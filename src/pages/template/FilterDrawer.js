@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * This function will infer the filter value from the data
- * @param {*[]} data 
+ * @param {Array.<*>} data The data to infer from
  */
 function inferOptions(data, key) {
     if (data.length === 0)
@@ -98,7 +98,6 @@ const FilterRow = (props) => {
                 <InputLabel htmlFor="select-multiple-chip">כלי</InputLabel>
                 <Select
                     multiple
-                    // autoWidth
                     value={value}
                     onChange={(e) => {handleChange(e.target.value.map( (v) => { return {operator: '=', value: v}}))}}
                     input={<Input id="select-multiple-chip" />}
@@ -120,16 +119,6 @@ const FilterRow = (props) => {
             </FormControl>
         );
     }
-    return (
-        <Grid item container className={classes.filterInputLine}>
-            <Grid item xs={6} className={classes.filterInputLineLabel}>
-                test1
-            </Grid>
-            <Grid item xs={6} className={classes.filterInputLineField}>
-                test2
-            </Grid>
-        </Grid>
-    );
 }
 
 export default (props) => {
