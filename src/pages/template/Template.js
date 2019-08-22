@@ -71,14 +71,30 @@ const useStyles = makeStyles(theme => ({
 
   },
   content: {
-    // flexGrow: '1',
+    flexGrow: '1',
+    // flexShrink: '1',
   },
   maxWidth100: {
     maxWidth: '100%'
   },
 }));
 
-let exampleFilter = {
+let exampleFilterDefinition = {
+  name: {
+    type: 'list',
+    listType: 'single'
+  },
+  // name2: {
+  //   type: 'list',
+  //   listType: 'single'
+  // },
+  // name3: {
+  //   type: 'list',
+  //   listType: 'single'
+  // }
+};
+
+let exampleActiveFilter = {
   name: [{
     operator: '=',
     value: 'Page A'
@@ -103,7 +119,7 @@ const operatorConv = {
   "!=": (val1, val2) => val1 !== val2
 }
 
-const filterData = function (filter, data) {
+function filterData(filter, data) {
   let applyFilter = function (dataKey, filterObj, data) {
     return filterObj.some((filterEntry) => operatorConv[filterEntry.operator](filterEntry.value, data[dataKey]))
   }
@@ -111,16 +127,24 @@ const filterData = function (filter, data) {
   return data.filter((dataVal) => Object.keys(filter).every((filterVal, index, arr) => applyFilter(filterVal, filter[filterVal], dataVal)));
 };
 
-const onFilterChange = function () {
+function onFilterChange(key, newFilters, oldFilters) {
+  let allFilterObj = { ...oldFilters };
 
+  if (newFilters.length === 0)
+    delete (allFilterObj[key]);
+  else
+    allFilterObj[key] = newFilters;
+
+  return allFilterObj;
 }
 
 export default (props) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [activeFilters, setActiveFilters] = React.useState({});
 
-  let filteredData = filterData(exampleFilter, data);
-  let filteredData2 = filterData(exampleFilter, data2);
+  let filteredData = filterData(activeFilters, data);
+  let filteredData2 = filterData(activeFilters, data2);
 
   return (
     <React.Fragment>
@@ -128,67 +152,58 @@ export default (props) => {
 
       <Grid container spacing={0} xs direction="column" className={classes.mainContainer}>
         <TopBar toggleFilterOpen={() => setOpen(!open)} />
-        <Grid item xs={8} className={[classes.maxWidth100, classes.content]}>
-          <Box display="flex" style={{ height: '100%' }}>
-            {/* content
-              b <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            a <br />
-            b <br /> */}
-            <Paper style={{ width: '50%', padding: '20px', margin: '10px' }}>
-              <ResponsiveContainer height={500} width={"100%"}>
-                <LineChart data={filteredData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                  <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-                  <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                </LineChart>
-              </ResponsiveContainer>
-            </Paper>
+        <Grid item container xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
+          <Grid item xs={open ? 0 : 0} style={{flexGrow: open ? 0.3 : 0, maxWidth: '100%', transition: open ? 'flex-grow 225ms cubic-bezier(0, 0, 0.2, 1) 0ms': '' }}>
+            <FilterDrawer open={open} data={data} filters={exampleFilterDefinition} activeFilters={activeFilters}
+              onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} />
+          </Grid>
+          <Grid item xs={1} className={[classes.maxWidth100, classes.content]} container>
+            {/* <Grid item xs={1} style={{ flexGrow: '1', height:'100%', maxWidth:'100%' }}> */}
+            <Box display="flex" style={{ height: '100%', width: '100%' }}>
+              <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
+                <Paper style={{ padding: '20px', margin: '10px' }}>
+                  <ResponsiveContainer height={500} width={"100%"}>
+                    <LineChart data={filteredData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                      <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                      <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </Paper>
+              </Grid>
+              <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
+                <Paper style={{ width: '50%', padding: '20px', margin: '10px', height: '50%' }}>
+                  <ResponsiveContainer height={"100%"} width={"100%"}>
+                    <ComposedChart data={filteredData2}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <CartesianGrid stroke="#f5f5f5" />
+                      <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
+                      <Bar dataKey="pv" barSize={20} fill="#413ea0" />
+                      <Line type="monotone" dataKey="uv" stroke="#ff7300" />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </Paper>
+              </Grid>
+            </Box>
+            {/* </Grid> */}
+            {/* <Grid item xs={1} style={{ flexGrow: '0.5', maxWidth: '100%' }}>
+            <FilterDrawer open={open} data={data} filters={exampleFilterDefinition} activeFilters={activeFilters}
+              onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} />
+          </Grid> */}
 
-            <Paper style={{ width: '50%', padding: '20px', margin: '10px', height:'50%' }}>
-              <ResponsiveContainer height={"100%"} width={"100%"}>
-                <ComposedChart data={filteredData2}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <CartesianGrid stroke="#f5f5f5" />
-                  <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
-                  <Bar dataKey="pv" barSize={20} fill="#413ea0" />
-                  <Line type="monotone" dataKey="uv" stroke="#ff7300" />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </Paper>
-          </Box>
-
+          </Grid>
         </Grid>
+
         {/* <BottomBar /> */}
       </Grid>
 
-      <FilterDrawer open={open} data={data} activeFilters={exampleFilter} onFilterChange={onFilterChange} />
+      {/* <FilterDrawer open={open} data={data} filters={exampleFilterDefinition} activeFilters={activeFilters}
+        onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} /> */}
 
     </React.Fragment>
   )
