@@ -1,11 +1,21 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import TemplatePage from './pages/template/Template'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <TemplatePage>
+
+      WHATEVER I WANT
+
+    </TemplatePage>
+  );
+
+  return (
+    <div className="App" style={{height:'100%', width:'100%'}}>
+      <TemplatePage />
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -19,6 +29,12 @@ function App() {
           Learn React
         </a>
       </header>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br /> */}
     </div>
   );
 }
