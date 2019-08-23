@@ -12,6 +12,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
     drawer: {
@@ -56,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 function inferOptions(data, key) {
     if (data.length === 0)
         return {};
-    
+
     let filters = {};
     if (key == null)
         Object.keys(data[0]).forEach((value) => filters[value] = new Set());
@@ -68,20 +69,52 @@ function inferOptions(data, key) {
         filters[value] = allVals;
     });
 
+    Object.keys(filters).forEach((f) => filters[f] = [...filters[f]]);
     return filters;
 }
 
 function getStyles(name, value, theme) {
     return {
         fontWeight:
-            value!= null && value.indexOf(name) === -1
+            value != null && value.indexOf(name) === -1
                 ? theme.typography.fontWeightRegular
                 : theme.typography.fontWeightMedium,
     };
 }
 
+const FilterListField = (props) => {
+    const { classes, filterKey, filter, value, theme, data, handleChange, MenuProps } = props;
+
+    return (
+        <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="select-multiple-chip">כלי</InputLabel>
+            <Select
+                multiple
+                // autoWidth
+                value={value}
+                onChange={(e) => { handleChange(e.target.value.map((v) => { return { operator: '=', value: v } })) }}
+                input={<Input id="select-multiple-chip" />}
+                renderValue={selected => (
+                    <div className={classes.chips}>
+                        {selected.map(value => (
+                            <Chip key={value} label={value} className={classes.chip} />
+                        ))}
+                    </div>
+                )}
+                MenuProps={MenuProps}
+            >
+                {(filter.options ? filter.options : (inferOptions(data, filterKey)[filterKey])).map(option => (
+                    <MenuItem key={option} value={option} style={getStyles(option, value, theme)}>
+                        {option}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+    );
+}
+
 const FilterRow = (props) => {
-    const { classes, filter, value, theme, options, handleChange } = props;
+    const { classes, filterKey, filter, value, theme, data, handleChange } = props;
 
     const MenuProps = {
         PaperProps: {
@@ -91,34 +124,19 @@ const FilterRow = (props) => {
             },
         },
     };
-    
+
     if (filter.type === "list") {
-        return (
-            <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="select-multiple-chip">כלי</InputLabel>
-                <Select
-                    multiple
-                    value={value}
-                    onChange={(e) => {handleChange(e.target.value.map( (v) => { return {operator: '=', value: v}}))}}
-                    input={<Input id="select-multiple-chip" />}
-                    renderValue={selected => (
-                        <div className={classes.chips}>
-                            {selected.map(value => (
-                                <Chip key={value} label={value} className={classes.chip} />
-                            ))}
-                        </div>
-                    )}
-                    MenuProps={MenuProps}
-                >
-                    {options.map(option => (
-                        <MenuItem key={option} value={option} style={getStyles(option, value, theme)}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-        );
+        return <FilterListField {...props} menuProps={MenuProps} />
     }
+}
+FilterRow.propTypes = {
+    classes: PropTypes.object, 
+    filterKey: PropTypes.string, 
+    filter: PropTypes.object, 
+    value: PropTypes.object, 
+    theme: PropTypes.object, 
+    data: PropTypes.object, 
+    handleChange: PropTypes.func
 }
 
 export default (props) => {
@@ -159,7 +177,7 @@ export default (props) => {
                         </Typography>
                     </Grid> */}
                     {
-                        Object.keys(filters).map((val) => <FilterRow classes={classes} filter={filters[val]} theme={theme} options={[...(inferOptions(data, val)[val])]}
+                        Object.keys(filters).map((val) => <FilterRow classes={classes} filterKey={val} filter={filters[val]} theme={theme} data={data}
                             handleChange={(newFilters) => onFilterChange(val, newFilters)}
                             value={activeFilters[val] ? activeFilters[val].reduce((prev, curr) => { prev.push(curr.value); return prev; }, []) : []} />)
                     }

@@ -82,7 +82,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @typedef filterDef
  * @type {Object}
- * @property {{type: string, listType: string}} * The filter definition.
+ * @property {{type: string, listType: string, options: Array.<*>}} * The filter definition.
  */
 let exampleFilterDefinition = {
   name: {
