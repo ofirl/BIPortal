@@ -86,8 +86,13 @@ const useStyles = makeStyles(theme => ({
  */
 let exampleFilterDefinition = {
   name: {
+    label: 'שם',
     type: 'list',
     listType: 'single'
+  },
+  ship: {
+    label: 'כלי',
+    type: 'tree',
   }
 };
 
@@ -184,7 +189,7 @@ function Template(props) {
         <Grid item container xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
 
           {/* filter drawer */}
-          <Grid item xs={open ? 0 : 0} style={{ flexGrow: open ? 0.3 : 0, maxWidth: '100%', transition: 'flex-grow 225ms cubic-bezier(0, 0, 0.2, 1) 0ms' }}>
+          <Grid item xs={open ? 0 : 0} style={{ flexGrow: open ? 0.3 : 0, maxWidth: '100%', width: '0', transition: 'flex-grow 225ms cubic-bezier(0, 0, 0.2, 1) 0ms' }}>
             <FilterDrawer open={open} data={data} filters={exampleFilterDefinition} activeFilters={activeFilters}
               onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} />
           </Grid>
@@ -194,8 +199,8 @@ function Template(props) {
             <Box display="flex" style={{ height: '100%', width: '100%' }}>
               {props.children(filteredData2)}
             </Box>
-
           </Grid>
+
         </Grid>
 
         {/* <BottomBar /> */}
