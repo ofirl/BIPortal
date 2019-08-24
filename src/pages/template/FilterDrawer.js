@@ -98,17 +98,22 @@ function inferOptions(data, key) {
     return filters;
 }
 
-function getStyles(name, value, theme) {
-    return {
-        fontWeight:
-            value != null && value.indexOf(name) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
-    };
-}
-
+/**
+ * Filter list field component
+ * 
+ * @param {object} props props object
+ */
 const FilterListField = (props) => {
     const { classes, filterKey, filter, value, theme, data, handleChange, MenuProps } = props;
+
+    function getStyles(name, value, theme) {
+        return {
+            fontWeight:
+                value != null && value.indexOf(name) === -1
+                    ? theme.typography.fontWeightRegular
+                    : theme.typography.fontWeightMedium,
+        };
+    }
 
     return (
         <FormControl className={classes.formControl}>
@@ -137,7 +142,22 @@ const FilterListField = (props) => {
         </FormControl>
     );
 }
+FilterListField.propTypes = {
+    classes: PropTypes.object,
+    filterKey: PropTypes.string,
+    filter: PropTypes.object,
+    value: PropTypes.any,
+    theme: PropTypes.object,
+    data: PropTypes.arrayOf(PropTypes.object),
+    handleChange: PropTypes.func,
+    MenuProps: PropTypes.object
+}
 
+/**
+ * Filter date field component
+ * 
+ * @param {object} props props object
+ */
 const FilterDateField = (props) => {
     let { filter, value, handleChange, classes } = props;
     let { dateType = 'range', dateSelection = ['year', 'month', 'day', 'time'] } = filter;
@@ -211,7 +231,18 @@ const FilterDateField = (props) => {
         );
     }
 }
+FilterDateField.propTypes = {
+    filter: PropTypes.object,
+    value: PropTypes.any,
+    handleChange: PropTypes.func,
+    classes: PropTypes.object
+}
 
+/**
+ * Filter row component
+ * 
+ * @param {object} props props object
+ */
 const FilterRow = (props) => {
     const { filter } = props;
 
@@ -263,7 +294,12 @@ FilterRow.propTypes = {
     handleChange: PropTypes.func
 }
 
-export default (props) => {
+/**
+ * Filter drawer component
+ * 
+ * @param {object} props props object
+ */
+const FilterDrawer = (props) => {
     const { data, open, filters, activeFilters, onFilterChange } = props;
     const classes = useStyles();
     const theme = useTheme();
@@ -318,3 +354,12 @@ export default (props) => {
         </Drawer>
     );
 }
+FilterDrawer.propTypes = {
+    data: PropTypes.object,
+    open: PropTypes.bool,
+    filters: PropTypes.object, 
+    activeFilters: PropTypes.object, 
+    onFilterChange: PropTypes.func
+}
+
+export default FilterDrawer;
