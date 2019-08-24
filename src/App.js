@@ -28,7 +28,7 @@ function App() {
           </Grid>
 
           <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
-            <Paper style={{ width: '50%', padding: '20px', margin: '10px', height: '50%' }}>
+            <Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '50%' }}>
               <ResponsiveContainer height={"100%"} width={"100%"}>
                 <ComposedChart data={data}>
                   <XAxis dataKey="name" />

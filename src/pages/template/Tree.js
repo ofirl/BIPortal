@@ -111,6 +111,7 @@ const exampleData = {
     id: 'Chapter 1',
     name: 'Chapter 1',
     toggled: true,
+    active: true,
     children: [
         {
             id: 'Chapter 1.1',
@@ -160,7 +161,7 @@ const findExactNode = (node, filter) => {
 
     let foundNode = matcher(filter, node);
     if (foundNode)
-        return foundNode;
+        return node;
 
     if (node.children && node.children.length) // or i have decendents and one of them match
         return node.children.find(child => findNode(child, filter, matcher));
@@ -246,7 +247,6 @@ const TreeExample = (props) => {
 
             checkList.splice(0, 1);
         }
-
         handleChange(allChildren.map((c) => { return { operator: '=', value: c, root: hierNode } }));
     }
 

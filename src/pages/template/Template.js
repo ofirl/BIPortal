@@ -142,9 +142,11 @@ const operatorConv = {
  */
 function filterData(filter, data) {
   let applyFilter = function (dataKey, filterObj, data) {
+    // check if the data checks against at least one of the filter values
     return filterObj.some((filterEntry) => operatorConv[filterEntry.operator](filterEntry.value, data[dataKey]))
   }
 
+  // check if the data checks against all the filters
   return data.filter((dataVal) => Object.keys(filter).every((filterVal, index, arr) => applyFilter(filterVal, filter[filterVal], dataVal)));
 };
 

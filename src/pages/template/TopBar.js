@@ -51,10 +51,11 @@ export default (props) => {
                         {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                             <MenuIcon />
                         </IconButton> */}
+                        <img src="./ocean.png" className="App-logo" alt="..." style={{width:"50px", height:"50px"}}/>
                         <Typography variant="h6" className={classes.title}>
-                            News
+                            כותרת לדוח
                         </Typography>
-                        <Button color="inherit">Login</Button>
+                        {/* <Button color="inherit">Login</Button> */}
                         <IconButton color="inherit" onClick={props.toggleFilterOpen}>
                             <FilterListIcon />
                         </IconButton>
