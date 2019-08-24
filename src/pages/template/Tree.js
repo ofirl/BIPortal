@@ -128,15 +128,18 @@ const exampleData = {
             children: []
         },
         {
-            id: 'Chapter 2',
-            name: 'Chapter 2',
+            id: 'Chapter 1.2',
+            name: 'Chapter 1.2',
             children: [
                 {
                     id: 'Chapter 2.1',
                     name: 'Chapter 2.1',
                     children: [
                         { id: 'Page C', name: 'Page C' },
-                        { id: 'Page D', name: 'Page D' }
+                        { id: 'Page D', name: 'Page D' },
+                        { id: 'Page E', name: 'Page E' },
+                        { id: 'Page F', name: 'Page F' },
+                        { id: 'Page G', name: 'Page G' }
                     ]
                 }
             ]
@@ -222,14 +225,14 @@ const TreeExample = (props) => {
     const [cursor, setCursor] = useState(false);
 
     const onToggle = (node, toggled) => {
-        if (cursor) {
-            data.active = false;
+        data.active = false;
+        if (cursor)
             cursor.active = false;
-        }
+
         node.active = true;
-        if (node.children) {
+        if (node.children)
             node.toggled = toggled;
-        }
+
         setCursor(node);
         setData(Object.assign({}, data))
 

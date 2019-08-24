@@ -24,43 +24,50 @@ const data2 = [
     "name": "Page A",
     "uv": 4000,
     "pv": 2400,
-    "amt": 2400
+    "amt": 2400,
+    "date": '01/05/2019'
   },
   {
     "name": "Page B",
     "uv": 3000,
     "pv": 1398,
-    "amt": 2210
+    "amt": 2210,
+    "date": '01/06/2019'
   },
   {
     "name": "Page C",
     "uv": 2000,
     "pv": 9800,
-    "amt": 2290
+    "amt": 2290,
+    "date": '01/06/2019'
   },
   {
     "name": "Page D",
     "uv": 2780,
     "pv": 3908,
-    "amt": 2000
+    "amt": 2000,
+    "date": '01/06/2019'
   },
   {
     "name": "Page E",
     "uv": 1890,
     "pv": 4800,
-    "amt": 2181
+    "amt": 2181,
+    "date": '01/06/2019'
   },
   {
     "name": "Page F",
     "uv": 2390,
     "pv": 3800,
-    "amt": 2500
+    "amt": 2500,
+    "date": '01/06/2019'
   },
   {
     "name": "Page G",
     "uv": 3490,
     "pv": 4300,
-    "amt": 2100
+    "amt": 2100,
+    "date": '01/06/2019'
   }
 ]
 
@@ -80,9 +87,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
+ * @typedef filterDefEntry
+ * @type {object} 
+ * @property {string} type the type of the filter, supported values are: 'list', 'date'
+ * @property {string} [listType] the type of the list, suported values are: 'single', 'multi
+ * @property {Array.<*>} [options] the options of the list
+ * @property {string} dateType the type of the date, supported values are: 'single', 'range' (default is range)
+ * @property {string | Array.<string>} dateSelection the type of the selection, supported values are: 'year', 'month', 'day', 'time'
+ */
+/**
  * @typedef filterDef
  * @type {Object}
- * @property {{type: string, listType: string, options: Array.<*>}} * The filter definition.
+ * @property {filterDefEntry} * The filter definition.
  */
 let exampleFilterDefinition = {
   uv: {
@@ -94,6 +110,11 @@ let exampleFilterDefinition = {
   name: {
     label: 'כלי',
     type: 'tree',
+  },
+  date: {
+    label: 'תאריך',
+    type: 'date',
+    // dateType: 'single'
   }
 };
 
@@ -128,7 +149,29 @@ const operatorConv = {
   "<=": (val1, val2) => val1 <= val2,
   ">": (val1, val2) => val1 > val2,
   "<": (val1, val2) => val1 < val2,
-  "!=": (val1, val2) => val1 !== val2
+  "!=": (val1, val2) => val1 !== val2,
+  "date-between": (val1, { startDate, endDate }) => { 
+    val1 = formatDate(val1);
+    return operatorConv[">"](new Date(val1), startDate) && operatorConv["<"](new Date(val1), endDate);
+  },
+  "date-single": (val1, val2) => {
+    val1 = formatDate(val1);
+    return operatorConv["="](new Date(val1).getTime(), val2.getTime());
+  },
+}
+
+/**
+ * Converts the given date to a date object
+ * 
+ * @param {string} date the date to convert (assuming the date is in dd/MM/yyyy format)
+ * 
+ * @returns {Date} date object
+ */
+function formatDate(date) {
+  // assuming the date is in dd/MM/yyyy format, if not this will need changing
+  let match = /(\d{2})\/(\d{2})\/(\d{4})/.exec(date);
+  date = new Date(match[3], match[2] - 1, match[1]);
+  return date;
 }
 
 /**
@@ -143,7 +186,7 @@ const operatorConv = {
 function filterData(filter, data) {
   let applyFilter = function (dataKey, filterObj, data) {
     // check if the data checks against at least one of the filter values
-    return filterObj.some((filterEntry) => operatorConv[filterEntry.operator](filterEntry.value, data[dataKey]))
+    return filterObj.some((filterEntry) => operatorConv[filterEntry.operator](data[dataKey], filterEntry.value))
   }
 
   // check if the data checks against all the filters
@@ -156,7 +199,7 @@ function filterData(filter, data) {
  * Adds or deletes the necessary values/keys from the old filters.
  * 
  * @param {string} key filter key
- * @param {activeFilter} newFilters new active filter (only filters relevant to key {@link key}
+ * @param {activeFilter} newFilters new active filter (only filters relevant to key {@link key})
  * @param {activeFilter} oldFilters old active filter (all keys)
  */
 function onFilterChange(key, newFilters, oldFilters) {

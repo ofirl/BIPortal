@@ -51,7 +51,7 @@ export default (props) => {
                         {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                             <MenuIcon />
                         </IconButton> */}
-                        <img src="./ocean.png" className="App-logo" alt="..." style={{width:"50px", height:"50px"}}/>
+                        <img src="./ocean.png" className="App-logo2" alt="..." style={{width:"50px", height:"50px", marginLeft: '1em'}}/>
                         <Typography variant="h6" className={classes.title}>
                             כותרת לדוח
                         </Typography>

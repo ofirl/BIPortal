@@ -10,11 +10,14 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+// import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 // import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import TextField from '@material-ui/core/TextField';
 
 import Tree from './Tree';
 
@@ -31,7 +34,8 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         backgroundColor: '#fafafa',
         borderRight: 'none',
-        padding: '10px'
+        padding: '10px',
+        overflow: 'visible'
     },
     maxWidth100: {
         maxWidth: '100%'
@@ -57,8 +61,19 @@ const useStyles = makeStyles(theme => ({
     filterInputLineField: {
         flexGrow: '1',
         width: '100%'
+    },
+    filterDateField: {
+        flexGrow: '1',
+        maxWidth: '100%'
+    },
+    filterDateFieldPopper: {
+        zIndex: '1001'
     }
 }));
+
+const searchBoxClasses = {
+    root: 'hierSearchBox'
+}
 
 /**
  * This function will infer the filter value from the data
@@ -101,7 +116,7 @@ const FilterListField = (props) => {
             <Select
                 multiple
                 // autoWidth
-                value={value}
+                value={value ? value : []}
                 onChange={(e) => { handleChange(e.target.value.map((v) => { return { operator: '=', value: v } })) }}
                 input={<Input id="select-multiple-chip" />}
                 renderValue={selected => (
@@ -123,6 +138,80 @@ const FilterListField = (props) => {
     );
 }
 
+const FilterDateField = (props) => {
+    let { filter, value, handleChange, classes } = props;
+    let { dateType = 'range', dateSelection = ['year', 'month', 'day', 'time'] } = filter;
+
+    if (dateType === 'range') {
+        let { startDate, endDate } = value ? value[0] : {};
+
+        return (
+            <React.Fragment>
+                <Grid container xs spacing={1} >
+                    <Grid item xs={1} className={classes.filterDateField}>
+                        <DatePicker
+                            customInput={<TextField
+                                id="outlined-dense"
+                                label="התחלה"
+                                className={[classes.textField, classes.dense]}
+                                classes={searchBoxClasses}
+                                margin="dense"
+                                variant="outlined"
+                            />}
+                            dateFormat="dd/MM/yyyy"
+                            popperClassName={classes.filterDateFieldPopper}
+                            selected={startDate}
+                            selectsStart
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(date) => handleChange([{ operator: 'date-between', value: { startDate: date, endDate: endDate } }])}
+                        />
+                    </Grid>
+                    <Grid item xs={1} className={classes.filterDateField}>
+                        <DatePicker
+                            customInput={<TextField
+                                id="outlined-dense"
+                                label="סיום"
+                                className={[classes.textField, classes.dense]}
+                                classes={searchBoxClasses}
+                                margin="dense"
+                                variant="outlined"
+                            />}
+                            dateFormat="dd/MM/yyyy"
+                            popperClassName={classes.filterDateFieldPopper}
+                            selected={endDate}
+                            selectsEnd
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(date) => handleChange([{ operator: 'date-between', value: { startDate: startDate, endDate: date } }])}
+                            minDate={startDate}
+                        />
+                    </Grid>
+                </Grid>
+            </React.Fragment>
+        );
+    }
+    if (dateType === 'single') {
+        // let { startDate, endDate } = value[0] ? value[0] : {};
+        return (
+            <DatePicker
+                customInput={<TextField
+                    id="outlined-dense"
+                    label="התחלה"
+                    className={[classes.textField, classes.dense]}
+                    classes={searchBoxClasses}
+                    margin="dense"
+                    variant="outlined"
+                />}
+                dateFormat="dd/MM/yyyy"
+                popperClassName={classes.filterDateFieldPopper}
+                selected={value ? value[0] : null}
+                onChange={(date) => handleChange([{ operator: 'date-single', value: date }])}
+            />
+        );
+    }
+}
+
 const FilterRow = (props) => {
     const { filter } = props;
 
@@ -130,7 +219,9 @@ const FilterRow = (props) => {
         height: 'auto',
         width: '100%',
         paddingTop: '0.5em',
-        paddingBottom: '0.5em'
+        paddingBottom: '0.5em',
+        paddingLeft: '8px',
+        paddingRight: '8px'
     }
     const MenuProps = {
         PaperProps: {
@@ -147,10 +238,13 @@ const FilterRow = (props) => {
         filterField = <FilterListField {...props} menuProps={MenuProps} />;
     if (filter.type === "tree")
         filterField = <Tree {...props} />;
+    if (filter.type === 'date') {
+        filterField = <FilterDateField {...props} />;
+    }
 
     return (
         <div style={filterRowStyle}>
-            <Typography variant="subtitle2" style={{fontWeight: 'bold'}}> {filter.label} </Typography>
+            <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}> {filter.label} </Typography>
             {filterField}
         </div>
     );
@@ -162,7 +256,7 @@ FilterRow.propTypes = {
     /** filter definition object */
     filter: PropTypes.object,
     /** active value */
-    value: PropTypes.object,
+    value: PropTypes.any,
     theme: PropTypes.object,
     data: PropTypes.object,
     /** gets the new selected filters as parameter */
@@ -212,7 +306,7 @@ export default (props) => {
                             <Paper style={{ marginBottom: '10px' }}>
                                 <FilterRow classes={classes} filterKey={val} filter={filters[val]} theme={theme} data={data}
                                     handleChange={(newFilters) => onFilterChange(val, newFilters)}
-                                    value={activeFilters[val] ? activeFilters[val].reduce((prev, curr) => { prev.push(curr.value); return prev; }, []) : []} />
+                                    value={activeFilters[val] ? activeFilters[val].reduce((prev, curr) => { prev.push(curr.value); return prev; }, []) : null} />
                             </Paper>
                         )
                         )
