@@ -9,6 +9,20 @@ html, body {
   flex-direction: column;
 }
 
+.hierSearchBox label {
+  left: auto;
+  right: 0;
+  transform: translate(-14px, 12px) scale(1) !important;
+  transform-origin: top right;
+}
+.hierSearchBox fieldset {
+  padding-right: 8px;
+}
+
+.hierSearchBox label.MuiInputLabel-shrink {
+  transform: translate(-14px, -6px) scale(0.75) !important;
+}
+
 .App {
   text-align: center;
 }

@@ -6,14 +6,14 @@ import Drawer from '@material-ui/core/Drawer';
 import Chip from '@material-ui/core/Chip';
 // import Draggable from 'react-draggable';
 import Grid from '@material-ui/core/Grid';
-// import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Box } from '@material-ui/core';
+// import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 
 import Tree from './Tree';
@@ -97,7 +97,7 @@ const FilterListField = (props) => {
 
     return (
         <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="select-multiple-chip">כלי</InputLabel>
+            {/* <InputLabel htmlFor="select-multiple-chip"> {filter.label} </InputLabel> */}
             <Select
                 multiple
                 // autoWidth
@@ -124,7 +124,7 @@ const FilterListField = (props) => {
 }
 
 const FilterRow = (props) => {
-    const { classes, filterKey, filter, value, theme, data, handleChange } = props;
+    const { filter } = props;
 
     const filterRowStyle = {
         height: 'auto',
@@ -146,21 +146,26 @@ const FilterRow = (props) => {
     if (filter.type === "list")
         filterField = <FilterListField {...props} menuProps={MenuProps} />;
     if (filter.type === "tree")
-        filterField = <Tree />;
+        filterField = <Tree {...props} />;
 
     return (
         <div style={filterRowStyle}>
+            <Typography variant="subtitle2" style={{fontWeight: 'bold'}}> {filter.label} </Typography>
             {filterField}
         </div>
     );
 }
 FilterRow.propTypes = {
     classes: PropTypes.object,
+    /** filter key */
     filterKey: PropTypes.string,
+    /** filter definition object */
     filter: PropTypes.object,
+    /** active value */
     value: PropTypes.object,
     theme: PropTypes.object,
     data: PropTypes.object,
+    /** gets the new selected filters as parameter */
     handleChange: PropTypes.func
 }
 

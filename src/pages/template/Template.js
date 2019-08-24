@@ -17,7 +17,7 @@ import TopBar from './TopBar';
 import { Box } from '@material-ui/core';
 import FilterDrawer from './FilterDrawer';
 
-const data = [{ name: 'Page A', uv: 400, pv: 2400, amt: 2400 }, { name: 'Page B', uv: 300 }, { name: 'Page C', uv: 250 }, { name: 'Page D', uv: 350 }];
+// const data = [{ name: 'Page A', uv: 400, pv: 2400, amt: 2400 }, { name: 'Page B', uv: 300 }, { name: 'Page C', uv: 250 }, { name: 'Page D', uv: 350 }];
 
 const data2 = [
   {
@@ -85,12 +85,13 @@ const useStyles = makeStyles(theme => ({
  * @property {{type: string, listType: string, options: Array.<*>}} * The filter definition.
  */
 let exampleFilterDefinition = {
-  name: {
+  uv: {
     label: 'שם',
     type: 'list',
-    listType: 'single'
+    listType: 'multi',
+    // options: [2000,3000]
   },
-  ship: {
+  name: {
     label: 'כלי',
     type: 'tree',
   }
@@ -172,7 +173,7 @@ function Template(props) {
   const [open, setOpen] = React.useState(false);
   const [activeFilters, setActiveFilters] = React.useState({});
 
-  let filteredData = filterData(activeFilters, data);
+  // let filteredData = filterData(activeFilters, data);
   let filteredData2 = filterData(activeFilters, data2);
 
   return (
@@ -190,7 +191,7 @@ function Template(props) {
 
           {/* filter drawer */}
           <Grid item xs={open ? 0 : 0} style={{ flexGrow: open ? 0.3 : 0, maxWidth: '100%', width: '0', transition: 'flex-grow 225ms cubic-bezier(0, 0, 0.2, 1) 0ms' }}>
-            <FilterDrawer open={open} data={data} filters={exampleFilterDefinition} activeFilters={activeFilters}
+            <FilterDrawer open={open} data={data2} filters={exampleFilterDefinition} activeFilters={activeFilters}
               onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} />
           </Grid>
 
