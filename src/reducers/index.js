@@ -1,8 +1,3 @@
-// import { combineReducers } from 'redux';
-// import data from './dataReducer';
-// import activeFilter from './activeFilterReducer';
-// import hierarchy from './hierarchyReducer';
-
 import { createActions, handleActions } from 'redux-actions'
 
 const exampleData = [
@@ -96,12 +91,6 @@ const exampleHier = {
       }
   ]
 };
-
-// export default combineReducers({
-//   data,
-//   activeFilter,
-//   hierarchy,
-// });
 
 export const { setData, setActiveFilter, setHierarchy } = createActions({
   SET_DATA: (data = []) => ({ data }),
