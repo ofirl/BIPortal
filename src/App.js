@@ -1,7 +1,7 @@
 import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import TemplatePage from './pages/template/Template'
+import TemplatePage from './pages/Template/Template'
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';

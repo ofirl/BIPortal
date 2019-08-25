@@ -27,19 +27,27 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import React from 'react'
+import PropTypes from 'prop-types';
+
 import Drawer from '@material-ui/core/Drawer';
 // import Divider from '@material-ui/core/Divider';
 import Chip from '@material-ui/core/Chip';
 // import Draggable from 'react-draggable';
-// import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-// import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+// import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
+// import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import TextField from '@material-ui/core/TextField';
+
+import Tree from './Tree';
 
 const useStyles = makeStyles(theme => ({
     drawer: {
@@ -52,9 +60,16 @@ const useStyles = makeStyles(theme => ({
     drawerPaper: {
         width: '100%',
         position: 'relative',
+        backgroundColor: '#fafafa',
+        borderRight: 'none',
+        padding: '10px',
+        overflow: 'visible'
     },
     maxWidth100: {
         maxWidth: '100%'
+    },
+    formControl: {
+        width: '100%'
     },
     filterChip: {
         margin: '1px',
@@ -74,8 +89,19 @@ const useStyles = makeStyles(theme => ({
     filterInputLineField: {
         flexGrow: '1',
         width: '100%'
+    },
+    filterDateField: {
+        flexGrow: '1',
+        maxWidth: '100%'
+    },
+    filterDateFieldPopper: {
+        zIndex: '1001'
     }
 }));
+
+const searchBoxClasses = {
+    root: 'hierSearchBox'
+}
 
 /**
  * This function will infer the filter value from the data
@@ -84,7 +110,7 @@ const useStyles = makeStyles(theme => ({
 function inferOptions(data, key) {
     if (data.length === 0)
         return {};
-    
+
     let filters = {};
     if (key == null)
         Object.keys(data[0]).forEach((value) => filters[value] = new Set());
@@ -96,21 +122,184 @@ function inferOptions(data, key) {
         filters[value] = allVals;
     });
 
+    Object.keys(filters).forEach((f) => filters[f] = [...filters[f]]);
     return filters;
 }
 
-function getStyles(name, value, theme) {
-    return {
-        fontWeight:
-            value!= null &amp;&amp; value.indexOf(name) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
-    };
+/**
+ * Filter list field component
+ * 
+ * @param {object} props props object
+ */
+const FilterListField = (props) => {
+    const { classes, filterKey, filter, value, theme, data, handleChange, MenuProps } = props;
+    const { listType, addBlank } = filter;
+
+    function getStyles(name, value, theme) {
+        return {
+            fontWeight:
+                value != null &amp;&amp; value.indexOf(name) === -1
+                    ? theme.typography.fontWeightRegular
+                    : theme.typography.fontWeightMedium,
+        };
+    }
+
+    return (
+        &lt;FormControl className={classes.formControl}>
+            {/* &lt;InputLabel htmlFor="select-multiple-chip"> {filter.label} &lt;/InputLabel> */}
+            &lt;Select
+                multiple={listType === "multi" ? true : false}
+                // autoWidth
+                value={value ? value : []}
+                onChange={(e) => { handleChange((listType === "multi" ? e.target.value : [e.target.value]).map((v) => { return { operator: '=', value: v } })) }}
+                input={&lt;Input id="select-multiple-chip" />}
+                renderValue={selected => (
+                    &lt;div className={classes.chips}>
+                        {selected.map(value => (
+                            &lt;Chip key={value} label={value} className={classes.chip} />
+                        ))}
+                    &lt;/div>
+                )}
+                MenuProps={MenuProps}
+            >
+                {/* {
+                    () => {
+                        //! hacky hacky... selects will have an id and value.... needs changing
+                        let realOptions = (filter.options ? filter.options : (inferOptions(data, filterKey)[filterKey]));
+                        if (addBlank)
+                            realOptions.splice(0, 0, "");
+
+                        return (filter.options ? filter.options : (inferOptions(data, filterKey)[filterKey])).map(option => (
+                            &lt;MenuItem key={option} value={option} style={getStyles(option, value, theme)}>
+                                {option}
+                            &lt;/MenuItem>
+                        ));
+                    }
+                } */}
+
+                {
+                    (filter.options ? filter.options : (inferOptions(data, filterKey)[filterKey])).map(option => (
+                        &lt;MenuItem key={option} value={option} style={getStyles(option, value, theme)}>
+                            {option}
+                        &lt;/MenuItem>
+                    ))
+                }
+            &lt;/Select>
+        &lt;/FormControl>
+    );
+}
+FilterListField.propTypes = {
+    classes: PropTypes.object,
+    filterKey: PropTypes.string,
+    filter: PropTypes.object,
+    value: PropTypes.any,
+    theme: PropTypes.object,
+    data: PropTypes.arrayOf(PropTypes.object),
+    handleChange: PropTypes.func,
+    MenuProps: PropTypes.object
 }
 
-const FilterRow = (props) => {
-    const { classes, filter, value, theme, options, handleChange } = props;
+/**
+ * Filter date field component
+ * 
+ * @param {object} props props object
+ */
+const FilterDateField = (props) => {
+    let { filter, value, handleChange, classes } = props;
+    let { dateType = 'range', dateSelection = ['year', 'month', 'day', 'time'] } = filter;
 
+    if (dateType === 'range') {
+        let { startDate, endDate } = value ? value[0] : {};
+
+        return (
+            &lt;React.Fragment>
+                &lt;Grid container xs spacing={1} >
+                    &lt;Grid item xs={1} className={classes.filterDateField}>
+                        &lt;DatePicker
+                            customInput={&lt;TextField
+                                id="outlined-dense"
+                                label="התחלה"
+                                className={[classes.textField, classes.dense]}
+                                classes={searchBoxClasses}
+                                margin="dense"
+                                variant="outlined"
+                            />}
+                            dateFormat="dd/MM/yyyy"
+                            popperClassName={classes.filterDateFieldPopper}
+                            selected={startDate}
+                            selectsStart
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(date) => handleChange([{ operator: 'date-between', value: { startDate: date, endDate: endDate } }])}
+                        />
+                    &lt;/Grid>
+                    &lt;Grid item xs={1} className={classes.filterDateField}>
+                        &lt;DatePicker
+                            customInput={&lt;TextField
+                                id="outlined-dense"
+                                label="סיום"
+                                className={[classes.textField, classes.dense]}
+                                classes={searchBoxClasses}
+                                margin="dense"
+                                variant="outlined"
+                            />}
+                            dateFormat="dd/MM/yyyy"
+                            popperClassName={classes.filterDateFieldPopper}
+                            selected={endDate}
+                            selectsEnd
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(date) => handleChange([{ operator: 'date-between', value: { startDate: startDate, endDate: date } }])}
+                            minDate={startDate}
+                        />
+                    &lt;/Grid>
+                &lt;/Grid>
+            &lt;/React.Fragment>
+        );
+    }
+    if (dateType === 'single') {
+        // let { startDate, endDate } = value[0] ? value[0] : {};
+        return (
+            &lt;DatePicker
+                customInput={&lt;TextField
+                    id="outlined-dense"
+                    label="התחלה"
+                    className={[classes.textField, classes.dense]}
+                    classes={searchBoxClasses}
+                    margin="dense"
+                    variant="outlined"
+                />}
+                dateFormat="dd/MM/yyyy"
+                popperClassName={classes.filterDateFieldPopper}
+                selected={value ? value[0] : null}
+                onChange={(date) => handleChange([{ operator: 'date-single', value: date }])}
+            />
+        );
+    }
+}
+FilterDateField.propTypes = {
+    filter: PropTypes.object,
+    value: PropTypes.any,
+    handleChange: PropTypes.func,
+    classes: PropTypes.object
+}
+
+/**
+ * Filter row component
+ * 
+ * @param {object} props props object
+ */
+const FilterRow = (props) => {
+    const { filter } = props;
+
+    const filterRowStyle = {
+        height: 'auto',
+        width: '100%',
+        paddingTop: '0.5em',
+        paddingBottom: '0.5em',
+        paddingLeft: '8px',
+        paddingRight: '8px'
+    }
     const MenuProps = {
         PaperProps: {
             style: {
@@ -119,37 +308,44 @@ const FilterRow = (props) => {
             },
         },
     };
-    
-    if (filter.type === "list") {
-        return (
-            &lt;FormControl className={classes.formControl}>
-                &lt;InputLabel htmlFor="select-multiple-chip">כלי&lt;/InputLabel>
-                &lt;Select
-                    multiple
-                    value={value}
-                    onChange={(e) => {handleChange(e.target.value.map( (v) => { return {operator: '=', value: v}}))}}
-                    input={&lt;Input id="select-multiple-chip" />}
-                    renderValue={selected => (
-                        &lt;div className={classes.chips}>
-                            {selected.map(value => (
-                                &lt;Chip key={value} label={value} className={classes.chip} />
-                            ))}
-                        &lt;/div>
-                    )}
-                    MenuProps={MenuProps}
-                >
-                    {options.map(option => (
-                        &lt;MenuItem key={option} value={option} style={getStyles(option, value, theme)}>
-                            {option}
-                        &lt;/MenuItem>
-                    ))}
-                &lt;/Select>
-            &lt;/FormControl>
-        );
+
+    let filterField = null;
+
+    if (filter.type === "list")
+        filterField = &lt;FilterListField {...props} menuProps={MenuProps} />;
+    if (filter.type === "tree")
+        filterField = &lt;Tree {...props} />;
+    if (filter.type === 'date') {
+        filterField = &lt;FilterDateField {...props} />;
     }
+
+    return (
+        &lt;div style={filterRowStyle}>
+            &lt;Typography variant="subtitle2" style={{ fontWeight: 'bold' }}> {filter.label} &lt;/Typography>
+            {filterField}
+        &lt;/div>
+    );
+}
+FilterRow.propTypes = {
+    classes: PropTypes.object,
+    /** filter key */
+    filterKey: PropTypes.string,
+    /** filter definition object */
+    filter: PropTypes.object,
+    /** active value */
+    value: PropTypes.any,
+    theme: PropTypes.object,
+    data: PropTypes.object,
+    /** gets the new selected filters as parameter */
+    handleChange: PropTypes.func
 }
 
-export default (props) => {
+/**
+ * Filter drawer component
+ * 
+ * @param {object} props props object
+ */
+const FilterDrawer = (props) => {
     const { data, open, filters, activeFilters, onFilterChange } = props;
     const classes = useStyles();
     const theme = useTheme();
@@ -165,6 +361,7 @@ export default (props) => {
                 root: classes.drawerRoot
             }}
         >
+            {/* &lt;Paper> */}
             &lt;Grid container direction="column" style={{ height: '100%', direction: 'rtl' }}>
                 {/* &lt;div style={{ height: '5em' }}>&lt;/div> */}
                 &lt;Grid id="filterGrid" item xs={1} style={{ flexGrow: '1' }} container direction="column" className={classes.maxWidth100}>
@@ -187,16 +384,31 @@ export default (props) => {
                         &lt;/Typography>
                     &lt;/Grid> */}
                     {
-                        Object.keys(filters).map((val) => &lt;FilterRow classes={classes} filter={filters[val]} theme={theme} options={[...(inferOptions(data, val)[val])]}
-                            handleChange={(newFilters) => onFilterChange(val, newFilters)}
-                            value={activeFilters[val] ? activeFilters[val].reduce((prev, curr) => { prev.push(curr.value); return prev; }, []) : []} />)
+                        Object.keys(filters).map((val) => (
+                            &lt;Paper style={{ marginBottom: '10px' }}>
+                                &lt;FilterRow classes={classes} filterKey={val} filter={filters[val]} theme={theme} data={data}
+                                    handleChange={(newFilters) => onFilterChange(val, newFilters)}
+                                    value={activeFilters[val] ? activeFilters[val].reduce((prev, curr) => { prev.push(curr.value); return prev; }, []) : null} />
+                            &lt;/Paper>
+                        )
+                        )
                     }
                 &lt;/Grid>
                 {/* &lt;div style={{ height: '5em' }}>&lt;/div> */}
             &lt;/Grid>
+            {/* &lt;/Paper> */}
         &lt;/Drawer>
     );
-}</code></pre>
+}
+FilterDrawer.propTypes = {
+    data: PropTypes.object,
+    open: PropTypes.bool,
+    filters: PropTypes.object,
+    activeFilters: PropTypes.object,
+    onFilterChange: PropTypes.func
+}
+
+export default FilterDrawer;</code></pre>
         </article>
     </section>
 
@@ -206,13 +418,13 @@ export default (props) => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#filterData">filterData</a></li><li><a href="global.html#inferOptions">inferOptions</a></li><li><a href="global.html#onFilterChange">onFilterChange</a></li><li><a href="global.html#operatorConv">operatorConv</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#filterData">filterData</a></li><li><a href="global.html#FilterDateField">FilterDateField</a></li><li><a href="global.html#FilterDrawer">FilterDrawer</a></li><li><a href="global.html#FilterListField">FilterListField</a></li><li><a href="global.html#FilterRow">FilterRow</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#inferOptions">inferOptions</a></li><li><a href="global.html#onFilterChange">onFilterChange</a></li><li><a href="global.html#operatorConv">operatorConv</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Aug 23 2019 01:58:45 GMT+0300 (Israel Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Aug 25 2019 17:28:07 GMT+0300 (Israel Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

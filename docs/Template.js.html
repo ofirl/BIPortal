@@ -45,50 +45,57 @@ import TopBar from './TopBar';
 import { Box } from '@material-ui/core';
 import FilterDrawer from './FilterDrawer';
 
-const data = [{ name: 'Page A', uv: 400, pv: 2400, amt: 2400 }, { name: 'Page B', uv: 300 }, { name: 'Page C', uv: 250 }, { name: 'Page D', uv: 350 }];
+// const data = [{ name: 'Page A', uv: 400, pv: 2400, amt: 2400 }, { name: 'Page B', uv: 300 }, { name: 'Page C', uv: 250 }, { name: 'Page D', uv: 350 }];
 
 const data2 = [
   {
     "name": "Page A",
     "uv": 4000,
     "pv": 2400,
-    "amt": 2400
+    "amt": 2400,
+    "date": '01/05/2019'
   },
   {
     "name": "Page B",
     "uv": 3000,
     "pv": 1398,
-    "amt": 2210
+    "amt": 2210,
+    "date": '01/06/2019'
   },
   {
     "name": "Page C",
     "uv": 2000,
     "pv": 9800,
-    "amt": 2290
+    "amt": 2290,
+    "date": '01/06/2019'
   },
   {
     "name": "Page D",
     "uv": 2780,
     "pv": 3908,
-    "amt": 2000
+    "amt": 2000,
+    "date": '01/06/2019'
   },
   {
     "name": "Page E",
     "uv": 1890,
     "pv": 4800,
-    "amt": 2181
+    "amt": 2181,
+    "date": '01/06/2019'
   },
   {
     "name": "Page F",
     "uv": 2390,
     "pv": 3800,
-    "amt": 2500
+    "amt": 2500,
+    "date": '01/06/2019'
   },
   {
     "name": "Page G",
     "uv": 3490,
     "pv": 4300,
-    "amt": 2100
+    "amt": 2100,
+    "date": '01/06/2019'
   }
 ]
 
@@ -108,14 +115,36 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
+ * @typedef filterDefEntry
+ * @type {object} 
+ * @property {string} type the type of the filter, supported values are: 'list', 'date'
+ * @property {string} [listType] the type of the list, suported values are: 'single', 'multi', default is 'single'
+ * @property {Array.&lt;*>} [options] the options of the list
+ * @property {bool} [addBlank] add a blank option, default is false
+ * @property {string} dateType the type of the date, supported values are: 'single', 'range' (default is range)
+ * @property {string | Array.&lt;string>} dateSelection the type of the selection, supported values are: 'year', 'month', 'day', 'time'
+ */
+/**
  * @typedef filterDef
  * @type {Object}
- * @property {{type: string, listType: string}} * The filter definition.
+ * @property {filterDefEntry} * The filter definition.
  */
 let exampleFilterDefinition = {
-  name: {
+  uv: {
+    label: 'שם',
     type: 'list',
-    listType: 'single'
+    addBlank: true,
+    // listType: 'multi',
+    // options: [2000,3000]
+  },
+  name: {
+    label: 'כלי',
+    type: 'tree',
+  },
+  date: {
+    label: 'תאריך',
+    type: 'date',
+    // dateType: 'single'
   }
 };
 
@@ -150,7 +179,29 @@ const operatorConv = {
   "&lt;=": (val1, val2) => val1 &lt;= val2,
   ">": (val1, val2) => val1 > val2,
   "&lt;": (val1, val2) => val1 &lt; val2,
-  "!=": (val1, val2) => val1 !== val2
+  "!=": (val1, val2) => val1 !== val2,
+  "date-between": (val1, { startDate, endDate }) => { 
+    val1 = formatDate(val1);
+    return operatorConv[">"](new Date(val1), startDate) &amp;&amp; operatorConv["&lt;"](new Date(val1), endDate);
+  },
+  "date-single": (val1, val2) => {
+    val1 = formatDate(val1);
+    return operatorConv["="](new Date(val1).getTime(), val2.getTime());
+  },
+}
+
+/**
+ * Converts the given date to a date object
+ * 
+ * @param {string} date the date to convert (assuming the date is in dd/MM/yyyy format)
+ * 
+ * @returns {Date} date object
+ */
+function formatDate(date) {
+  // assuming the date is in dd/MM/yyyy format, if not this will need changing
+  let match = /(\d{2})\/(\d{2})\/(\d{4})/.exec(date);
+  date = new Date(match[3], match[2] - 1, match[1]);
+  return date;
 }
 
 /**
@@ -164,9 +215,11 @@ const operatorConv = {
  */
 function filterData(filter, data) {
   let applyFilter = function (dataKey, filterObj, data) {
-    return filterObj.some((filterEntry) => operatorConv[filterEntry.operator](filterEntry.value, data[dataKey]))
+    // check if the data checks against at least one of the filter values
+    return filterObj.some((filterEntry) => operatorConv[filterEntry.operator](data[dataKey], filterEntry.value))
   }
 
+  // check if the data checks against all the filters
   return data.filter((dataVal) => Object.keys(filter).every((filterVal, index, arr) => applyFilter(filterVal, filter[filterVal], dataVal)));
 };
 
@@ -176,7 +229,7 @@ function filterData(filter, data) {
  * Adds or deletes the necessary values/keys from the old filters.
  * 
  * @param {string} key filter key
- * @param {activeFilter} newFilters new active filter (only filters relevant to key {@link key}
+ * @param {activeFilter} newFilters new active filter (only filters relevant to key {@link key})
  * @param {activeFilter} oldFilters old active filter (all keys)
  */
 function onFilterChange(key, newFilters, oldFilters) {
@@ -195,7 +248,7 @@ function Template(props) {
   const [open, setOpen] = React.useState(false);
   const [activeFilters, setActiveFilters] = React.useState({});
 
-  let filteredData = filterData(activeFilters, data);
+  // let filteredData = filterData(activeFilters, data);
   let filteredData2 = filterData(activeFilters, data2);
 
   return (
@@ -212,8 +265,8 @@ function Template(props) {
         &lt;Grid item container xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
 
           {/* filter drawer */}
-          &lt;Grid item xs={open ? 0 : 0} style={{ flexGrow: open ? 0.3 : 0, maxWidth: '100%', transition: 'flex-grow 225ms cubic-bezier(0, 0, 0.2, 1) 0ms' }}>
-            &lt;FilterDrawer open={open} data={data} filters={exampleFilterDefinition} activeFilters={activeFilters}
+          &lt;Grid item xs={open ? 0 : 0} style={{ flexGrow: open ? 0.3 : 0, maxWidth: '100%', width: '0', transition: 'flex-grow 225ms cubic-bezier(0, 0, 0.2, 1) 0ms' }}>
+            &lt;FilterDrawer open={open} data={data2} filters={exampleFilterDefinition} activeFilters={activeFilters}
               onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} />
           &lt;/Grid>
 
@@ -222,8 +275,8 @@ function Template(props) {
             &lt;Box display="flex" style={{ height: '100%', width: '100%' }}>
               {props.children(filteredData2)}
             &lt;/Box>
-
           &lt;/Grid>
+
         &lt;/Grid>
 
         {/* &lt;BottomBar /> */}
@@ -247,13 +300,13 @@ export default Template;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#filterData">filterData</a></li><li><a href="global.html#inferOptions">inferOptions</a></li><li><a href="global.html#onFilterChange">onFilterChange</a></li><li><a href="global.html#operatorConv">operatorConv</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#filterData">filterData</a></li><li><a href="global.html#FilterDateField">FilterDateField</a></li><li><a href="global.html#FilterDrawer">FilterDrawer</a></li><li><a href="global.html#FilterListField">FilterListField</a></li><li><a href="global.html#FilterRow">FilterRow</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#inferOptions">inferOptions</a></li><li><a href="global.html#onFilterChange">onFilterChange</a></li><li><a href="global.html#operatorConv">operatorConv</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Aug 23 2019 01:58:45 GMT+0300 (Israel Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Aug 25 2019 17:28:07 GMT+0300 (Israel Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

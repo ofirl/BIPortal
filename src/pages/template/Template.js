@@ -12,10 +12,10 @@ import Grid from '@material-ui/core/Grid';
 // import Paper from '@material-ui/core/Paper';
 
 // import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, ComposedChart, Legend, Area, Bar } from 'recharts';
-import TopBar from './TopBar';
+import TopBar from './TopBar/TopBar';
 // import BottomBar from './BottomBar';
-import { Box } from '@material-ui/core';
-import FilterDrawer from './FilterDrawer';
+import Box from '@material-ui/core/Box';
+import FilterDrawer from './FilterDrawer/FilterDrawer';
 
 // const data = [{ name: 'Page A', uv: 400, pv: 2400, amt: 2400 }, { name: 'Page B', uv: 300 }, { name: 'Page C', uv: 250 }, { name: 'Page D', uv: 350 }];
 
@@ -90,8 +90,9 @@ const useStyles = makeStyles(theme => ({
  * @typedef filterDefEntry
  * @type {object} 
  * @property {string} type the type of the filter, supported values are: 'list', 'date'
- * @property {string} [listType] the type of the list, suported values are: 'single', 'multi
+ * @property {string} [listType] the type of the list, suported values are: 'single', 'multi', default is 'single'
  * @property {Array.<*>} [options] the options of the list
+ * @property {bool} [addBlank] add a blank option, default is false
  * @property {string} dateType the type of the date, supported values are: 'single', 'range' (default is range)
  * @property {string | Array.<string>} dateSelection the type of the selection, supported values are: 'year', 'month', 'day', 'time'
  */
@@ -104,6 +105,7 @@ let exampleFilterDefinition = {
   uv: {
     label: 'שם',
     type: 'list',
+    addBlank: true,
     listType: 'multi',
     // options: [2000,3000]
   },
