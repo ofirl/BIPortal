@@ -3,7 +3,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, ComposedChart, Legend, Area, Bar } from 'recharts';
-import ConnectedTemplate from '../Template2/Template';
+import ConnectedTemplate from '../Template/Template';
 
 /**
  * @typedef filterDefEntry
