@@ -1,10 +1,9 @@
 import React from 'react';
 
-import TemplatePage from '../Template/Template'
-
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, ComposedChart, Legend, Area, Bar } from 'recharts';
+import ConnectedTemplate from '../Template/Template';
 
 /**
  * @typedef filterDefEntry
@@ -42,7 +41,7 @@ let exampleFilterDefinition = {
 
 const ExampleReport = (props) => {
     return (
-        <TemplatePage filterDef={exampleFilterDefinition}>
+        <ConnectedTemplate filterDef={exampleFilterDefinition}>
             {data => (
                 <React.Fragment>
 
@@ -81,7 +80,7 @@ const ExampleReport = (props) => {
             )}
 
 
-        </TemplatePage>
+        </ConnectedTemplate>
     );
 }
 
