@@ -53,7 +53,6 @@ const exampleData = [
 const data = (state = [], action) => {
     switch (action.type) {
         case 'SET_DATA':
-            console.log('set data?')
             return state;
         default:
             return exampleData;

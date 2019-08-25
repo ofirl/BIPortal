@@ -17,6 +17,7 @@
     "react-treebeard": "^3.2.4",
     "recharts": "^1.7.1",
     "redux": "^4.0.4",
+    "redux-actions": "^2.6.5",
     "victory": "^32.3.7"
   },
   "scripts": {
