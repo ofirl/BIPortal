@@ -21,7 +21,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import FilterListField from './FilterFields/ListField/ListField';
 import FilterDateField from './FilterFields/DateField/DateField';
-import Tree from './../../../components/Tree/Tree';
+import Tree from '../../../components/Tree/Tree';
 
 const useStyles = makeStyles(theme => ({
     drawer: {

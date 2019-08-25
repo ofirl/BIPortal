@@ -13,7 +13,7 @@ import { setActiveFilter } from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1, 
   },
   mainContainer: {
 
