@@ -109,10 +109,23 @@ const treeBaseStyle = {
 };
 
 // Helper functions for filtering
+/**
+ * matches a node by his name
+ * 
+ * @param {string} filterText filter value
+ * @param {object} node node to check
+ */
 const defaultMatcher = (filterText, node) => {
     return node.name.toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
 };
 
+/**
+ * finds a node (including if one of his children matches)
+ * 
+ * @param {object} node node to check
+ * @param {*} filter filter value
+ * @param {func} matcher match function
+ */
 const findNode = (node, filter, matcher) => {
     return matcher(filter, node) || // i match
         (node.children && // or i have decendents and one of them match
@@ -120,6 +133,12 @@ const findNode = (node, filter, matcher) => {
             !!node.children.find(child => findNode(child, filter, matcher)));
 };
 
+/**
+ * finds exactly the node that matches the filter
+ * 
+ * @param {object} node node to check
+ * @param {*} filter filter value
+ */
 const findExactNode = (node, filter) => {
     let matcher = (filterId, node) => node.id === filterId;
 
@@ -143,6 +162,13 @@ const findExactNode = (node, filter) => {
     return null;
 };
 
+/**
+ * filters the tree
+ * 
+ * @param {object} node node to check
+ * @param {*} filter filter value
+ * @param {func} matcher match function
+ */
 const filterTree = (node, filter, matcher = defaultMatcher) => {
     // If im an exact match then all my children get to stay
     if (matcher(filter, node) || !node.children) {
@@ -155,6 +181,13 @@ const filterTree = (node, filter, matcher = defaultMatcher) => {
     return Object.assign({}, node, { children: filtered });
 };
 
+/**
+ * expands all the filtered nodes
+ * 
+ * @param {object} node node to check
+ * @param {*} filter filter value
+ * @param {func} matcher match function
+ */
 const expandFilteredNodes = (node, filter, matcher = defaultMatcher) => {
     let children = node.children;
     if (!children || children.length === 0) {
@@ -174,16 +207,27 @@ const expandFilteredNodes = (node, filter, matcher = defaultMatcher) => {
     });
 };
 
-function onFilterMouseUp({ target: { value } }, data) {
+/**
+ * callback fired when filter input box is changed
+ * 
+ * @param {object} param0 the event object
+ * @param {object} hier hierarchy data
+ */
+function onFilterMouseUp({ target: { value } }, hier) {
     const filter = value.trim();
     if (!filter) {
-        return data;
+        return hier;
     }
-    let filtered = filterTree(data, filter);
+    let filtered = filterTree(hier, filter);
     filtered = expandFilteredNodes(filtered, filter);
     return filtered;
 }
 
+/**
+ * The tree component
+ * 
+ * @param {object} props props object
+ */
 const TreeComp = (props) => {
     const classes = useStyles();
     let { handleChange, hierarchy } = props
