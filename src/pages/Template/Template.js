@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import FilterDrawer from './FilterDrawer/FilterDrawer';
 
 import { connect } from 'react-redux';
-import { setActiveFilter } from '../../actions';
+import { setActiveFilter } from '../../reducers';
 
 const useStyles = makeStyles(theme => ({
   root: {
