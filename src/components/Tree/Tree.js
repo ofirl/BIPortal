@@ -3,10 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Treebeard } from 'react-treebeard';
 import { PropTypes } from 'prop-types';
 import TextField from '@material-ui/core/TextField';
+import { connect } from 'react-redux';
 
 const searchBoxClasses = {
     root: 'hierSearchBox'
-}
+};
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -107,46 +108,6 @@ const treeBaseStyle = {
     }
 };
 
-const exampleData = {
-    id: 'Chapter 1',
-    name: 'Chapter 1',
-    toggled: true,
-    active: true,
-    children: [
-        {
-            id: 'Chapter 1.1',
-            name: 'Chapter 1.1',
-            children: [
-                { id: 'Page A', name: 'Page A' },
-                { id: 'Page B', name: 'Page B' }
-            ]
-        },
-        {
-            id: 'loading',
-            name: 'loading parent',
-            loading: true,
-            children: []
-        },
-        {
-            id: 'Chapter 1.2',
-            name: 'Chapter 1.2',
-            children: [
-                {
-                    id: 'Chapter 2.1',
-                    name: 'Chapter 2.1',
-                    children: [
-                        { id: 'Page C', name: 'Page C' },
-                        { id: 'Page D', name: 'Page D' },
-                        { id: 'Page E', name: 'Page E' },
-                        { id: 'Page F', name: 'Page F' },
-                        { id: 'Page G', name: 'Page G' }
-                    ]
-                }
-            ]
-        }
-    ]
-};
-
 // Helper functions for filtering
 const defaultMatcher = (filterText, node) => {
     return node.name.toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
@@ -162,12 +123,22 @@ const findNode = (node, filter, matcher) => {
 const findExactNode = (node, filter) => {
     let matcher = (filterId, node) => node.id === filterId;
 
+    // if i match
     let foundNode = matcher(filter, node);
     if (foundNode)
         return node;
 
-    if (node.children && node.children.length) // or i have decendents and one of them match
-        return node.children.find(child => findNode(child, filter, matcher));
+    if (node.children && node.children.length) { // or i have decendents and one of them match
+        node.children.forEach((c) => {
+            if (foundNode)
+                return;
+
+            let tempNode = findExactNode(c, filter, matcher);
+            foundNode = tempNode ? tempNode : null;
+        });
+
+        return foundNode;
+    }
 
     return null;
 };
@@ -215,12 +186,8 @@ function onFilterMouseUp({ target: { value } }, data) {
 
 const TreeComp = (props) => {
     const classes = useStyles();
-    // let { hierarchy, handleChange } = props
-    let { handleChange } = props
-    // if (hierarchy == null)
-    let hierarchy = props.hierarchy ? props.hierarchy : exampleData;
+    let { handleChange, hierarchy } = props
 
-    const [hier/*, setHier*/] = useState(hierarchy);
     const [data, setData] = useState(hierarchy);
     const [cursor, setCursor] = useState(false);
 
@@ -235,10 +202,10 @@ const TreeComp = (props) => {
 
         setCursor(node);
         setData(Object.assign({}, data))
-
+        debugger;
         // makes the selection apply to the original hier and not the filtered one - to undo, switch hierNode to be node
         // let hierNode = node;
-        let hierNode = findExactNode(hier, node.id);
+        let hierNode = findExactNode(hierarchy, node.id);
         let allChildren = [hierNode.id];
         let checkList = [hierNode];
         while (checkList.length > 0) {
@@ -260,25 +227,38 @@ const TreeComp = (props) => {
                 label="חיפוש"
                 className={[classes.textField, classes.dense]}
                 classes={searchBoxClasses}
-                onInput={(e) => setData(onFilterMouseUp(e, hier))}
+                onInput={(e) => setData(onFilterMouseUp(e, hierarchy))}
                 margin="dense"
                 variant="outlined"
             />
-            {/* <input
-                className="form-control"
-                onKeyUp={(e) => setData(onFilterMouseUp(e, hier))}
-                placeholder="Search the tree..."
-                type="text"
-            /> */}
             <Treebeard data={data} onToggle={onToggle} style={treeBaseStyle} />
         </React.Fragment>
     )
-}
+};
 TreeComp.propTypes = {
     /** hierarchy data */
     hierarchy: PropTypes.object,
     /** gets the new selected filters as parameter */
     handleChange: PropTypes.func
-}
+};
 
-export default TreeComp;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        hierarchy: state.hierarchy,
+    }
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        // setActiveFilters: (newActiveFilters) => {
+        //     dispatch(setActiveFilter(newActiveFilters));
+        // }
+    }
+};
+
+const ConnectedTree = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TreeComp);
+
+export default ConnectedTree;

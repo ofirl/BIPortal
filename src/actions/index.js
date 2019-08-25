@@ -7,9 +7,14 @@
 export const setData = data => ({
     type: 'SET_DATA',
     data
-})
+});
 
 export const setActiveFilter = activeFilter => ({
     type: 'SET_ACTIVE_FILTER',
     activeFilter
+});
+
+export const setHierarchy = hier => ({
+    type: 'SET_HIERARCHY',
+    hier
 })
