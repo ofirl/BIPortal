@@ -112,7 +112,7 @@ function Template(props) {
       <CssBaseline />
 
       {/* main grid */}
-      <Grid container spacing={0} xs direction="column" className={classes.mainContainer}>
+      <Grid container spacing={0} direction="column" className={classes.mainContainer}>
 
         {/* top bar */}
         <TopBar toggleFilterOpen={() => setOpen(!open)} />
@@ -121,7 +121,7 @@ function Template(props) {
         <Grid item container xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
 
           {/* filter drawer */}
-          <Grid item xs={open ? 0 : 0} style={{ flexGrow: open ? 0.3 : 0, maxWidth: '100%', width: '0', transition: 'flex-grow 225ms cubic-bezier(0, 0, 0.2, 1) 0ms' }}>
+          <Grid item style={{ flexGrow: open ? 0.3 : 0, maxWidth: '100%', width: '0', transition: 'flex-grow 225ms cubic-bezier(0, 0, 0.2, 1) 0ms' }}>
             <FilterDrawer open={open} data={data} filters={filterDef} activeFilters={activeFilters}
               onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} />
           </Grid>
@@ -143,9 +143,9 @@ function Template(props) {
 }
 Template.propTypes = {
   /** children to render */
-  children: PropTypes.element,
+  children: PropTypes.func,
   /** filter definition */
-  filterDef: PropTypes.arrayOf(PropTypes.object),
+  filterDef: PropTypes.object,
   /** data (from store) */
   data: PropTypes.arrayOf(PropTypes.object),
   /** current active fiters (from store) */

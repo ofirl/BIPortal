@@ -190,7 +190,7 @@ const FilterDrawer = (props) => {
     );
 }
 FilterDrawer.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.arrayOf(PropTypes.object),
     open: PropTypes.bool,
     filters: PropTypes.object,
     activeFilters: PropTypes.object,
