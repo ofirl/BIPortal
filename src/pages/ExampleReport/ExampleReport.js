@@ -6,6 +6,7 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContai
 import TemplatePage from '../Template/Template';
 import ChartTooltip from '../../components/ChartTooltip/ChartTooltip';
 import { getColor, setColors } from './../../Utils/colors';
+import ChartLegend from '../../components/ChartLegend/ChartLegend';
 
 /**
  * @typedef filterDefEntry
@@ -53,7 +54,8 @@ const ExampleReport = (props) => {
         amtStroke: '#8884d8',
         amtFill: '#8884d8',
         // pv : '#413ea0'
-        pv : 'transparent'
+        pv : 'transparent',
+        pvBackground: 'transparent',
     });
 
     return (
@@ -81,12 +83,12 @@ const ExampleReport = (props) => {
                                 <ComposedChart data={data} barCategoryGap={0}>
                                     <XAxis dataKey="name" />
                                     <YAxis />
-                                    <Tooltip content={<ChartTooltip showKeys={['date']} hideKeys={['amt']} />} />
-                                    <Legend />
+                                    <Tooltip content={<ChartTooltip showKeys={['date']} hideKeys={[]} />} />
+                                    <Legend content={<ChartLegend hideKeys={['pv']} />} />
                                     <CartesianGrid stroke="#f5f5f5" />
                                     <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} />
                                     <Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
-                                    <Bar dataKey="pv" fill={getColor('pv')} onClick={handleClick}/>
+                                    <Bar dataKey="pv" fill={getColor('pv')} onClick={handleClick} background={{ fill: getColor('pvBackground') }}/>
                                 </ComposedChart>
                             </ResponsiveContainer>
                         </Paper>

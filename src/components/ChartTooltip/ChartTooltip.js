@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Divider } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     chartTooltipPaper: {
@@ -20,7 +20,7 @@ const Tooltip = (props) => {
     const classes = useStyles();
 
     const { label, payload, showKeys = [], hideKeys = [] } = props;
-    console.log(props);
+
     return (
         <Paper className={classes.chartTooltipPaper}>
             <div> {label} </div>
@@ -29,12 +29,10 @@ const Tooltip = (props) => {
                     <div key={p.dataKey} style={createStyle(p.color)}> {p.name} : {p.payload[p.dataKey]} </div>
                 )
             }
-            {/* <Divider /> */}
             {
                 payload.length === 0 ? null :
                     showKeys.map( (k) => <div key={k} style={createStyle('gray')}> {k} : {payload[0].payload[k]} </div> )
             }
-            {/* <div> {payload[0].name} : {payload[0].payload[payload[0].dataKey]} </div> */}
         </Paper>
     );
 };

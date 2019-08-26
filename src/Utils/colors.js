@@ -22,7 +22,7 @@ export function getColor(key, color) {
 
     if (assignedColors[key] == null) {
         let nextColor = allColors[currentColorIndex++];
-        while (currentColorIndex < allColors.length && Object.keys(assignedColors).find((c) => !assignedColors[c].localeCompare(nextColor)))
+        while (currentColorIndex < allColors.length && Object.keys(assignedColors).find((c) => c === nextColor /*!assignedColors[c].localeCompare(nextColor)*/))
             nextColor = allColors[currentColorIndex++];
 
         assignedColors[key] = nextColor;
