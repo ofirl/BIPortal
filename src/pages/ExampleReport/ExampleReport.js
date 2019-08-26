@@ -102,7 +102,7 @@ const ExampleReport = (props) => {
                                     <CartesianGrid stroke="#f5f5f5" />
                                     <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} />
                                     <Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
-                                    <Bar dataKey="pv" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { test: 'tes' })} background={{ fill: getColor('pvBackground') }} />
+                                    <Bar dataKey="pv" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} />
                                 </ComposedChart>
                             </ResponsiveContainer>
                         </Paper>
