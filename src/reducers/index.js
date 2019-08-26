@@ -58,41 +58,42 @@ const exampleHier = {
   toggled: true,
   active: true,
   children: [
-      {
-          id: 'Chapter 1.1',
-          name: 'Chapter 1.1',
+    {
+      id: 'Chapter 1.1',
+      name: 'Chapter 1.1',
+      children: [
+        { id: 'Page A', name: 'Page A' },
+        { id: 'Page B', name: 'Page B' }
+      ]
+    },
+    {
+      id: 'loading',
+      name: 'loading parent',
+      loading: true,
+      children: []
+    },
+    {
+      id: 'Chapter 1.2',
+      name: 'Chapter 1.2',
+      children: [
+        {
+          id: 'Chapter 2.1',
+          name: 'Chapter 2.1',
           children: [
-              { id: 'Page A', name: 'Page A' },
-              { id: 'Page B', name: 'Page B' }
+            { id: 'Page C', name: 'Page C' },
+            { id: 'Page D', name: 'Page D' },
+            { id: 'Page E', name: 'Page E' },
+            { id: 'Page F', name: 'Page F' },
+            { id: 'Page G', name: 'Page G' }
           ]
-      },
-      {
-          id: 'loading',
-          name: 'loading parent',
-          loading: true,
-          children: []
-      },
-      {
-          id: 'Chapter 1.2',
-          name: 'Chapter 1.2',
-          children: [
-              {
-                  id: 'Chapter 2.1',
-                  name: 'Chapter 2.1',
-                  children: [
-                      { id: 'Page C', name: 'Page C' },
-                      { id: 'Page D', name: 'Page D' },
-                      { id: 'Page E', name: 'Page E' },
-                      { id: 'Page F', name: 'Page F' },
-                      { id: 'Page G', name: 'Page G' }
-                  ]
-              }
-          ]
-      }
+        }
+      ]
+    }
   ]
 };
 
-export const { setData, setActiveFilter, setHierarchy } = createActions({
+export const { setData, setActiveFilter, setHierarchy, fetchData } = createActions({
+  SET_DATA_URL: (dataUrl = {}) => ({ dataUrl }),
   SET_DATA: (data = []) => ({ data }),
   SET_ACTIVE_FILTER: (activeFilter = {}) => ({ activeFilter }),
   SET_HIERARCHY: (hierarchy = {}) => ({ hierarchy })
@@ -100,6 +101,10 @@ export const { setData, setActiveFilter, setHierarchy } = createActions({
 
 export default handleActions(
   {
+    [fetchData]: (state, { payload: { dataUrl } }) => {
+      // todo: fetch data
+      return { ...state };
+    },
     [setData]: (state, { payload: { data } }) => {
       return { ...state, data };
     },
@@ -108,9 +113,10 @@ export default handleActions(
     },
     [setHierarchy]: (state, { payload: { hierarchy } }) => {
       return { ...state, hierarchy };
-    }
+    },
   },
   {
+    dataUrl: {},
     data: exampleData,
     activeFilter: {},
     hierarchy: exampleHier
