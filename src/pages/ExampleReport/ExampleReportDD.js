@@ -7,6 +7,7 @@ import TemplatePage from '../Template/Template';
 import ChartTooltip from '../../components/ChartTooltip/ChartTooltip';
 import { getColor, setColors } from './../../Utils/colors';
 import ChartLegend from '../../components/ChartLegend/ChartLegend';
+import ConnectedTable from '../../components/Table/Table';
 
 /**
  * @typedef filterDefEntry
@@ -62,8 +63,9 @@ const ExampleReportDD = (props) => {
         <TemplatePage filterDef={exampleFilterDefinition} history={props.history}>
             {(data, setRedirect) => (
                 <React.Fragment>
+                    <ConnectedTable style={{height: '500px'}} />
 
-                    <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '50%', width: '100%' }}>
+                    {/* <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '50%', width: '100%' }}>
                         <Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '100%' }}>
                             <ResponsiveContainer height={"100%"} width={"100%"}>
                                 <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
@@ -75,7 +77,7 @@ const ExampleReportDD = (props) => {
                                 </LineChart>
                             </ResponsiveContainer>
                         </Paper>
-                    </Grid>
+                    </Grid> */}
 
                     {/* <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
                         <Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '50%' }}>
