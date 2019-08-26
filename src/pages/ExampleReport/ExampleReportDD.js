@@ -42,7 +42,7 @@ let exampleFilterDefinition = {
     }
 };
 
-const ExampleReport = (props) => {
+const ExampleReportDD = (props) => {
     const handleClick = (data, index) => {
         console.log(data);
         console.log(index);
@@ -78,20 +78,6 @@ const ExampleReport = (props) => {
                     </Grid>
 
                     {/* <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
-                        <Paper style={{ padding: '20px', margin: '10px' }}>
-                            <ResponsiveContainer height={500} width={"100%"}>
-                                <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                                    <Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
-                                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </Paper>
-                    </Grid> */}
-
-                    <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
                         <Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '50%' }}>
                             <ResponsiveContainer height={"100%"} width={"100%"}>
                                 <ComposedChart data={data} barCategoryGap={0}>
@@ -102,11 +88,11 @@ const ExampleReport = (props) => {
                                     <CartesianGrid stroke="#f5f5f5" />
                                     <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} />
                                     <Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
-                                    <Bar dataKey="pv" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { test: 'tes' })} background={{ fill: getColor('pvBackground') }} />
+                                    <Bar dataKey="pv" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', {test:'tes'})} background={{ fill: getColor('pvBackground') }} />
                                 </ComposedChart>
                             </ResponsiveContainer>
                         </Paper>
-                    </Grid>
+                    </Grid> */}
 
                 </React.Fragment>
             )}
@@ -116,4 +102,4 @@ const ExampleReport = (props) => {
     );
 }
 
-export default ExampleReport;
+export default ExampleReportDD;

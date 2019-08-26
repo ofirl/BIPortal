@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
+import { setActiveFilter } from '../../reducers';
+
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
 import TopBar from './TopBar/TopBar';
-import Box from '@material-ui/core/Box';
 import FilterDrawer from './FilterDrawer/FilterDrawer';
-
-import { connect } from 'react-redux';
-import { setActiveFilter } from '../../reducers';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1, 
   },
   mainContainer: {
-
+    position: 'absolute',
+    height: '100%'
   },
   content: {
     flexGrow: '1',
@@ -99,11 +101,23 @@ function onFilterChange(key, newFilters, oldFilters) {
   return allFilterObj;
 }
 
+/**
+ * Redirects to the target with the supplied parameters
+ * 
+ * @param {object} history history object from react-router
+ * @param {string} target redirect target
+ * @param {object} params additional url parameters
+ */
+function onRedirect(history, target, params) {
+  let paramString = params ? Object.keys(params).map( (p) => `${p}=${params[p]}`).join('&') : '';
+  history.push(target + "?" + paramString );
+}
+
 function Template(props) {
   const classes = useStyles();
 
-  let { data, activeFilters, setActiveFilters, filterDef } = props;
-  const [open, setOpen] = React.useState(false);
+  let { data, history, activeFilters, setActiveFilters, filterDef } = props;
+  const [open, setOpen] = useState(false);
 
   let filteredData = filterData(activeFilters, data);
 
@@ -129,7 +143,7 @@ function Template(props) {
           {/* content */}
           <Grid item xs={1} className={[classes.maxWidth100, classes.content]} container>
             <Box display="flex" style={{ height: '100%', width: '100%' }}>
-              {props.children(filteredData)}
+              {props.children(filteredData, (target, params) => onRedirect(history, target, params))}
             </Box>
           </Grid>
 
@@ -144,6 +158,8 @@ function Template(props) {
 Template.propTypes = {
   /** children to render */
   children: PropTypes.func,
+  /** history object from react-router */
+  history: PropTypes.object.isRequired,
   /** filter definition */
   filterDef: PropTypes.object,
   /** data (from store) */

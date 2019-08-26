@@ -46,7 +46,9 @@ export function setColor(key, color) {
  * sets colors
  * 
  * @param {object} colorsObj colors object ( {name: colorValue})
+ * @param {boolean} override override values
  */
-export function setColors(colorsObj) {
-    assignedColors = { ...assignedColors, ...colorsObj };
+export function setColors(colorsObj, override = true) {
+
+    assignedColors = override ? { ...assignedColors, ...colorsObj } : { ...colorsObj, ...assignedColors };
 }
