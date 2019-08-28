@@ -88,11 +88,49 @@ const exampleHier = {
           ]
         }
       ]
+    },
+    {
+      id: 'Chapter 1.3',
+      name: 'Chapter 1.3',
+      children: [
+        {
+          id: 'Chapter 3.1',
+          name: 'Chapter 3.1',
+          children: [
+            { id: 'אח"י חנית', name: 'אח"י חנית' },
+            { id: 'אח"י סופה', name: 'אח"י סופה' }
+          ]
+        }
+      ]
     }
   ]
 };
 
-export const { setData, setActiveFilter, setHierarchy, fetchData } = createActions({
+function getPercentMockData(executedPercent) {
+  return {
+      executedPercent: executedPercent,
+      unexecutedPercent: 100 - executedPercent,
+  };
+}
+
+let lockshData = [
+  {
+      id: 'אח"י חנית',
+      name: 'אח"י חנית',
+      ...getPercentMockData(30)
+  },
+  {
+      id: 'אח"י סופה',
+      name: 'אח"י סופה',
+      ...getPercentMockData(0)
+  }
+];
+
+function fetchDataHelper() {
+
+}
+
+export const { fetchData, setData, setActiveFilter, setHierarchy } = createActions({
   SET_DATA_URL: (dataUrl = {}) => ({ dataUrl }),
   SET_DATA: (data = []) => ({ data }),
   SET_ACTIVE_FILTER: (activeFilter = {}) => ({ activeFilter }),
@@ -102,8 +140,11 @@ export const { setData, setActiveFilter, setHierarchy, fetchData } = createActio
 export default handleActions(
   {
     [fetchData]: (state, { payload: { dataUrl } }) => {
-      // todo: fetch data
-      return { ...state };
+      if (dataUrl !== state.dataUrl)
+        // todo: fetch data
+        fetchDataHelper();
+        
+      return { ...state, dataUrl };
     },
     [setData]: (state, { payload: { data } }) => {
       return { ...state, data };
@@ -117,7 +158,7 @@ export default handleActions(
   },
   {
     dataUrl: {},
-    data: exampleData,
+    data: lockshData,
     activeFilter: {},
     hierarchy: exampleHier
   }

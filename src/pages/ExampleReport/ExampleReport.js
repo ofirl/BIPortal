@@ -2,7 +2,7 @@ import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, ComposedChart, Legend, Area, Bar } from 'recharts';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, ComposedChart, Legend, Area, Bar, LabelList } from 'recharts';
 import TemplatePage from '../Template/Template';
 import ChartTooltip from '../../components/ChartTooltip/ChartTooltip';
 import { getColor, setColors } from './../../Utils/colors';
@@ -42,6 +42,29 @@ let exampleFilterDefinition = {
     }
 };
 
+function getPercentMockData(executedPercent) {
+    return {
+        executedPercent: executedPercent,
+        unexecutedPercent: 100 - executedPercent,
+    };
+}
+
+let lockshData = [
+    {
+        name: 'אח"י חנית',
+        ...getPercentMockData(30)
+    },
+    {
+        name: 'אח"י סופה',
+        ...getPercentMockData(0)
+    }
+];
+
+const templateParams = {
+    filterDef: exampleFilterDefinition,
+    serviceName: 'testService'
+}
+
 const ExampleReport = (props) => {
     const handleClick = (data, index) => {
         console.log(data);
@@ -50,16 +73,18 @@ const ExampleReport = (props) => {
     }
 
     setColors({
-        uv: '#ff7300',
+        // uv: '#ff7300',
+        uv: '#bd050d',
         amtStroke: '#8884d8',
         amtFill: '#8884d8',
-        // pv : '#413ea0'
-        pv: 'transparent',
+        // pv: '#413ea0',
+        pv: '#2baa00',
+        // pv: 'transparent',
         pvBackground: 'transparent',
     });
 
     return (
-        <TemplatePage filterDef={exampleFilterDefinition} history={props.history}>
+        <TemplatePage {...templateParams} history={props.history}>
             {(data, setRedirect) => (
                 <React.Fragment>
 
@@ -94,15 +119,20 @@ const ExampleReport = (props) => {
                     <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
                         <Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '50%' }}>
                             <ResponsiveContainer height={"100%"} width={"100%"}>
-                                <ComposedChart data={data} barCategoryGap={0}>
+                                <ComposedChart data={data} /*barCategoryGap={0}*/>
                                     <XAxis dataKey="name" />
                                     <YAxis />
-                                    <Tooltip content={<ChartTooltip showKeys={['date']} hideKeys={[]} />} />
+                                    <Tooltip content={<ChartTooltip showKeys={[]} hideKeys={[]} />} />
                                     <Legend content={<ChartLegend hideKeys={['pv']} />} />
                                     <CartesianGrid stroke="#f5f5f5" />
-                                    <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} />
-                                    <Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
-                                    <Bar dataKey="pv" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} />
+                                    {/* <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} /> */}
+                                    {/* <Line type="monotone" dataKey="uv" stroke={getColor('uv')} /> */}
+                                    <Bar stackId="a" dataKey="executedPercent" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
+                                        <LabelList dataKey="executedPercent" position="inisde" content={({value}) => value !== 0 ? value + "%" : ''} />
+                                    </Bar>
+                                    <Bar stackId="a" dataKey="unexecutedPercent" fill={getColor('uv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
+                                        <LabelList dataKey="unexecutedPercent" position="inside" content={({value}) => value !== 0 ? value + "%" : ''} />
+                                    </Bar>
                                 </ComposedChart>
                             </ResponsiveContainer>
                         </Paper>

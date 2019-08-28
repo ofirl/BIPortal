@@ -9,6 +9,59 @@ import { getColor, setColors } from './../../Utils/colors';
 import ChartLegend from '../../components/ChartLegend/ChartLegend';
 import ConnectedTable from '../../components/Table/Table';
 
+const exampleData = [
+    {
+      "name": "Page A",
+      "uv": 4000,
+      "pv": 2400,
+      "amt": 2400,
+      "date": '01/05/2019'
+    },
+    {
+      "name": "Page B",
+      "uv": 3000,
+      "pv": 1398,
+      "amt": 2210,
+      "date": '01/06/2019'
+    },
+    {
+      "name": "Page C",
+      "uv": 2000,
+      "pv": 9800,
+      "amt": 2290,
+      "date": '01/06/2019'
+    },
+    {
+      "name": "Page D",
+      "uv": 2780,
+      "pv": 3908,
+      "amt": 2000,
+      "date": '01/06/2019'
+    },
+    {
+      "name": "Page E",
+      "uv": 1890,
+      "pv": 4800,
+      "amt": 2181,
+      "date": '01/06/2019'
+    },
+    {
+      "name": "Page F",
+      "uv": 2390,
+      "pv": 3800,
+      "amt": 2500,
+      "date": '01/06/2019'
+    },
+    {
+      "name": "Page G",
+      "uv": 3490,
+      "pv": 4300,
+      "amt": 2100,
+      "date": '01/06/2019'
+    }
+  ];
+  
+
 /**
  * @typedef filterDefEntry
  * @type {object} 
@@ -54,8 +107,8 @@ const ExampleReportDD = (props) => {
         uv: '#ff7300',
         amtStroke: '#8884d8',
         amtFill: '#8884d8',
-        // pv : '#413ea0'
-        pv: 'transparent',
+        pv : '#413ea0',
+        // pv: 'transparent',
         pvBackground: 'transparent',
     });
 
@@ -63,7 +116,7 @@ const ExampleReportDD = (props) => {
         <TemplatePage filterDef={exampleFilterDefinition} history={props.history}>
             {(data, setRedirect) => (
                 <React.Fragment>
-                    <ConnectedTable style={{height: '500px'}} />
+                    <ConnectedTable style={{ height: '500px' }} />
 
                     {/* <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '50%', width: '100%' }}>
                         <Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '100%' }}>
@@ -96,8 +149,30 @@ const ExampleReportDD = (props) => {
                         </Paper>
                     </Grid> */}
 
+                    <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
+                        <Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '50%' }}>
+                            <ResponsiveContainer height={"100%"} width={"100%"}>
+                                <ComposedChart data={exampleData} barCategoryGap={100} barGap={1}>
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <Tooltip content={<ChartTooltip showKeys={[]} hideKeys={[]} />} />
+                                    <Legend content={<ChartLegend hideKeys={['pv']} />} />
+                                    <CartesianGrid stroke="#f5f5f5" />
+                                    <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} />
+                                    <Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
+                                    <Bar stackId="a" dataKey="pv" fill={getColor('pv')} /*onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })}*/ background={{ fill: getColor('pvBackground') }} >
+                                        {/* <LabelList dataKey="executedPercent" position="inisde" content={({ value }) => value + "%"} /> */}
+                                    </Bar>
+                                    {/* <Bar stackId="a" dataKey="unexecutedPercent" fill={getColor('uv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} > */}
+                                    {/* <LabelList dataKey="unexecutedPercent" position="inside" content={({ value }) => value + "%"} /> */}
+                                    {/* </Bar> */}
+                                </ComposedChart>
+                            </ResponsiveContainer>
+                        </Paper>
+                    </Grid>
                 </React.Fragment>
             )}
+
 
 
         </TemplatePage>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
-import { setActiveFilter } from '../../reducers';
+import { setActiveFilter, fetchData } from '../../reducers';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -116,8 +116,17 @@ function onRedirect(history, target, params) {
 function Template(props) {
   const classes = useStyles();
 
-  let { data, history, activeFilters, setActiveFilters, filterDef } = props;
+  let { data, history, activeFilters, setActiveFilters, filterDef, serviceName, fetchData } = props;
   const [open, setOpen] = useState(false);
+  const [service, setService] = useState(null);
+
+  if (service !== serviceName) {
+    // fetchDataOnce(serviceName, fetchData);
+    setService(serviceName);
+    // todo : get a url (?)
+    let url = serviceName;
+    fetchData(url);
+  }
 
   let filteredData = filterData(activeFilters, data);
 
@@ -168,6 +177,8 @@ Template.propTypes = {
   activeFilters: PropTypes.object,
   /** set activ filters (from store) */
   setActiveFilters: PropTypes.func,
+  /** the service to get the data from */
+  serviceName: PropTypes.string
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -179,9 +190,11 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setActiveFilters: (newActiveFilters) => {
-      dispatch(setActiveFilter(newActiveFilters));
-    }
+    setActiveFilters: (newActiveFilters) => 
+      dispatch(setActiveFilter(newActiveFilters))
+    ,
+    fetchData: (url) => 
+      dispatch(fetchData)
   }
 }
 
