@@ -140,10 +140,10 @@ export const { fetchData, setData, setActiveFilter, setHierarchy } = createActio
 export default handleActions(
   {
     [fetchData]: (state, { payload: { dataUrl } }) => {
-      if (dataUrl !== state.dataUrl)
+      // if (dataUrl !== state.dataUrl)
         // todo: fetch data
-        fetchDataHelper();
-        
+        // fetchDataHelper();
+
       return { ...state, dataUrl };
     },
     [setData]: (state, { payload: { data } }) => {

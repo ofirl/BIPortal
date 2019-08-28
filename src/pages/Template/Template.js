@@ -116,7 +116,7 @@ function onRedirect(history, target, params) {
 function Template(props) {
   const classes = useStyles();
 
-  let { data, history, activeFilters, setActiveFilters, filterDef, serviceName, fetchData } = props;
+  let { data, history, activeFilters, setActiveFilters, filterDef, serviceName, fetchDataAction } = props;
   const [open, setOpen] = useState(false);
   const [service, setService] = useState(null);
 
@@ -125,7 +125,8 @@ function Template(props) {
     setService(serviceName);
     // todo : get a url (?)
     let url = serviceName;
-    fetchData(url);
+    // ! fix later
+    // fetchDataAction(url);
   }
 
   let filteredData = filterData(activeFilters, data);
@@ -193,8 +194,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     setActiveFilters: (newActiveFilters) => 
       dispatch(setActiveFilter(newActiveFilters))
     ,
-    fetchData: (url) => 
-      dispatch(fetchData)
+    fetchDataAction: (url) =>
+    //! fetchData is undefined
+      dispatch(fetchData(url))
   }
 }
 
