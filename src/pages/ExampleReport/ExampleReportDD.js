@@ -96,6 +96,16 @@ let exampleFilterDefinition = {
     }
 };
 
+const templateParams = {
+    filterDef: exampleFilterDefinition,
+    service: {
+        name: 'testService',
+        params: {
+            'key1': 'test'
+        }
+    },
+}
+
 const ExampleReportDD = (props) => {
     const handleClick = (data, index) => {
         console.log(data);
@@ -113,7 +123,7 @@ const ExampleReportDD = (props) => {
     });
 
     return (
-        <TemplatePage filterDef={exampleFilterDefinition} history={props.history}>
+        <TemplatePage {...templateParams} history={props.history}>
             {(data, setRedirect) => (
                 <React.Fragment>
                     <ConnectedTable style={{ height: '500px' }} />
