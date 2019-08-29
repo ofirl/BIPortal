@@ -1,5 +1,6 @@
 import { createActions, handleActions } from 'redux-actions'
 import fetch from 'cross-fetch';
+import { fetchFromUrl, fetchFromFioriService } from '../Utils/network';
 
 const exampleData = [
   {
@@ -129,10 +130,10 @@ let lockshData = [
 
 // sync function
 export const { /* sync */ setData, setDataUrl, setActiveFilter, setHierarchy, setFetchFlag, toggleFetchFlag, /* async *//* fetchData*/ } = createActions({
-  SET_DATA: (data = [], isFetching = false) => ({ data: {fetched: data, isFetching} }),
+  SET_DATA: (data = [], isFetching = false) => ({ data: { fetched: data, isFetching } }),
   SET_DATA_URL: (dataUrl = {}) => ({ dataUrl }),
   SET_ACTIVE_FILTER: (activeFilter = {}) => ({ activeFilter }),
-  SET_HIERARCHY: (hierarchy = {}, isFetching = false) => ({ hierarchy: { fetched: hierarchy, isFetching} }),
+  SET_HIERARCHY: (hierarchy = {}, isFetching = false) => ({ hierarchy: { fetched: hierarchy, isFetching } }),
   SET_FETCH_FLAG: (type, isFetching = true) => ({ type, isFetching }),
   TOGGLE_FETCH_FLAG: (type) => ({ type }),
 });
@@ -144,15 +145,16 @@ export const fetchData = (url) => {
       return Promise.resolve();
 
     dispatch(setDataUrl(url));
-
     dispatch(setFetchFlag('data', true));
-    return fetch('https://www.reddit.com/r/reactjs.json')
+
+    // return fetchFromFioriService('https://www.reddit.com/r/reactjs.json')
+    return fetchFromUrl('https://www.reddit.com/r/reactjs.json')
       .then(
         response => response.json(),
         error => console.log(error)
       )
       .then(jsonData => dispatch(setData(lockshData))) // set data and reset flag here
-      // .then(() => dispatch(setFetchFlag('data', false))); // reset flag (merged with the set data)
+    // .then(() => dispatch(setFetchFlag('data', false))); // reset flag (merged with the set data)
   }
 };
 
