@@ -14,7 +14,7 @@ import FilterDrawer from './FilterDrawer/FilterDrawer';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1, 
+    flexGrow: 1,
   },
   mainContainer: {
     position: 'absolute',
@@ -38,7 +38,7 @@ const operatorConv = {
   ">": (val1, val2) => val1 > val2,
   "<": (val1, val2) => val1 < val2,
   "!=": (val1, val2) => val1 !== val2,
-  "date-between": (val1, { startDate, endDate }) => { 
+  "date-between": (val1, { startDate, endDate }) => {
     val1 = formatDate(val1);
     return operatorConv[">"](new Date(val1), startDate) && operatorConv["<"](new Date(val1), endDate);
   },
@@ -109,26 +109,18 @@ function onFilterChange(key, newFilters, oldFilters) {
  * @param {object} params additional url parameters
  */
 function onRedirect(history, target, params) {
-  let paramString = params ? Object.keys(params).map( (p) => `${p}=${params[p]}`).join('&') : '';
-  history.push(target + "?" + paramString );
+  let paramString = params ? Object.keys(params).map((p) => `${p}=${params[p]}`).join('&') : '';
+  history.push(target + "?" + paramString);
 }
 
 function Template(props) {
   console.log('render template');
   const classes = useStyles();
 
-  let { data, history, activeFilters, setActiveFilters, filterDef, serviceName, fetchDataAction, isFetchingData } = props;
+  let { data, history, activeFilters, setActiveFilters, filterDef, service, fetchDataAction, isFetchingData } = props;
   const [open, setOpen] = useState(false);
-  // const [service, setService] = useState(null);
 
-  // if (service !== serviceName) {
-    // fetchDataOnce(serviceName, fetchData);
-    // setService(serviceName);
-    // todo : get a url (?)
-    // let url = serviceName;
-    // ! fix later
-    fetchDataAction('test');
-  // }
+  fetchDataAction(service);
 
   let filteredData = filterData(activeFilters, data);
 
@@ -196,8 +188,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     setActiveFilters: (newActiveFilters) => {
       return dispatch(setActiveFilter(newActiveFilters))
     },
-    fetchDataAction: (url) => {
-      return dispatch(fetchData(url))
+    fetchDataAction: (service) => {
+      return dispatch(fetchData(service))
     }
   }
 }

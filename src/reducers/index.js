@@ -139,15 +139,15 @@ export const { /* sync */ setData, setDataUrl, setActiveFilter, setHierarchy, se
 });
 
 // async functions
-export const fetchData = (url) => {
+export const fetchData = ({name, params}) => {
   return (dispatch, getState) => {
-    if (getState().dataUrl === url)
+    if (getState().dataUrl === name)
       return Promise.resolve();
 
-    dispatch(setDataUrl(url));
+    dispatch(setDataUrl(name));
     dispatch(setFetchFlag('data', true));
 
-    // return fetchFromFioriService('https://www.reddit.com/r/reactjs.json')
+    // return fetchFromFioriService({name, params})
     return fetchFromUrl('https://www.reddit.com/r/reactjs.json')
       .then(
         response => response.json(),

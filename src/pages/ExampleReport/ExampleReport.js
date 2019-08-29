@@ -62,7 +62,12 @@ let lockshData = [
 
 const templateParams = {
     filterDef: exampleFilterDefinition,
-    serviceName: 'testService'
+    service: {
+        name: 'testService',
+        params: {
+            'key1': 'test'
+        }
+    },
 }
 
 const ExampleReport = (props) => {
