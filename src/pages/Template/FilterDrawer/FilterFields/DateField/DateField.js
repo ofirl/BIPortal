@@ -24,7 +24,7 @@ const FilterDateField = (props) => {
 
         return (
             <React.Fragment>
-                <Grid container xs spacing={1} >
+                <Grid container spacing={1} >
                     <Grid item xs={1} className={classes.filterDateField}>
                         <DatePicker
                             customInput={<TextField

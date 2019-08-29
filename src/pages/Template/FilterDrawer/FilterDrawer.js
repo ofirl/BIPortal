@@ -124,7 +124,7 @@ FilterRow.propTypes = {
     /** active value */
     value: PropTypes.any,
     theme: PropTypes.object,
-    data: PropTypes.object,
+    data: PropTypes.arrayOf(PropTypes.object),
     /** gets the new selected filters as parameter */
     handleChange: PropTypes.func
 }
@@ -174,7 +174,7 @@ const FilterDrawer = (props) => {
                     </Grid> */}
                     {
                         Object.keys(filters).map((val) => (
-                            <Paper style={{ marginBottom: '10px' }}>
+                            <Paper key={val} style={{ marginBottom: '10px' }}>
                                 <FilterRow classes={classes} filterKey={val} filter={filters[val]} theme={theme} data={data}
                                     handleChange={(newFilters) => onFilterChange(val, newFilters)}
                                     value={activeFilters[val] ? activeFilters[val].reduce((prev, curr) => { prev.push(curr.value); return prev; }, []) : null} />

@@ -128,7 +128,7 @@ const ExampleReport = (props) => {
                                     {/* <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} /> */}
                                     {/* <Line type="monotone" dataKey="uv" stroke={getColor('uv')} /> */}
                                     <Bar stackId="a" dataKey="executedPercent" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
-                                        <LabelList dataKey="executedPercent" position="inisde" content={({value}) => value !== 0 ? value + "%" : ''} />
+                                        <LabelList dataKey="executedPercent" position="inside" content={({value}) => value !== 0 ? value + "%" : ''} />
                                     </Bar>
                                     <Bar stackId="a" dataKey="unexecutedPercent" fill={getColor('uv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
                                         <LabelList dataKey="unexecutedPercent" position="inside" content={({value}) => value !== 0 ? value + "%" : ''} />

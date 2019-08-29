@@ -1,4 +1,5 @@
 import { createActions, handleActions } from 'redux-actions'
+import fetch from 'cross-fetch';
 
 const exampleData = [
   {
@@ -108,46 +109,61 @@ const exampleHier = {
 
 function getPercentMockData(executedPercent) {
   return {
-      executedPercent: executedPercent,
-      unexecutedPercent: 100 - executedPercent,
+    executedPercent: executedPercent,
+    unexecutedPercent: 100 - executedPercent,
   };
 }
 
 let lockshData = [
   {
-      id: 'אח"י חנית',
-      name: 'אח"י חנית',
-      ...getPercentMockData(30)
+    id: 'אח"י חנית',
+    name: 'אח"י חנית',
+    ...getPercentMockData(30)
   },
   {
-      id: 'אח"י סופה',
-      name: 'אח"י סופה',
-      ...getPercentMockData(0)
+    id: 'אח"י סופה',
+    name: 'אח"י סופה',
+    ...getPercentMockData(0)
   }
 ];
 
-function fetchDataHelper() {
-
-}
-
-export const { fetchData, setData, setActiveFilter, setHierarchy } = createActions({
+// sync function
+export const { /* sync */ setData, setDataUrl, setActiveFilter, setHierarchy, setFetchFlag, toggleFetchFlag, /* async *//* fetchData*/ } = createActions({
+  SET_DATA: (data = [], isFetching = false) => ({ data: {fetched: data, isFetching} }),
   SET_DATA_URL: (dataUrl = {}) => ({ dataUrl }),
-  SET_DATA: (data = []) => ({ data }),
   SET_ACTIVE_FILTER: (activeFilter = {}) => ({ activeFilter }),
-  SET_HIERARCHY: (hierarchy = {}) => ({ hierarchy })
+  SET_HIERARCHY: (hierarchy = {}, isFetching = false) => ({ hierarchy: { fetched: hierarchy, isFetching} }),
+  SET_FETCH_FLAG: (type, isFetching = true) => ({ type, isFetching }),
+  TOGGLE_FETCH_FLAG: (type) => ({ type }),
 });
+
+// async functions
+export const fetchData = (url) => {
+  return (dispatch, getState) => {
+    if (getState().dataUrl === url)
+      return Promise.resolve();
+
+    dispatch(setDataUrl(url));
+
+    dispatch(setFetchFlag('data', true));
+    return fetch('https://www.reddit.com/r/reactjs.json')
+      .then(
+        response => response.json(),
+        error => console.log(error)
+      )
+      .then(jsonData => dispatch(setData(lockshData))) // set data and reset flag here
+      // .then(() => dispatch(setFetchFlag('data', false))); // reset flag (merged with the set data)
+  }
+};
 
 export default handleActions(
   {
-    [fetchData]: (state, { payload: { dataUrl } }) => {
-      // if (dataUrl !== state.dataUrl)
-        // todo: fetch data
-        // fetchDataHelper();
-
-      return { ...state, dataUrl };
-    },
+    //sync
     [setData]: (state, { payload: { data } }) => {
       return { ...state, data };
+    },
+    [setDataUrl]: (state, { payload: { dataUrl } }) => {
+      return { ...state, dataUrl };
     },
     [setActiveFilter]: (state, { payload: { activeFilter } }) => {
       return { ...state, activeFilter };
@@ -155,11 +171,28 @@ export default handleActions(
     [setHierarchy]: (state, { payload: { hierarchy } }) => {
       return { ...state, hierarchy };
     },
+    [setFetchFlag]: (state, { payload: { type, isFetching } }) => {
+      return { ...state, [type]: { fetched: state[type].fetched ? state[type].fetched : [], isFetching } };
+    },
+    [toggleFetchFlag]: (state, { payload: { type } }) => {
+      return { ...state, [type]: { fetched: state[type].fetched ? state[type].fetched : [], isFetching: !state[type].isFetching } };
+    },
+
+    // async
+    [fetchData]: (state, { payload: { dataUrl, status, error } }) => {
+      return { ...state };
+    },
   },
   {
     dataUrl: {},
-    data: lockshData,
+    data: {
+      fetched: lockshData,
+      isFetching: false
+    },
     activeFilter: {},
-    hierarchy: exampleHier
+    hierarchy: {
+      fetched: exampleHier,
+      isFetching: false
+    }
   }
 );

@@ -114,20 +114,21 @@ function onRedirect(history, target, params) {
 }
 
 function Template(props) {
+  console.log('render template');
   const classes = useStyles();
 
-  let { data, history, activeFilters, setActiveFilters, filterDef, serviceName, fetchDataAction } = props;
+  let { data, history, activeFilters, setActiveFilters, filterDef, serviceName, fetchDataAction, isFetchingData } = props;
   const [open, setOpen] = useState(false);
-  const [service, setService] = useState(null);
+  // const [service, setService] = useState(null);
 
-  if (service !== serviceName) {
+  // if (service !== serviceName) {
     // fetchDataOnce(serviceName, fetchData);
-    setService(serviceName);
+    // setService(serviceName);
     // todo : get a url (?)
-    let url = serviceName;
+    // let url = serviceName;
     // ! fix later
-    // fetchDataAction(url);
-  }
+    fetchDataAction('test');
+  // }
 
   let filteredData = filterData(activeFilters, data);
 
@@ -153,7 +154,7 @@ function Template(props) {
           {/* content */}
           <Grid item xs={1} className={[classes.maxWidth100, classes.content]} container>
             <Box display="flex" style={{ height: '100%', width: '100%' }}>
-              {props.children(filteredData, (target, params) => onRedirect(history, target, params))}
+              {isFetchingData ? 'loading' : props.children(filteredData, (target, params) => onRedirect(history, target, params))}
             </Box>
           </Grid>
 
@@ -184,19 +185,20 @@ Template.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    data: state.data,
+    data: state.data.fetched,
+    isFetchingData: state.data.isFetching,
     activeFilters: state.activeFilter
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setActiveFilters: (newActiveFilters) => 
-      dispatch(setActiveFilter(newActiveFilters))
-    ,
-    fetchDataAction: (url) =>
-    //! fetchData is undefined
-      dispatch(fetchData(url))
+    setActiveFilters: (newActiveFilters) => {
+      return dispatch(setActiveFilter(newActiveFilters))
+    },
+    fetchDataAction: (url) => {
+      return dispatch(fetchData(url))
+    }
   }
 }
 

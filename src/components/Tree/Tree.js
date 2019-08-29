@@ -246,7 +246,6 @@ const TreeComp = (props) => {
 
         setCursor(node);
         setData(Object.assign({}, data))
-        debugger;
         // makes the selection apply to the original hier and not the filtered one - to undo, switch hierNode to be node
         // let hierNode = node;
         let hierNode = findExactNode(hierarchy, node.id);
@@ -288,7 +287,7 @@ TreeComp.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        hierarchy: state.hierarchy,
+        hierarchy: state.hierarchy ? state.hierarchy.fetched : {},
     }
 };
 
