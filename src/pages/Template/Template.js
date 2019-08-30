@@ -24,10 +24,10 @@ const useStyles = makeStyles(theme => ({
     },
     mainGrid: {
         transition: '225ms cubic-bezier(0, 0, 0.2, 1) 0ms;',
+        backgroundColor: '#fafafa',
     },
     filterOpen: {
         gridTemplateColumns: '0.2fr 1fr',
-        // backgroundColor: 'red',
     },
     content: {
         flexGrow: '1',
@@ -169,9 +169,6 @@ function Template(props) {
                                 <Template.GridItem {...c} data={filteredData} setRedirect={(target, params) => onRedirect(history, target, params)} />)
                             : null
                     }
-                    {/* <Cell left={1} top={1} height={1} width={1}>
-                        {props.children.content[0].render(filteredData, (target, params) => onRedirect(history, target, params))}
-                    </Cell> */}
                 </Grid>
             </Cell>
         </Grid>
