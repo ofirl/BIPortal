@@ -19,7 +19,7 @@ const createStyle = (color) => {
 const Tooltip = (props) => {
     const classes = useStyles();
 
-    const { label, payload, showKeys = [], hideKeys = [] } = props;
+    let { label, payload, showKeys = [], hideKeys = [] } = props;
 
     return (
         <Paper className={classes.chartTooltipPaper}>

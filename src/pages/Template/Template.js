@@ -13,6 +13,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
 import { Grid, Cell } from "styled-css-grid";
+import createChart from './../../components/Chart/Chart';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -173,20 +174,6 @@ function Template(props) {
             </Cell>
         </Grid>
     );
-}
-Template.GridItem = ({ left, top, width, height, render, data, setRedirect, ...others }) => {
-    let cellProps = {
-        left,
-        top,
-        width,
-        height
-    };
-
-    return (
-        <Cell {...cellProps}>
-            {render(data, setRedirect)}
-        </Cell>
-    );
 };
 Template.propTypes = {
     /** children to render */
@@ -203,7 +190,22 @@ Template.propTypes = {
     setActiveFilters: PropTypes.func,
     /** the service to get the data from */
     serviceName: PropTypes.string
-}
+};
+Template.GridItem = ({ left, top, width, height, render, data, setRedirect, chart, ...others }) => {
+    let cellProps = {
+        left,
+        top,
+        width,
+        height
+    };
+
+    return (
+        <Cell {...cellProps}>
+            {render ? render(data, setRedirect) : createChart(chart)(data) }
+        </Cell>
+    );
+};
+
 
 const mapStateToProps = (state, ownProps) => {
     return {
