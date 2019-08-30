@@ -28,11 +28,11 @@ const useStyles = makeStyles(theme => ({
         // width: '30%'
     },
     drawerRoot: {
-        height: '100%',
+        // height: '100%',
         // width:'30%'
     },
     drawerPaper: {
-        width: '100%',
+        // width: '100%',
         position: 'relative',
         backgroundColor: '#fafafa',
         borderRight: 'none',
@@ -83,7 +83,7 @@ const FilterRow = (props) => {
 
     const filterRowStyle = {
         height: 'auto',
-        width: '100%',
+        // width: '100%',
         paddingTop: '0.5em',
         paddingBottom: '0.5em',
         paddingLeft: '8px',

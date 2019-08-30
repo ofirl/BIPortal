@@ -4,9 +4,11 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, ComposedChart, Legend, Area, Bar, LabelList } from 'recharts';
 import TemplatePage from '../Template/Template';
-import ChartTooltip from '../../components/ChartTooltip/ChartTooltip';
 import { getColor, setColors } from './../../Utils/colors';
+import ChartTooltip from '../../components/ChartTooltip/ChartTooltip';
 import ChartLegend from '../../components/ChartLegend/ChartLegend';
+
+import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
 
 /**
  * @typedef filterDefEntry
@@ -70,6 +72,8 @@ const templateParams = {
     },
 }
 
+const GridItemWidth = WidthProvider(TemplatePage.GridItem);
+
 const ExampleReport = (props) => {
     const handleClick = (data, index) => {
         console.log(data);
@@ -90,12 +94,13 @@ const ExampleReport = (props) => {
 
     return (
         <TemplatePage {...templateParams} history={props.history}>
-            {(data, setRedirect) => (
-                <React.Fragment>
+            {(data, setRedirect) => [
+                // <React.Fragment>
 
-                    <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '50%', width: '100%' }}>
-                        <Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '100%' }}>
+                    
+                    <GridItemWidth key="b">
                             <ResponsiveContainer height={"100%"} width={"100%"}>
+                            {/* { ({width, height, ...others}) => */}
                                 <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                                     <Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
                                     <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
@@ -103,26 +108,12 @@ const ExampleReport = (props) => {
                                     <YAxis />
                                     <Tooltip />
                                 </LineChart>
+                            {/* } */}
                             </ResponsiveContainer>
-                        </Paper>
-                    </Grid>
-
-                    {/* <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
-                        <Paper style={{ padding: '20px', margin: '10px' }}>
-                            <ResponsiveContainer height={500} width={"100%"}>
-                                <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                                    <Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
-                                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </Paper>
-                    </Grid> */}
-
-                    <Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
-                        <Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '50%' }}>
+                    </GridItemWidth>
+                    ,
+                    
+                    <TemplatePage.GridItem key="c">
                             <ResponsiveContainer height={"100%"} width={"100%"}>
                                 <ComposedChart data={data} /*barCategoryGap={0}*/>
                                     <XAxis dataKey="name" />
@@ -133,18 +124,18 @@ const ExampleReport = (props) => {
                                     {/* <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} /> */}
                                     {/* <Line type="monotone" dataKey="uv" stroke={getColor('uv')} /> */}
                                     <Bar stackId="a" dataKey="executedPercent" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
-                                        <LabelList dataKey="executedPercent" position="inside" content={({value}) => value !== 0 ? value + "%" : ''} />
+                                        <LabelList dataKey="executedPercent" position="inside" content={({ value }) => value !== 0 ? value + "%" : ''} />
                                     </Bar>
                                     <Bar stackId="a" dataKey="unexecutedPercent" fill={getColor('uv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
-                                        <LabelList dataKey="unexecutedPercent" position="inside" content={({value}) => value !== 0 ? value + "%" : ''} />
+                                        <LabelList dataKey="unexecutedPercent" position="inside" content={({ value }) => value !== 0 ? value + "%" : ''} />
                                     </Bar>
                                 </ComposedChart>
                             </ResponsiveContainer>
-                        </Paper>
-                    </Grid>
+                    </TemplatePage.GridItem>
 
-                </React.Fragment>
-            )}
+                //  </React.Fragment>
+            ]
+            }
 
 
         </TemplatePage>

@@ -1,51 +1,60 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import { setActiveFilter, fetchData } from '../../reducers';
 
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 
 import TopBar from './TopBar/TopBar';
 import FilterDrawer from './FilterDrawer/FilterDrawer';
 
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
+
+import { Grid, Cell } from "styled-css-grid";
+
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  mainContainer: {
-    position: 'absolute',
-    height: '100%'
-  },
-  content: {
-    flexGrow: '1',
-  },
-  maxWidth100: {
-    maxWidth: '100%'
-  },
+    root: {
+        flexGrow: 1,
+    },
+    mainContainer: {
+        position: 'absolute',
+        height: '100%'
+    },
+    mainGrid: {
+        transition: '225ms cubic-bezier(0, 0, 0.2, 1) 0ms;',
+    },
+    filterOpen: {
+        gridTemplateColumns: '0.2fr 1fr',
+        // backgroundColor: 'red',
+    },
+    content: {
+        flexGrow: '1',
+    },
+    maxWidth100: {
+        maxWidth: '100%'
+    },
 }));
 
 /**
  * Conversion object for filtering.
  */
 const operatorConv = {
-  "=": (val1, val2) => val1 === val2,
-  ">=": (val1, val2) => val1 >= val2,
-  "<=": (val1, val2) => val1 <= val2,
-  ">": (val1, val2) => val1 > val2,
-  "<": (val1, val2) => val1 < val2,
-  "!=": (val1, val2) => val1 !== val2,
-  "date-between": (val1, { startDate, endDate }) => {
-    val1 = formatDate(val1);
-    return operatorConv[">"](new Date(val1), startDate) && operatorConv["<"](new Date(val1), endDate);
-  },
-  "date-single": (val1, val2) => {
-    val1 = formatDate(val1);
-    return operatorConv["="](new Date(val1).getTime(), val2.getTime());
-  },
+    "=": (val1, val2) => val1 === val2,
+    ">=": (val1, val2) => val1 >= val2,
+    "<=": (val1, val2) => val1 <= val2,
+    ">": (val1, val2) => val1 > val2,
+    "<": (val1, val2) => val1 < val2,
+    "!=": (val1, val2) => val1 !== val2,
+    "date-between": (val1, { startDate, endDate }) => {
+        val1 = formatDate(val1);
+        return operatorConv[">"](new Date(val1), startDate) && operatorConv["<"](new Date(val1), endDate);
+    },
+    "date-single": (val1, val2) => {
+        val1 = formatDate(val1);
+        return operatorConv["="](new Date(val1).getTime(), val2.getTime());
+    },
 }
 
 /**
@@ -56,10 +65,10 @@ const operatorConv = {
  * @returns {Date} date object
  */
 function formatDate(date) {
-  // assuming the date is in dd/MM/yyyy format, if not this will need changing
-  let match = /(\d{2})\/(\d{2})\/(\d{4})/.exec(date);
-  date = new Date(match[3], match[2] - 1, match[1]);
-  return date;
+    // assuming the date is in dd/MM/yyyy format, if not this will need changing
+    let match = /(\d{2})\/(\d{2})\/(\d{4})/.exec(date);
+    date = new Date(match[3], match[2] - 1, match[1]);
+    return date;
 }
 
 /**
@@ -72,13 +81,13 @@ function formatDate(date) {
  * @returns Filtered data
  */
 function filterData(filter, data) {
-  let applyFilter = function (dataKey, filterObj, data) {
-    // check if the data checks against at least one of the filter values
-    return filterObj.some((filterEntry) => operatorConv[filterEntry.operator](data[dataKey], filterEntry.value))
-  }
+    let applyFilter = function (dataKey, filterObj, data) {
+        // check if the data checks against at least one of the filter values
+        return filterObj.some((filterEntry) => operatorConv[filterEntry.operator](data[dataKey], filterEntry.value))
+    }
 
-  // check if the data checks against all the filters
-  return data.filter((dataVal) => Object.keys(filter).every((filterVal, index, arr) => applyFilter(filterVal, filter[filterVal], dataVal)));
+    // check if the data checks against all the filters
+    return data.filter((dataVal) => Object.keys(filter).every((filterVal, index, arr) => applyFilter(filterVal, filter[filterVal], dataVal)));
 };
 
 /**
@@ -91,14 +100,14 @@ function filterData(filter, data) {
  * @param {activeFilter} oldFilters old active filter (all keys)
  */
 function onFilterChange(key, newFilters, oldFilters) {
-  let allFilterObj = { ...oldFilters };
+    let allFilterObj = { ...oldFilters };
 
-  if (newFilters.length === 0)
-    delete (allFilterObj[key]);
-  else
-    allFilterObj[key] = newFilters;
+    if (newFilters.length === 0)
+        delete (allFilterObj[key]);
+    else
+        allFilterObj[key] = newFilters;
 
-  return allFilterObj;
+    return allFilterObj;
 }
 
 /**
@@ -109,94 +118,118 @@ function onFilterChange(key, newFilters, oldFilters) {
  * @param {object} params additional url parameters
  */
 function onRedirect(history, target, params) {
-  let paramString = params ? Object.keys(params).map((p) => `${p}=${params[p]}`).join('&') : '';
-  history.push(target + "?" + paramString);
+    let paramString = params ? Object.keys(params).map((p) => `${p}=${params[p]}`).join('&') : '';
+    history.push(target + "?" + paramString);
 }
 
 function Template(props) {
-  console.log('render template');
-  const classes = useStyles();
+    console.log('render template');
+    const classes = useStyles();
+    // debugger;
+    let { children: { layout, content }, data, history, activeFilters, setActiveFilters, filterDef, service, fetchDataAction, isFetchingData } = props;
+    const [open, setOpen] = useState(false);
 
-  let { data, history, activeFilters, setActiveFilters, filterDef, service, fetchDataAction, isFetchingData } = props;
-  const [open, setOpen] = useState(false);
+    fetchDataAction(service);
 
-  fetchDataAction(service);
+    let filteredData = filterData(activeFilters, data);
 
-  let filteredData = filterData(activeFilters, data);
+    if (isFetchingData)
+        return (
+            <div>
+                loading
+            </div>
+        );
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-
-      {/* main grid */}
-      <Grid container spacing={0} direction="column" className={classes.mainContainer}>
-
-        {/* top bar */}
-        <TopBar toggleFilterOpen={() => setOpen(!open)} />
-
-        {/* content grid */}
-        <Grid item container xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
-
-          {/* filter drawer */}
-          <Grid item style={{ flexGrow: open ? 0.3 : 0, maxWidth: '100%', width: '0', transition: 'flex-grow 225ms cubic-bezier(0, 0, 0.2, 1) 0ms' }}>
-            <FilterDrawer open={open} data={data} filters={filterDef} activeFilters={activeFilters}
-              onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} />
-          </Grid>
-
-          {/* content */}
-          <Grid item xs={1} className={[classes.maxWidth100, classes.content]} container>
-            <Box display="flex" style={{ height: '100%', width: '100%' }}>
-              {isFetchingData ? 'loading' : props.children(filteredData, (target, params) => onRedirect(history, target, params))}
-            </Box>
-          </Grid>
-
+    return (
+        <Grid
+            className={[classes.mainGrid, open ? classes.filterOpen : ''].join(' ')}
+            height="100%"
+            columns={"0fr 1fr"}
+            rows={"5em 1fr"}
+            areas={[
+                "header header",
+                "menu   content"
+            ]}>
+            <Cell area="header">
+                <TopBar key="topBar" toggleFilterOpen={() => setOpen(!open)} />
+            </Cell>
+            <Cell area="menu">
+                <FilterDrawer open={open} data={data} filters={filterDef} activeFilters={activeFilters}
+                    onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} />
+            </Cell>
+            <Cell area="content" style={{ paddingRight: '10px' }}>
+                <Grid
+                    columns={layout.columns}
+                    rows={layout.rows}
+                    height="100%"
+                >
+                    {
+                        content ?
+                            content.map((c) =>
+                                <Template.GridItem {...c} data={filteredData} setRedirect={(target, params) => onRedirect(history, target, params)} />)
+                            : null
+                    }
+                    {/* <Cell left={1} top={1} height={1} width={1}>
+                        {props.children.content[0].render(filteredData, (target, params) => onRedirect(history, target, params))}
+                    </Cell> */}
+                </Grid>
+            </Cell>
         </Grid>
-
-        {/* <BottomBar /> */}
-      </Grid>
-
-    </React.Fragment>
-  )
+    );
 }
+Template.GridItem = ({ left, top, width, height, render, data, setRedirect, ...others }) => {
+    let cellProps = {
+        left,
+        top,
+        width,
+        height
+    };
+
+    return (
+        <Cell {...cellProps}>
+            {render(data, setRedirect)}
+        </Cell>
+    );
+};
 Template.propTypes = {
-  /** children to render */
-  children: PropTypes.func,
-  /** history object from react-router */
-  history: PropTypes.object.isRequired,
-  /** filter definition */
-  filterDef: PropTypes.object,
-  /** data (from store) */
-  data: PropTypes.arrayOf(PropTypes.object),
-  /** current active fiters (from store) */
-  activeFilters: PropTypes.object,
-  /** set activ filters (from store) */
-  setActiveFilters: PropTypes.func,
-  /** the service to get the data from */
-  serviceName: PropTypes.string
+    /** children to render */
+    children: PropTypes.func,
+    /** history object from react-router */
+    history: PropTypes.object.isRequired,
+    /** filter definition */
+    filterDef: PropTypes.object,
+    /** data (from store) */
+    data: PropTypes.arrayOf(PropTypes.object),
+    /** current active fiters (from store) */
+    activeFilters: PropTypes.object,
+    /** set activ filters (from store) */
+    setActiveFilters: PropTypes.func,
+    /** the service to get the data from */
+    serviceName: PropTypes.string
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    data: state.data.fetched,
-    isFetchingData: state.data.isFetching,
-    activeFilters: state.activeFilter
-  }
+    return {
+        data: state.data.fetched,
+        isFetchingData: state.data.isFetching,
+        activeFilters: state.activeFilter
+    }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    setActiveFilters: (newActiveFilters) => {
-      return dispatch(setActiveFilter(newActiveFilters))
-    },
-    fetchDataAction: (service) => {
-      return dispatch(fetchData(service))
+    return {
+        setActiveFilters: (newActiveFilters) => {
+            return dispatch(setActiveFilter(newActiveFilters))
+        },
+        fetchDataAction: (service) => {
+            return dispatch(fetchData(service))
+        }
     }
-  }
 }
 
 const ConnectedTemplate = connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Template)
 
 export default ConnectedTemplate;
