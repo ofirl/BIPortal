@@ -129,7 +129,7 @@ const TestReport = (props) => {
                                         <XAxis dataKey="name" />
                                         <YAxis />
                                         <Tooltip content={<ChartTooltip showKeys={[]} hideKeys={[]} />} />
-                                        <Legend content={<ChartLegend hideKeys={['pv']} />} />
+                                        <Legend height={'1.5em'} content={<ChartLegend hideKeys={['pv']} />} />
                                         <CartesianGrid stroke="#f5f5f5" />
                                         {/* <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} /> */}
                                         {/* <Line type="monotone" dataKey="uv" stroke={getColor('uv')} /> */}
