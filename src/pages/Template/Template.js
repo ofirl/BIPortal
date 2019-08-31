@@ -127,7 +127,8 @@ function Template(props) {
     console.log('render template');
     const classes = useStyles();
     // debugger;
-    let { children: { layout, content }, data, history, activeFilters, setActiveFilters, filterDef, service, fetchDataAction, isFetchingData } = props;
+    let { children: { layout = {}, content = [] }, data, history, activeFilters, setActiveFilters, filterDef, service, fetchDataAction, isFetchingData } = props;
+    let { columns: layoutColumns = 'auto-fill', rows: layoutRows = 'auto-fill', /*layoutMinWidth = '600px',*/ layoutMinHeight = '400px' } = layout;
     const [open, setOpen] = useState(false);
 
     fetchDataAction(service);
@@ -160,9 +161,10 @@ function Template(props) {
             </Cell>
             <Cell area="content" style={{ paddingRight: '10px' }}>
                 <Grid
-                    columns={layout.columns}
-                    rows={layout.rows}
+                    columns={layoutColumns}
+                    rows={layoutRows}
                     height="100%"
+                    minRowHeight={layoutMinHeight}
                 >
                     {
                         content ?
@@ -177,7 +179,7 @@ function Template(props) {
 };
 Template.propTypes = {
     /** children to render */
-    children: PropTypes.func,
+    children: PropTypes.object.isRequired,
     /** history object from react-router */
     history: PropTypes.object.isRequired,
     /** filter definition */
@@ -191,6 +193,7 @@ Template.propTypes = {
     /** the service to get the data from */
     serviceName: PropTypes.string
 };
+
 Template.GridItem = ({ left, top, width, height, render, data, setRedirect, chart, ...others }) => {
     let cellProps = {
         left,
@@ -201,11 +204,10 @@ Template.GridItem = ({ left, top, width, height, render, data, setRedirect, char
 
     return (
         <Cell {...cellProps}>
-            {render ? render(data, setRedirect) : createChart(chart)(data) }
+            {render ? render(data, setRedirect) : createChart(chart)(data)}
         </Cell>
     );
 };
-
 
 const mapStateToProps = (state, ownProps) => {
     return {

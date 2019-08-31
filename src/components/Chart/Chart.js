@@ -26,10 +26,10 @@ const createChart = (props) => {
     let { hideKeys: legendHideKeys = [], height: legendHeight = '1.5em', props: legendProps = {} } = legend;
     return (data) => (
         <Paper style={{ width: '100%', height: '100%' }}>
-            <ResponsiveContainer height={"99%"} width={"100%"}>
+            <ResponsiveContainer height={"97%"} width={"100%"}>
                 <ComposedChart data={data} {...chartProps}>
                     {xAxis ? <XAxis {...xAxis} /> : null}
-                    {xAxis ? <YAxis {...yAxis} /> : null}
+                    {yAxis ? <YAxis {...yAxis} /> : null}
                     {tooltip ? <Tooltip content={<ChartTooltip showKeys={tooltipShowKeys} hideKeys={tooltipHideKeys} />} {...tooltipProps} /> : null}
                     {legend ? <Legend height={legendHeight} content={<ChartLegend height={legendHeight} hideKeys={legendHideKeys} />} {...legendProps} /> : null}
                     {grid ? <CartesianGrid {...grid} /> : null}

@@ -101,8 +101,8 @@ const TestReport = (props) => {
             {
                 {
                     layout: {
-                        columns: '1fr 1fr',
-                        rows: '1fr 1fr'
+                        // columns: '1fr 1fr',
+                        // rows: '1fr 1fr',
                     },
                     content: [
                         {
@@ -175,20 +175,22 @@ const TestReport = (props) => {
                                             // fill: '#cfcfcf',
                                             // onClick: (data, index) => {},
                                             // label: true,
-                                            onClick: createRedirect(history, '/ExampleReportDD', ['name']),
+                                            onClick: createRedirect(history, '/ExampleReportDD2', ['name']),
                                         },
                                     },
                                 ],
-                                // layout: 'horizontal',
                                 axis: {
                                     // object will be passed directly to the axis component
-                                    x: {
+                                    y: {
                                         dataKey: 'name',
+                                        type: 'category'
                                     },
-                                    y: true,
                                     // object will be passed directly to the axis component
-                                    // {
-                                    // },
+                                    // x: false,
+                                    x: {
+                                        type: 'number',
+                                        hide: true,
+                                    },
                                 },
                                 // grid: true,
                                 // {
@@ -214,6 +216,7 @@ const TestReport = (props) => {
                                 // props object will be passed down to the chart directly
                                 props: {
                                     // general props
+                                    layout: 'vertical',
                                     // onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                     // onMouseEnter: (e) => { },
                                     // onMouseMove: (e) => { },
@@ -252,8 +255,8 @@ const TestReport = (props) => {
                         },
                         {
                             left: 2,
-                            top: 2,
-                            height: 1,
+                            top: 1,
+                            height: 2,
                             width: 1,
                             chart: {
                                 type: [

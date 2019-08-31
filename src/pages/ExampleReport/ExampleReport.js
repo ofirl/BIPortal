@@ -1,14 +1,15 @@
 import React from 'react';
 
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, ComposedChart, Legend, Area, Bar, LabelList } from 'recharts';
 import TemplatePage from '../Template/Template';
 import { getColor, setColors } from './../../Utils/colors';
 import ChartTooltip from '../../components/ChartTooltip/ChartTooltip';
 import ChartLegend from '../../components/ChartLegend/ChartLegend';
+import { createRedirect } from '../../Utils/charts';
 
-import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
+// import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
 
 /**
  * @typedef filterDefEntry
@@ -44,23 +45,23 @@ let exampleFilterDefinition = {
     }
 };
 
-function getPercentMockData(executedPercent) {
-    return {
-        executedPercent: executedPercent,
-        unexecutedPercent: 100 - executedPercent,
-    };
-}
+// function getPercentMockData(executedPercent) {
+//     return {
+//         executedPercent: executedPercent,
+//         unexecutedPercent: 100 - executedPercent,
+//     };
+// }
 
-let lockshData = [
-    {
-        name: 'אח"י חנית',
-        ...getPercentMockData(30)
-    },
-    {
-        name: 'אח"י סופה',
-        ...getPercentMockData(0)
-    }
-];
+// let lockshData = [
+//     {
+//         name: 'אח"י חנית',
+//         ...getPercentMockData(30)
+//     },
+//     {
+//         name: 'אח"י סופה',
+//         ...getPercentMockData(0)
+//     }
+// ];
 
 const templateParams = {
     filterDef: exampleFilterDefinition,
@@ -72,14 +73,13 @@ const templateParams = {
     },
 }
 
-const GridItemWidth = WidthProvider(TemplatePage.GridItem);
-
 const ExampleReport = (props) => {
-    const handleClick = (data, index) => {
-        console.log(data);
-        console.log(index);
-        alert(index + " : " + data.payload.name + ' was clicked');
-    }
+    let { history } = props;
+    // const handleClick = (data, index) => {
+    //     console.log(data);
+    //     console.log(index);
+    //     alert(index + " : " + data.payload.name + ' was clicked');
+    // }
 
     setColors({
         // uv: '#ff7300',
@@ -88,56 +88,148 @@ const ExampleReport = (props) => {
         amtFill: '#8884d8',
         // pv: '#413ea0',
         pv: '#2baa00',
+        // executedPercentBackground: '#2baa00',
+        executedPercent: '#2baa00',
+        // unexecutedPercentBackground: '#bd050d',
+        unexecutedPercent: '#bd050d',
+        unexecutedPercentFill: '#bd050d',
         // pv: 'transparent',
         pvBackground: 'transparent',
     });
 
     return (
         <TemplatePage {...templateParams} history={props.history}>
-            {(data, setRedirect) => [
-                // <React.Fragment>
-
-                    
-                    <GridItemWidth key="b">
-                            <ResponsiveContainer height={"100%"} width={"100%"}>
-                            {/* { ({width, height, ...others}) => */}
-                                <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                                    <Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
-                                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                </LineChart>
-                            {/* } */}
-                            </ResponsiveContainer>
-                    </GridItemWidth>
-                    ,
-                    
-                    <TemplatePage.GridItem key="c">
-                            <ResponsiveContainer height={"100%"} width={"100%"}>
-                                <ComposedChart data={data} /*barCategoryGap={0}*/>
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip content={<ChartTooltip showKeys={[]} hideKeys={[]} />} />
-                                    <Legend content={<ChartLegend hideKeys={['pv']} />} />
-                                    <CartesianGrid stroke="#f5f5f5" />
-                                    {/* <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} /> */}
-                                    {/* <Line type="monotone" dataKey="uv" stroke={getColor('uv')} /> */}
-                                    <Bar stackId="a" dataKey="executedPercent" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
-                                        <LabelList dataKey="executedPercent" position="inside" content={({ value }) => value !== 0 ? value + "%" : ''} />
-                                    </Bar>
-                                    <Bar stackId="a" dataKey="unexecutedPercent" fill={getColor('uv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
-                                        <LabelList dataKey="unexecutedPercent" position="inside" content={({ value }) => value !== 0 ? value + "%" : ''} />
-                                    </Bar>
-                                </ComposedChart>
-                            </ResponsiveContainer>
-                    </TemplatePage.GridItem>
-
-                //  </React.Fragment>
-            ]
+            {
+                {
+                    content: [
+                        {
+                            left: 1,
+                            top: 1,
+                            height: 1,
+                            width: 1,
+                            chart: {
+                                type: [
+                                    {
+                                        type: 'area',
+                                        props: {
+                                            lineType: 'monotone',
+                                            dataKey: 'unexecutedPercent',
+                                        }
+                                    },
+                                    {
+                                        type: 'bar',
+                                        labelList: {
+                                            suffix: '%',
+                                            prefix: '',
+                                            props: {
+                                                dataKey: 'executedPercent',
+                                                position: 'inside',
+                                            },
+                                        },
+                                        background: false,
+                                        props: {
+                                            stackId: 'a',
+                                            dataKey: 'executedPercent',
+                                            onClick: createRedirect(history, '/ExampleReportDD', ['name']),
+                                        },
+                                    },
+                                    {
+                                        type: 'bar',
+                                        labelList: {
+                                            suffix: '%',
+                                            prefix: '',
+                                            props: {
+                                                dataKey: 'unexecutedPercent',
+                                                position: 'inside',
+                                            },
+                                        },
+                                        background: false,
+                                        props: {
+                                            stackId: 'a',
+                                            dataKey: 'unexecutedPercent',
+                                            onClick: createRedirect(history, '/ExampleReportDD2', ['name']),
+                                        },
+                                    },
+                                    {
+                                        type: 'line',
+                                        props: {
+                                            lineType: 'monotone',
+                                            dataKey: 'executedPercent',
+                                        }
+                                    },
+                                ],
+                                axis: {
+                                    y: {
+                                        dataKey: 'name',
+                                        type: 'category'
+                                    },
+                                    x: {
+                                        type: 'number',
+                                        hide: true,
+                                    },
+                                },
+                                legend: true,
+                                props: {
+                                    layout: 'vertical',
+                                }
+                            },
+                        },
+                        {
+                            left: 2,
+                            top: 1,
+                            height: 2,
+                            width: 1,
+                            chart: {
+                                type: [
+                                    {
+                                        type: 'bar',
+                                        labelList: {
+                                            suffix: '%',
+                                            prefix: '',
+                                            props: {
+                                                dataKey: 'executedPercent',
+                                                position: 'inside',
+                                            },
+                                        },
+                                        background: false,
+                                        props: {
+                                            stackId: 'a',
+                                            dataKey: 'executedPercent',
+                                            onClick: createRedirect(history, '/ExampleReportDD', ['name']),
+                                        },
+                                    },
+                                    {
+                                        type: 'bar',
+                                        labelList: {
+                                            suffix: '%',
+                                            prefix: '',
+                                            props: {
+                                                dataKey: 'unexecutedPercent',
+                                                position: 'inside',
+                                            },
+                                        },
+                                        background: false,
+                                        props: {
+                                            stackId: 'a',
+                                            dataKey: 'unexecutedPercent',
+                                            onClick: createRedirect(history, '/ExampleReportDD', ['name']),
+                                        },
+                                    },
+                                ],
+                                axis: {
+                                    y: {
+                                        type: 'number',
+                                    },
+                                    x: {
+                                        dataKey: 'name',
+                                        type: 'category',
+                                    },
+                                },
+                            },
+                        }
+                    ]
+                }
             }
-
-
         </TemplatePage>
     );
 }
