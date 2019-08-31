@@ -104,6 +104,24 @@ const TestReport = (props) => {
                         // columns: '1fr 1fr',
                         // rows: '1fr 1fr',
                     },
+                    filterDef: {
+                        uv: {
+                            label: 'שם',
+                            type: 'list',
+                            addBlank: true,
+                            listType: 'multi',
+                            // options: [2000,3000]
+                        },
+                        name: {
+                            label: 'כלי',
+                            type: 'tree',
+                        },
+                        date: {
+                            label: 'תאריך',
+                            type: 'date',
+                            // dateType: 'single'
+                        }
+                    },
                     content: [
                         {
                             left: 1,

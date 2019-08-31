@@ -101,6 +101,24 @@ const ExampleReport = (props) => {
         <TemplatePage {...templateParams} history={props.history}>
             {
                 {
+                    filterDef: {
+                        uv: {
+                            label: 'שם',
+                            type: 'list',
+                            addBlank: true,
+                            listType: 'multi',
+                            // options: [2000,3000]
+                        },
+                        name: {
+                            label: 'כלי',
+                            type: 'tree',
+                        },
+                        date: {
+                            label: 'תאריך',
+                            type: 'date',
+                            // dateType: 'single'
+                        }
+                    },
                     content: [
                         {
                             left: 1,
