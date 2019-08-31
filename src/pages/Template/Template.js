@@ -126,7 +126,7 @@ function onRedirect(history, target, params) {
 function Template(props) {
     console.log('render template');
     const classes = useStyles();
-    // debugger;
+    // debugger; 
     let { children: { layout = {}, content = [] }, data, history, activeFilters, setActiveFilters, filterDef, service, fetchDataAction, isFetchingData } = props;
     let { columns: layoutColumns = 'auto-fill', rows: layoutRows = 'auto-fill', /*layoutMinWidth = '600px',*/ layoutMinHeight = '400px' } = layout;
     const [open, setOpen] = useState(false);
