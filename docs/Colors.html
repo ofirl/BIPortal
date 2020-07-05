@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: ReportTemplate</title>
+    <title>JSDoc: Namespace: Colors</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: ReportTemplate</h1>
+    <h1 class="page-title">Namespace: Colors</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>ReportTemplate</h2>
+        <h2>Colors</h2>
         
     
 </header>
@@ -70,7 +70,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pages_Template_Template.js.html">pages/Template/Template.js</a>, <a href="pages_Template_Template.js.html#line19">line 19</a>
+        <a href="Utils_colors.js.html">Utils/colors.js</a>, <a href="Utils_colors.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -103,13 +103,13 @@
 
         
             
-<h4 class="name" id=".operatorConv"><span class="type-signature">(static, constant) </span>operatorConv<span class="type-signature"></span></h4>
+<h4 class="name" id=".allColors"><span class="type-signature">(static, constant) </span>allColors<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    Conversion object for filtering <br />Converts a sign to a convertion function
+    Colors bank
 </div>
 
 
@@ -147,7 +147,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pages_Template_Template.js.html">pages/Template/Template.js</a>, <a href="pages_Template_Template.js.html#line52">line 52</a>
+        <a href="Utils_colors.js.html">Utils/colors.js</a>, <a href="Utils_colors.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -175,7 +175,7 @@
     
 
     
-    <h4 class="name" id=".filterData"><span class="type-signature">(static) </span>filterData<span class="signature">(filter, data)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".exports.getColor"><span class="type-signature">(static) </span>exports.getColor<span class="signature">(key, color)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -183,336 +183,7 @@
 
 
 <div class="description">
-    Filter the data based on the given filter. <br/>Filters the data using the filter object given and the convertion object operatorConv.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filter</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">activeFilter</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;*></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the data to filter</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pages_Template_Template.js.html">pages/Template/Template.js</a>, <a href="pages_Template_Template.js.html#line95">line 95</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Filtered data
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".formatDate"><span class="type-signature">(static) </span>formatDate<span class="signature">(date)</span><span class="type-signature"> &rarr; {Date}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Converts the given date to a date object
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>date</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the date to convert (assuming the date is in dd/MM/yyyy format)</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pages_Template_Template.js.html">pages/Template/Template.js</a>, <a href="pages_Template_Template.js.html#line78">line 78</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    date object
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Date</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".onFilterChange"><span class="type-signature">(static) </span>onFilterChange<span class="signature">(key, newFilters, oldFilters)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Changes {@param oldFilters} by the given new filters and key. <br />Adds or deletes the necessary values/keys from the old filters.
+    gets a color, or assign a new one
 </div>
 
 
@@ -564,20 +235,20 @@
 
             
 
-            <td class="description last">filter key</td>
+            <td class="description last">name</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>newFilters</code></td>
+                <td class="name"><code>color</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">activeFilter</span>
+<span class="param-type">string</span>
 
 
             
@@ -587,30 +258,7 @@
 
             
 
-            <td class="description last">new active filter (only filters relevant to key key)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>oldFilters</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">activeFilter</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">old active filter (all keys)</td>
+            <td class="description last">color value</td>
         </tr>
 
     
@@ -651,7 +299,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pages_Template_Template.js.html">pages/Template/Template.js</a>, <a href="pages_Template_Template.js.html#line115">line 115</a>
+        <a href="Utils_colors.js.html">Utils/colors.js</a>, <a href="Utils_colors.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -676,6 +324,28 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    color value
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -687,7 +357,7 @@
     
 
     
-    <h4 class="name" id=".onRedirect"><span class="type-signature">(static) </span>onRedirect<span class="signature">(history, target, params)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".exports.setColor"><span class="type-signature">(static) </span>exports.setColor<span class="signature">(key, color)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -695,7 +365,7 @@
 
 
 <div class="description">
-    Redirects to the target with the supplied parameters
+    sets a color
 </div>
 
 
@@ -731,30 +401,7 @@
 
         <tr>
             
-                <td class="name"><code>history</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">history object from react-router</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>target</code></td>
+                <td class="name"><code>key</code></td>
             
 
             <td class="type">
@@ -770,20 +417,20 @@
 
             
 
-            <td class="description last">redirect target</td>
+            <td class="description last">name</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>params</code></td>
+                <td class="name"><code>color</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">string</span>
 
 
             
@@ -793,7 +440,7 @@
 
             
 
-            <td class="description last">additional url parameters</td>
+            <td class="description last">color value</td>
         </tr>
 
     
@@ -834,7 +481,201 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pages_Template_Template.js.html">pages/Template/Template.js</a>, <a href="pages_Template_Template.js.html#line135">line 135</a>
+        <a href="Utils_colors.js.html">Utils/colors.js</a>, <a href="Utils_colors.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    color value
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".exports.setColors"><span class="type-signature">(static) </span>exports.setColors<span class="signature">(colorsObj, override)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    sets colors
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>colorsObj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">colors object ( {name: colorValue} )</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>override</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last">override values</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Utils_colors.js.html">Utils/colors.js</a>, <a href="Utils_colors.js.html#line66">line 66</a>
     </li></ul></dd>
     
 
@@ -868,6 +709,130 @@
     
 
     
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id=".assignedColors">assignedColors</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>*</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the color assigned</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Utils_colors.js.html">Utils/colors.js</a>, <a href="Utils_colors.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+    
 
     
 </article>
@@ -886,7 +851,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Jul 05 2020 12:43:39 GMT+0300 (Israel Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Jul 05 2020 17:26:37 GMT+0300 (Israel Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

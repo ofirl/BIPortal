@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: pages/ExampleReport/ExampleReport.js</title>
+    <title>JSDoc: Source: pages/ExampleReport/TestReport.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: pages/ExampleReport/ExampleReport.js</h1>
+    <h1 class="page-title">Source: pages/ExampleReport/TestReport.js</h1>
 
     
 
@@ -40,19 +40,7 @@ import { createRedirect } from '../../Utils/charts';
 // import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
 
 /**
- * @typedef filterDefEntry
- * @type {object} 
- * @property {string} type the type of the filter, supported values are: 'list', 'date'
- * @property {string} [listType] the type of the list, suported values are: 'single', 'multi', default is 'single'
- * @property {Array.&lt;*>} [options] the options of the list
- * @property {bool} [addBlank] add a blank option, default is false
- * @property {string} dateType the type of the date, supported values are: 'single', 'range' (default is range)
- * @property {string | Array.&lt;string>} dateSelection the type of the selection, supported values are: 'year', 'month', 'day', 'time'
- */
-/**
- * @typedef filterDef
- * @type {Object}
- * @property {filterDefEntry} * The filter definition.
+ * @type {filterDef}
  */
 let exampleFilterDefinition = {
     uv: {
@@ -92,7 +80,7 @@ let exampleFilterDefinition = {
 // ];
 
 const templateParams = {
-    filterDef: exampleFilterDefinition,
+    // filterDef: exampleFilterDefinition,
     service: {
         name: 'testService',
         params: {
@@ -101,7 +89,7 @@ const templateParams = {
     },
 }
 
-const ExampleReport = (props) => {
+const TestReport = (props) => {
     let { history } = props;
     // const handleClick = (data, index) => {
     //     console.log(data);
@@ -120,7 +108,6 @@ const ExampleReport = (props) => {
         executedPercent: '#2baa00',
         // unexecutedPercentBackground: '#bd050d',
         unexecutedPercent: '#bd050d',
-        unexecutedPercentFill: '#bd050d',
         // pv: 'transparent',
         pvBackground: 'transparent',
     });
@@ -129,14 +116,18 @@ const ExampleReport = (props) => {
         &lt;TemplatePage {...templateParams} history={props.history}>
             {
                 {
+                    layout: {
+                        columns: '1fr 1fr',
+                        rows: '1fr 1fr',
+                    },
                     filterDef: {
-                        uv: {
-                            label: 'שם',
-                            type: 'list',
-                            addBlank: true,
-                            listType: 'multi',
-                            // options: [2000,3000]
-                        },
+                        // uv: {
+                        //     label: 'שם',
+                        //     type: 'list',
+                        //     addBlank: true,
+                        //     listType: 'multi',
+                        //     // options: [2000,3000]
+                        // },
                         name: {
                             label: 'כלי',
                             type: 'tree',
@@ -150,32 +141,56 @@ const ExampleReport = (props) => {
                     content: [
                         {
                             left: 1,
-                            top: 1,
+                            top: 2,
                             height: 1,
                             width: 1,
+                            texts: {
+                                //"id": idTexts
+                            },
                             chart: {
                                 type: [
-                                    {
-                                        type: 'area',
-                                        props: {
-                                            lineType: 'monotone',
-                                            dataKey: 'unexecutedPercent',
-                                        }
-                                    },
+                                    // {
+                                    //     type: 'line',
+                                    //    // object will be passed down directly to the line component
+                                    //     props: {
+                                    //         lineType: 'monotone',
+                                    //         dataKey: 'uv',
+                                    //         // stroke: '#ac43fc',
+                                    //     }
+                                    // },
+                                    // {
+                                    //     type: 'area',
+                                    //     // object will be passed down directly to the line component
+                                    //     props: {
+                                    //         lineType: 'monotone',
+                                    //         dataKey: 'uv',
+                                    //         // stroke: '#ac43fc',
+                                    //         // fill: '#acacac',
+                                    //     }
+                                    // },
                                     {
                                         type: 'bar',
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            // showZeroes: true,
+                                            // showNulls: false,
                                             props: {
                                                 dataKey: 'executedPercent',
                                                 position: 'inside',
                                             },
                                         },
                                         background: false,
+                                        // object will be passed down directly to the line component
                                         props: {
                                             stackId: 'a',
                                             dataKey: 'executedPercent',
+                                            // fill: '#cfcfcf',
+                                            // onClick: (data, index) => {},
+                                            // background: {
+                                            //     fill: '#cfcfcf',
+                                            // },
+                                            // label: true,
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
@@ -190,35 +205,90 @@ const ExampleReport = (props) => {
                                             },
                                         },
                                         background: false,
+                                        // object will be passed down directly to the line component
                                         props: {
                                             stackId: 'a',
                                             dataKey: 'unexecutedPercent',
+                                            // fill: '#cfcfcf',
+                                            // onClick: (data, index) => {},
+                                            // label: true,
                                             onClick: createRedirect(history, '/ExampleReportDD2', ['name']),
                                         },
                                     },
-                                    {
-                                        type: 'line',
-                                        props: {
-                                            lineType: 'monotone',
-                                            dataKey: 'executedPercent',
-                                        }
-                                    },
                                 ],
                                 axis: {
+                                    // object will be passed directly to the axis component
                                     y: {
                                         dataKey: 'name',
                                         type: 'category'
                                     },
+                                    // object will be passed directly to the axis component
+                                    // x: false,
                                     x: {
                                         type: 'number',
                                         hide: true,
                                     },
                                 },
-                                legend: true,
+                                // grid: true,
+                                // {
+                                //     x: 0,
+                                //     y: 0,
+                                //     width: 0,
+                                //     height: 0,
+                                //     horizontal: true,
+                                //     vertical: true,
+                                //     horizontalPoints: [],
+                                //     verticalPoints: []
+                                // },
+                                // tooltip: true,
+                                tooltip: {
+                                    hideKeys: [],
+                                    showKeys: ['date'],
+                                },
+                                // legend: true,
+                                legend: {
+                                    // height: '1.5em',
+                                    // hideKeys: ['executedPercent'],
+                                },
+                                // props object will be passed down to the chart directly
                                 props: {
+                                    // general props
                                     layout: 'vertical',
+                                    // onClick: createRedirect(history, '/ExampleReportDD', ['name']),
+                                    // onMouseEnter: (e) => { },
+                                    // onMouseMove: (e) => { },
+                                    // onMouseLeave: (e) => { },
+                                    // onMouseDown: (e) => { },
+                                    syncId: "syncCategory",
+                                    // margin: {
+                                    //     top: 5,
+                                    //     bottom: 5,
+                                    //     left: 5,
+                                    //     right: 5
+                                    // },
+
+                                    // bar chart props
+                                    // barCategoryGap: '10%',
+                                    // barGap: 4,
+                                    // barSize: 10,
+                                    // maxBarSize: 10,
+                                    // stackOffset: 'none',
+                                    // reverseStackOrder: 'false',
+
+                                    // area chart props
+                                    // baseValue: 'auto',
                                 }
                             },
+                            // render: (data, setRedirect) =>
+                            //     &lt;ResponsiveContainer width={'100%'} height={'99%'}>
+                            //         &lt;LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                            //             &lt;Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
+                            //             &lt;CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                            //             &lt;XAxis dataKey="name" />
+                            //             &lt;YAxis />
+                            //             &lt;Tooltip />
+                            //         &lt;/LineChart>
+                            //     &lt;/ResponsiveContainer>
                         },
                         {
                             left: 2,
@@ -234,7 +304,7 @@ const ExampleReport = (props) => {
                                             prefix: '',
                                             props: {
                                                 dataKey: 'executedPercent',
-                                                position: 'inside',
+                                                position: 'top',
                                             },
                                         },
                                         background: false,
@@ -251,7 +321,7 @@ const ExampleReport = (props) => {
                                             prefix: '',
                                             props: {
                                                 dataKey: 'unexecutedPercent',
-                                                position: 'inside',
+                                                position: 'top',
                                             },
                                         },
                                         background: false,
@@ -271,7 +341,31 @@ const ExampleReport = (props) => {
                                         type: 'category',
                                     },
                                 },
+                                props: {
+                                    // layout: 'vertical',
+                                    syncId: "syncCategory",
+                                },
                             },
+                            // render: (data, setRedirect) =>
+                            //     &lt;Paper style={{ width: '100%', height: '100%' }}>
+                            //         &lt;ResponsiveContainer height={"99%"} width={"100%"}>
+                            //             &lt;ComposedChart layout={'vertical'} data={data} /*barCategoryGap={0}*/>
+                            //                 &lt;XAxis type="number" />
+                            //                 &lt;YAxis dataKey="name" type="category" />
+                            //                 &lt;Tooltip content={&lt;ChartTooltip showKeys={[]} hideKeys={[]} />} />
+                            //                 &lt;Legend height={'1.5em'} content={&lt;ChartLegend height={'1.5em'} hideKeys={['pv']} />} />
+                            //                 &lt;CartesianGrid stroke="#f5f5f5" />
+                            //                 {/* &lt;Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} /> */}
+                            //                 {/* &lt;Line type="monotone" dataKey="uv" stroke={getColor('uv')} /> */}
+                            //                 &lt;Bar stackId="a" dataKey="executedPercent" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
+                            //                     &lt;LabelList dataKey="executedPercent" position="inside" content={({ value }) => value !== 0 ? value + "%" : ''} />
+                            //                 &lt;/Bar>
+                            //                 &lt;Bar stackId="a" dataKey="unexecutedPercent" fill={getColor('uv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
+                            //                     &lt;LabelList dataKey="unexecutedPercent" position="inside" formatter={(v) => v + "%"} /*content={({ value }) => value !== 0 ? value + "%" : ''}*/ />
+                            //                 &lt;/Bar>
+                            //             &lt;/ComposedChart>
+                            //         &lt;/ResponsiveContainer>
+                            //     &lt;/Paper>
                         }
                     ]
                 }
@@ -280,7 +374,7 @@ const ExampleReport = (props) => {
     );
 }
 
-export default ExampleReport;</code></pre>
+export default TestReport;</code></pre>
         </article>
     </section>
 
@@ -296,7 +390,7 @@ export default ExampleReport;</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Jul 05 2020 12:43:39 GMT+0300 (Israel Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Jul 05 2020 17:26:37 GMT+0300 (Israel Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
