@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: components/ChartLegend/ChartLegend.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,43 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: components/ChartLegend/ChartLegend.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import PropTypes from 'prop-types';
 
+import { Legend } from 'recharts';
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
+const ChartLegend = (props) => {
+    let { height = '1.5em', payload, hideKeys } = props;
     
+    hideKeys.forEach( (k) => {
+        let index = payload.findIndex( (p) => p.dataKey === k);
+        if (index !== -1)
+            payload.splice(index, 1);
+    });
 
+    return &lt;Legend wrapperStyle={{ width: '100%', height }} payload={payload} style={{ padding: '0px', margin: '0px', textAlign: 'center' }} />
+}
+ChartLegend.propTypes = {
+    /** height of the legend */
+    height: PropTypes.string,
+    /** payload (see recharts API) */
+    payload: PropTypes.any,
+    /** keys to hide on the legend */
+    hideKeys: PropTypes.arrayOf(PropTypes.string),
+}
 
-
-
-
+export default ChartLegend;</code></pre>
+        </article>
+    </section>
 
 
 

@@ -1,4 +1,32 @@
-import React from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/ExampleReport/TestReport.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/ExampleReport/TestReport.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
 
 // import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -52,7 +80,7 @@ let exampleFilterDefinition = {
 // ];
 
 const templateParams = {
-    // filterDef: exampleFilterDefinition,
+    filterDef: exampleFilterDefinition,
     service: {
         name: 'testService',
         params: {
@@ -85,7 +113,7 @@ const TestReport = (props) => {
     });
 
     return (
-        <TemplatePage {...templateParams} history={props.history}>
+        &lt;TemplatePage {...templateParams} history={props.history}>
             {
                 {
                     layout: {
@@ -93,13 +121,13 @@ const TestReport = (props) => {
                         rows: '1fr 1fr',
                     },
                     filterDef: {
-                        // uv: {
-                        //     label: 'שם',
-                        //     type: 'list',
-                        //     addBlank: true,
-                        //     listType: 'multi',
-                        //     // options: [2000,3000]
-                        // },
+                        uv: {
+                            label: 'שם',
+                            type: 'list',
+                            addBlank: true,
+                            listType: 'multi',
+                            // options: [2000,3000]
+                        },
                         name: {
                             label: 'כלי',
                             type: 'tree',
@@ -252,15 +280,15 @@ const TestReport = (props) => {
                                 }
                             },
                             // render: (data, setRedirect) =>
-                            //     <ResponsiveContainer width={'100%'} height={'99%'}>
-                            //         <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                            //             <Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
-                            //             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                            //             <XAxis dataKey="name" />
-                            //             <YAxis />
-                            //             <Tooltip />
-                            //         </LineChart>
-                            //     </ResponsiveContainer>
+                            //     &lt;ResponsiveContainer width={'100%'} height={'99%'}>
+                            //         &lt;LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                            //             &lt;Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
+                            //             &lt;CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                            //             &lt;XAxis dataKey="name" />
+                            //             &lt;YAxis />
+                            //             &lt;Tooltip />
+                            //         &lt;/LineChart>
+                            //     &lt;/ResponsiveContainer>
                         },
                         {
                             left: 2,
@@ -319,31 +347,53 @@ const TestReport = (props) => {
                                 },
                             },
                             // render: (data, setRedirect) =>
-                            //     <Paper style={{ width: '100%', height: '100%' }}>
-                            //         <ResponsiveContainer height={"99%"} width={"100%"}>
-                            //             <ComposedChart layout={'vertical'} data={data} /*barCategoryGap={0}*/>
-                            //                 <XAxis type="number" />
-                            //                 <YAxis dataKey="name" type="category" />
-                            //                 <Tooltip content={<ChartTooltip showKeys={[]} hideKeys={[]} />} />
-                            //                 <Legend height={'1.5em'} content={<ChartLegend height={'1.5em'} hideKeys={['pv']} />} />
-                            //                 <CartesianGrid stroke="#f5f5f5" />
-                            //                 {/* <Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} /> */}
-                            //                 {/* <Line type="monotone" dataKey="uv" stroke={getColor('uv')} /> */}
-                            //                 <Bar stackId="a" dataKey="executedPercent" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
-                            //                     <LabelList dataKey="executedPercent" position="inside" content={({ value }) => value !== 0 ? value + "%" : ''} />
-                            //                 </Bar>
-                            //                 <Bar stackId="a" dataKey="unexecutedPercent" fill={getColor('uv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
-                            //                     <LabelList dataKey="unexecutedPercent" position="inside" formatter={(v) => v + "%"} /*content={({ value }) => value !== 0 ? value + "%" : ''}*/ />
-                            //                 </Bar>
-                            //             </ComposedChart>
-                            //         </ResponsiveContainer>
-                            //     </Paper>
+                            //     &lt;Paper style={{ width: '100%', height: '100%' }}>
+                            //         &lt;ResponsiveContainer height={"99%"} width={"100%"}>
+                            //             &lt;ComposedChart layout={'vertical'} data={data} /*barCategoryGap={0}*/>
+                            //                 &lt;XAxis type="number" />
+                            //                 &lt;YAxis dataKey="name" type="category" />
+                            //                 &lt;Tooltip content={&lt;ChartTooltip showKeys={[]} hideKeys={[]} />} />
+                            //                 &lt;Legend height={'1.5em'} content={&lt;ChartLegend height={'1.5em'} hideKeys={['pv']} />} />
+                            //                 &lt;CartesianGrid stroke="#f5f5f5" />
+                            //                 {/* &lt;Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} /> */}
+                            //                 {/* &lt;Line type="monotone" dataKey="uv" stroke={getColor('uv')} /> */}
+                            //                 &lt;Bar stackId="a" dataKey="executedPercent" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
+                            //                     &lt;LabelList dataKey="executedPercent" position="inside" content={({ value }) => value !== 0 ? value + "%" : ''} />
+                            //                 &lt;/Bar>
+                            //                 &lt;Bar stackId="a" dataKey="unexecutedPercent" fill={getColor('uv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} >
+                            //                     &lt;LabelList dataKey="unexecutedPercent" position="inside" formatter={(v) => v + "%"} /*content={({ value }) => value !== 0 ? value + "%" : ''}*/ />
+                            //                 &lt;/Bar>
+                            //             &lt;/ComposedChart>
+                            //         &lt;/ResponsiveContainer>
+                            //     &lt;/Paper>
                         }
                     ]
                 }
             }
-        </TemplatePage>
+        &lt;/TemplatePage>
     );
 }
 
-export default TestReport;
+export default TestReport;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Colors.html">Colors</a></li><li><a href="ReportTemplate.html">ReportTemplate</a></li><li><a href="TreeComponent.html">TreeComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#exampleFilterDefinition">exampleFilterDefinition</a></li><li><a href="global.html#FilterDateField">FilterDateField</a></li><li><a href="global.html#FilterDrawer">FilterDrawer</a></li><li><a href="global.html#FilterListField">FilterListField</a></li><li><a href="global.html#FilterRow">FilterRow</a></li><li><a href="global.html#inferOptions">inferOptions</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Jul 05 2020 12:43:39 GMT+0300 (Israel Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

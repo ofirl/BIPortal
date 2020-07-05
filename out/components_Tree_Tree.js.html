@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Tree.js</title>
+    <title>JSDoc: Source: components/Tree/Tree.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Tree.js</h1>
+    <h1 class="page-title">Source: components/Tree/Tree.js</h1>
 
     
 
@@ -31,10 +31,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Treebeard } from 'react-treebeard';
 import { PropTypes } from 'prop-types';
 import TextField from '@material-ui/core/TextField';
+import { connect } from 'react-redux';
+
+/**
+ * @namespace TreeComponent
+ */
 
 const searchBoxClasses = {
     root: 'hierSearchBox'
-}
+};
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -135,51 +140,28 @@ const treeBaseStyle = {
     }
 };
 
-const exampleData = {
-    id: 'Chapter 1',
-    name: 'Chapter 1',
-    toggled: true,
-    active: true,
-    children: [
-        {
-            id: 'Chapter 1.1',
-            name: 'Chapter 1.1',
-            children: [
-                { id: 'Page A', name: 'Page A' },
-                { id: 'Page B', name: 'Page B' }
-            ]
-        },
-        {
-            id: 'loading',
-            name: 'loading parent',
-            loading: true,
-            children: []
-        },
-        {
-            id: 'Chapter 1.2',
-            name: 'Chapter 1.2',
-            children: [
-                {
-                    id: 'Chapter 2.1',
-                    name: 'Chapter 2.1',
-                    children: [
-                        { id: 'Page C', name: 'Page C' },
-                        { id: 'Page D', name: 'Page D' },
-                        { id: 'Page E', name: 'Page E' },
-                        { id: 'Page F', name: 'Page F' },
-                        { id: 'Page G', name: 'Page G' }
-                    ]
-                }
-            ]
-        }
-    ]
-};
-
 // Helper functions for filtering
+/**
+ * matches a node by his name
+ * 
+ * @param {string} filterText filter value
+ * @param {object} node node to check
+ * 
+ * @memberof TreeComponent
+ */
 const defaultMatcher = (filterText, node) => {
     return node.name.toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
 };
 
+/**
+ * finds a node (including if one of his children matches)
+ * 
+ * @param {object} node node to check
+ * @param {*} filter filter value
+ * @param {func} matcher match function
+ * 
+ * @memberof TreeComponent
+ */
 const findNode = (node, filter, matcher) => {
     return matcher(filter, node) || // i match
         (node.children &amp;&amp; // or i have decendents and one of them match
@@ -187,19 +169,46 @@ const findNode = (node, filter, matcher) => {
             !!node.children.find(child => findNode(child, filter, matcher)));
 };
 
+/**
+ * finds exactly the node that matches the filter
+ * 
+ * @param {object} node node to check
+ * @param {*} filter filter value
+ * 
+ * @memberof TreeComponent
+ */
 const findExactNode = (node, filter) => {
     let matcher = (filterId, node) => node.id === filterId;
 
+    // if i match
     let foundNode = matcher(filter, node);
     if (foundNode)
         return node;
 
-    if (node.children &amp;&amp; node.children.length) // or i have decendents and one of them match
-        return node.children.find(child => findNode(child, filter, matcher));
+    if (node.children &amp;&amp; node.children.length) { // or i have decendents and one of them match
+        node.children.forEach((c) => {
+            if (foundNode)
+                return;
+
+            let tempNode = findExactNode(c, filter, matcher);
+            foundNode = tempNode ? tempNode : null;
+        });
+
+        return foundNode;
+    }
 
     return null;
 };
 
+/**
+ * filters the tree
+ * 
+ * @param {object} node node to check
+ * @param {*} filter filter value
+ * @param {func} matcher match function
+ * 
+ * @memberof TreeComponent
+ */
 const filterTree = (node, filter, matcher = defaultMatcher) => {
     // If im an exact match then all my children get to stay
     if (matcher(filter, node) || !node.children) {
@@ -212,6 +221,15 @@ const filterTree = (node, filter, matcher = defaultMatcher) => {
     return Object.assign({}, node, { children: filtered });
 };
 
+/**
+ * expands all the filtered nodes
+ * 
+ * @param {object} node node to check
+ * @param {*} filter filter value
+ * @param {func} matcher match function
+ * 
+ * @memberof TreeComponent
+ */
 const expandFilteredNodes = (node, filter, matcher = defaultMatcher) => {
     let children = node.children;
     if (!children || children.length === 0) {
@@ -231,24 +249,35 @@ const expandFilteredNodes = (node, filter, matcher = defaultMatcher) => {
     });
 };
 
-function onFilterMouseUp({ target: { value } }, data) {
+/**
+ * callback fired when filter input box is changed
+ * 
+ * @param {object} param0 the event object
+ * @param {object} hier hierarchy data
+ * 
+ * @memberof TreeComponent
+ */
+function onFilterMouseUp({ target: { value } }, hier) {
     const filter = value.trim();
     if (!filter) {
-        return data;
+        return hier;
     }
-    let filtered = filterTree(data, filter);
+    let filtered = filterTree(hier, filter);
     filtered = expandFilteredNodes(filtered, filter);
     return filtered;
 }
 
-const TreeExample = (props) => {
+/**
+ * The tree component
+ * 
+ * @param {object} props props object
+ * 
+ * @memberof TreeComponent
+ */
+const TreeComp = (props) => {
     const classes = useStyles();
-    // let { hierarchy, handleChange } = props
-    let { handleChange } = props
-    // if (hierarchy == null)
-    let hierarchy = exampleData;
+    let { handleChange, hierarchy } = props
 
-    const [hier/*, setHier*/] = useState(hierarchy);
     const [data, setData] = useState(hierarchy);
     const [cursor, setCursor] = useState(false);
 
@@ -263,10 +292,9 @@ const TreeExample = (props) => {
 
         setCursor(node);
         setData(Object.assign({}, data))
-
         // makes the selection apply to the original hier and not the filtered one - to undo, switch hierNode to be node
         // let hierNode = node;
-        let hierNode = findExactNode(hier, node.id);
+        let hierNode = findExactNode(hierarchy, node.id);
         let allChildren = [hierNode.id];
         let checkList = [hierNode];
         while (checkList.length > 0) {
@@ -288,28 +316,41 @@ const TreeExample = (props) => {
                 label="חיפוש"
                 className={[classes.textField, classes.dense]}
                 classes={searchBoxClasses}
-                onInput={(e) => setData(onFilterMouseUp(e, hier))}
+                onInput={(e) => setData(onFilterMouseUp(e, hierarchy))}
                 margin="dense"
                 variant="outlined"
             />
-            {/* &lt;input
-                className="form-control"
-                onKeyUp={(e) => setData(onFilterMouseUp(e, hier))}
-                placeholder="Search the tree..."
-                type="text"
-            /> */}
             &lt;Treebeard data={data} onToggle={onToggle} style={treeBaseStyle} />
         &lt;/React.Fragment>
     )
-}
-TreeExample.propTypes = {
+};
+TreeComp.propTypes = {
     /** hierarchy data */
     hierarchy: PropTypes.object,
     /** gets the new selected filters as parameter */
     handleChange: PropTypes.func
-}
+};
 
-export default TreeExample;</code></pre>
+const mapStateToProps = (state, ownProps) => {
+    return {
+        hierarchy: state.hierarchy ? state.hierarchy.fetched : {},
+    }
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        // setActiveFilters: (newActiveFilters) => {
+        //     dispatch(setActiveFilter(newActiveFilters));
+        // }
+    }
+};
+
+const ConnectedTree = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TreeComp);
+
+export default ConnectedTree;</code></pre>
         </article>
     </section>
 
@@ -319,13 +360,13 @@ export default TreeExample;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#filterData">filterData</a></li><li><a href="global.html#FilterDateField">FilterDateField</a></li><li><a href="global.html#FilterDrawer">FilterDrawer</a></li><li><a href="global.html#FilterListField">FilterListField</a></li><li><a href="global.html#FilterRow">FilterRow</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#inferOptions">inferOptions</a></li><li><a href="global.html#onFilterChange">onFilterChange</a></li><li><a href="global.html#operatorConv">operatorConv</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Colors.html">Colors</a></li><li><a href="ReportTemplate.html">ReportTemplate</a></li><li><a href="TreeComponent.html">TreeComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#exampleFilterDefinition">exampleFilterDefinition</a></li><li><a href="global.html#FilterDateField">FilterDateField</a></li><li><a href="global.html#FilterDrawer">FilterDrawer</a></li><li><a href="global.html#FilterListField">FilterListField</a></li><li><a href="global.html#FilterRow">FilterRow</a></li><li><a href="global.html#inferOptions">inferOptions</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Aug 25 2019 17:28:07 GMT+0300 (Israel Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Jul 05 2020 12:43:39 GMT+0300 (Israel Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

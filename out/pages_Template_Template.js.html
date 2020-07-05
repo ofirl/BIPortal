@@ -1,4 +1,32 @@
-import React, { useState } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/Template/Template.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/Template/Template.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -44,7 +72,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * Conversion object for filtering <br />
+ * Conversion object for filtering &lt;br />
  * Converts a sign to a convertion function
  * 
  * @memberof ReportTemplate
@@ -52,13 +80,13 @@ const useStyles = makeStyles(theme => ({
 const operatorConv = {
     "=": (val1, val2) => val1 === val2,
     ">=": (val1, val2) => val1 >= val2,
-    "<=": (val1, val2) => val1 <= val2,
+    "&lt;=": (val1, val2) => val1 &lt;= val2,
     ">": (val1, val2) => val1 > val2,
-    "<": (val1, val2) => val1 < val2,
+    "&lt;": (val1, val2) => val1 &lt; val2,
     "!=": (val1, val2) => val1 !== val2,
     "date-between": (val1, { startDate, endDate }) => {
         val1 = formatDate(val1);
-        return operatorConv[">"](new Date(val1), startDate) && operatorConv["<"](new Date(val1), endDate);
+        return operatorConv[">"](new Date(val1), startDate) &amp;&amp; operatorConv["&lt;"](new Date(val1), endDate);
     },
     "date-single": (val1, val2) => {
         val1 = formatDate(val1);
@@ -83,11 +111,11 @@ function formatDate(date) {
 }
 
 /**
- * Filter the data based on the given filter. <br/>
+ * Filter the data based on the given filter. &lt;br/>
  * Filters the data using the filter object given and the convertion object {@link operatorConv}.
  * 
  * @param {activeFilter} filter 
- * @param {Array.<*>} data the data to filter
+ * @param {Array.&lt;*>} data the data to filter
  * @returns Filtered data
  * 
  * @memberof ReportTemplate
@@ -103,7 +131,7 @@ function filterData(filter, data) {
 };
 
 /**
- * Changes {@param oldFilters} by the given new filters and key. <br />
+ * Changes {@param oldFilters} by the given new filters and key. &lt;br />
  * Adds or deletes the necessary values/keys from the old filters.
  * 
  * @param {string} key filter key
@@ -133,7 +161,7 @@ function onFilterChange(key, newFilters, oldFilters) {
  * @memberof ReportTemplate
  */
 function onRedirect(history, target, params) {
-    let paramString = params ? Object.keys(params).map((p) => `${p}=${params[p]}`).join('&') : '';
+    let paramString = params ? Object.keys(params).map((p) => `${p}=${params[p]}`).join('&amp;') : '';
     history.push(target + "?" + paramString);
 }
 
@@ -151,13 +179,13 @@ function Template(props) {
 
     if (isFetchingData)
         return (
-            <div>
+            &lt;div>
                 loading
-            </div>
+            &lt;/div>
         );
 
     return (
-        <Grid
+        &lt;Grid
             className={[classes.mainGrid, open ? classes.filterOpen : ''].join(' ')}
             height="100%"
             columns={"0fr 1fr"}
@@ -166,15 +194,15 @@ function Template(props) {
                 "header header",
                 "menu   content"
             ]}>
-            <Cell area="header">
-                <TopBar key="topBar" toggleFilterOpen={() => setOpen(!open)} />
-            </Cell>
-            <Cell area="menu">
-                <FilterDrawer open={open} data={data} filters={filterDef} activeFilters={activeFilters}
+            &lt;Cell area="header">
+                &lt;TopBar key="topBar" toggleFilterOpen={() => setOpen(!open)} />
+            &lt;/Cell>
+            &lt;Cell area="menu">
+                &lt;FilterDrawer open={open} data={data} filters={filterDef} activeFilters={activeFilters}
                     onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} />
-            </Cell>
-            <Cell area="content" style={{ paddingRight: '10px' }}>
-                <Grid
+            &lt;/Cell>
+            &lt;Cell area="content" style={{ paddingRight: '10px' }}>
+                &lt;Grid
                     columns={layoutColumns}
                     rows={layoutRows}
                     height="100%"
@@ -183,13 +211,13 @@ function Template(props) {
                     {
                         content ?
                             content.map((c) =>
-                                <Template.GridItem {...c} data={filteredData} setRedirect={(target, params) => onRedirect(history, target, params)} />)
+                                &lt;Template.GridItem {...c} data={filteredData} setRedirect={(target, params) => onRedirect(history, target, params)} />)
                             : null
                     }
-                    <Table />
-                </Grid>
-            </Cell>
-        </Grid>
+                    &lt;Table />
+                &lt;/Grid>
+            &lt;/Cell>
+        &lt;/Grid>
     );
 };
 Template.propTypes = {
@@ -218,9 +246,9 @@ Template.GridItem = ({ left, top, width, height, render, data, setRedirect, char
     };
 
     return (
-        <Cell {...cellProps}>
+        &lt;Cell {...cellProps}>
             {render ? render(data, setRedirect) : createChart(chart)(data)}
-        </Cell>
+        &lt;/Cell>
     );
 };
 
@@ -248,4 +276,26 @@ const ConnectedTemplate = connect(
     mapDispatchToProps
 )(Template)
 
-export default ConnectedTemplate;
+export default ConnectedTemplate;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Colors.html">Colors</a></li><li><a href="ReportTemplate.html">ReportTemplate</a></li><li><a href="TreeComponent.html">TreeComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#exampleFilterDefinition">exampleFilterDefinition</a></li><li><a href="global.html#FilterDateField">FilterDateField</a></li><li><a href="global.html#FilterDrawer">FilterDrawer</a></li><li><a href="global.html#FilterListField">FilterListField</a></li><li><a href="global.html#FilterRow">FilterRow</a></li><li><a href="global.html#inferOptions">inferOptions</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Jul 05 2020 12:43:39 GMT+0300 (Israel Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

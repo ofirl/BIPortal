@@ -5,6 +5,10 @@ import { PropTypes } from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 
+/**
+ * @namespace TreeComponent
+ */
+
 const searchBoxClasses = {
     root: 'hierSearchBox'
 };
@@ -114,6 +118,8 @@ const treeBaseStyle = {
  * 
  * @param {string} filterText filter value
  * @param {object} node node to check
+ * 
+ * @memberof TreeComponent
  */
 const defaultMatcher = (filterText, node) => {
     return node.name.toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
@@ -125,6 +131,8 @@ const defaultMatcher = (filterText, node) => {
  * @param {object} node node to check
  * @param {*} filter filter value
  * @param {func} matcher match function
+ * 
+ * @memberof TreeComponent
  */
 const findNode = (node, filter, matcher) => {
     return matcher(filter, node) || // i match
@@ -138,6 +146,8 @@ const findNode = (node, filter, matcher) => {
  * 
  * @param {object} node node to check
  * @param {*} filter filter value
+ * 
+ * @memberof TreeComponent
  */
 const findExactNode = (node, filter) => {
     let matcher = (filterId, node) => node.id === filterId;
@@ -168,6 +178,8 @@ const findExactNode = (node, filter) => {
  * @param {object} node node to check
  * @param {*} filter filter value
  * @param {func} matcher match function
+ * 
+ * @memberof TreeComponent
  */
 const filterTree = (node, filter, matcher = defaultMatcher) => {
     // If im an exact match then all my children get to stay
@@ -187,6 +199,8 @@ const filterTree = (node, filter, matcher = defaultMatcher) => {
  * @param {object} node node to check
  * @param {*} filter filter value
  * @param {func} matcher match function
+ * 
+ * @memberof TreeComponent
  */
 const expandFilteredNodes = (node, filter, matcher = defaultMatcher) => {
     let children = node.children;
@@ -212,6 +226,8 @@ const expandFilteredNodes = (node, filter, matcher = defaultMatcher) => {
  * 
  * @param {object} param0 the event object
  * @param {object} hier hierarchy data
+ * 
+ * @memberof TreeComponent
  */
 function onFilterMouseUp({ target: { value } }, hier) {
     const filter = value.trim();
@@ -227,6 +243,8 @@ function onFilterMouseUp({ target: { value } }, hier) {
  * The tree component
  * 
  * @param {object} props props object
+ * 
+ * @memberof TreeComponent
  */
 const TreeComp = (props) => {
     const classes = useStyles();

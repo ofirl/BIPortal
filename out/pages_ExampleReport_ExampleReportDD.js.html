@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/ExampleReport/ExampleReportDD.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/ExampleReport/ExampleReportDD.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, ComposedChart, Legend, Area, Bar } from 'recharts';
+import TemplatePage from '../Template/Template';
+import ChartTooltip from '../../components/ChartTooltip/ChartTooltip';
+import { getColor, setColors } from './../../Utils/colors';
+import ChartLegend from '../../components/ChartLegend/ChartLegend';
+import ConnectedTable from '../../components/Table/Table';
+
+const exampleData = [
+    {
+      "name": "Page A",
+      "uv": 4000,
+      "pv": 2400,
+      "amt": 2400,
+      "date": '01/05/2019'
+    },
+    {
+      "name": "Page B",
+      "uv": 3000,
+      "pv": 1398,
+      "amt": 2210,
+      "date": '01/06/2019'
+    },
+    {
+      "name": "Page C",
+      "uv": 2000,
+      "pv": 9800,
+      "amt": 2290,
+      "date": '01/06/2019'
+    },
+    {
+      "name": "Page D",
+      "uv": 2780,
+      "pv": 3908,
+      "amt": 2000,
+      "date": '01/06/2019'
+    },
+    {
+      "name": "Page E",
+      "uv": 1890,
+      "pv": 4800,
+      "amt": 2181,
+      "date": '01/06/2019'
+    },
+    {
+      "name": "Page F",
+      "uv": 2390,
+      "pv": 3800,
+      "amt": 2500,
+      "date": '01/06/2019'
+    },
+    {
+      "name": "Page G",
+      "uv": 3490,
+      "pv": 4300,
+      "amt": 2100,
+      "date": '01/06/2019'
+    }
+  ];
+  
+
+/**
+ * @typedef filterDefEntry
+ * @type {object} 
+ * @property {string} type the type of the filter, supported values are: 'list', 'date'
+ * @property {string} [listType] the type of the list, suported values are: 'single', 'multi', default is 'single'
+ * @property {Array.&lt;*>} [options] the options of the list
+ * @property {bool} [addBlank] add a blank option, default is false
+ * @property {string} dateType the type of the date, supported values are: 'single', 'range' (default is range)
+ * @property {string | Array.&lt;string>} dateSelection the type of the selection, supported values are: 'year', 'month', 'day', 'time'
+ */
+/**
+ * @typedef filterDef
+ * @type {Object}
+ * @property {filterDefEntry} * The filter definition.
+ */
+let exampleFilterDefinition = {
+    uv: {
+        label: 'שם',
+        type: 'list',
+        addBlank: true,
+        listType: 'multi',
+        // options: [2000,3000]
+    },
+    name: {
+        label: 'כלי',
+        type: 'tree',
+    },
+    date: {
+        label: 'תאריך',
+        type: 'date',
+        // dateType: 'single'
+    }
+};
+
+const templateParams = {
+    filterDef: exampleFilterDefinition,
+    service: {
+        name: 'testService',
+        params: {
+            'key1': 'test'
+        }
+    },
+}
+
+const ExampleReportDD = (props) => {
+    const handleClick = (data, index) => {
+        console.log(data);
+        console.log(index);
+        alert(index + " : " + data.payload.name + ' was clicked');
+    }
+
+    setColors({
+        uv: '#ff7300',
+        amtStroke: '#8884d8',
+        amtFill: '#8884d8',
+        pv : '#413ea0',
+        // pv: 'transparent',
+        pvBackground: 'transparent',
+    });
+
+    return (
+        &lt;TemplatePage {...templateParams} history={props.history}>
+            {(data, setRedirect) => (
+                &lt;React.Fragment>
+                    &lt;ConnectedTable style={{ height: '500px' }} />
+
+                    {/* &lt;Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '50%', width: '100%' }}>
+                        &lt;Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '100%' }}>
+                            &lt;ResponsiveContainer height={"100%"} width={"100%"}>
+                                &lt;LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                                    &lt;Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
+                                    &lt;CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                                    &lt;XAxis dataKey="name" />
+                                    &lt;YAxis />
+                                    &lt;Tooltip />
+                                &lt;/LineChart>
+                            &lt;/ResponsiveContainer>
+                        &lt;/Paper>
+                    &lt;/Grid> */}
+
+                    {/* &lt;Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
+                        &lt;Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '50%' }}>
+                            &lt;ResponsiveContainer height={"100%"} width={"100%"}>
+                                &lt;ComposedChart data={data} barCategoryGap={0}>
+                                    &lt;XAxis dataKey="name" />
+                                    &lt;YAxis />
+                                    &lt;Tooltip content={&lt;ChartTooltip showKeys={['date']} hideKeys={[]} />} />
+                                    &lt;Legend content={&lt;ChartLegend hideKeys={['pv']} />} />
+                                    &lt;CartesianGrid stroke="#f5f5f5" />
+                                    &lt;Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} />
+                                    &lt;Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
+                                    &lt;Bar dataKey="pv" fill={getColor('pv')} onClick={(data, index) => setRedirect('/ExampleReportDD', {test:'tes'})} background={{ fill: getColor('pvBackground') }} />
+                                &lt;/ComposedChart>
+                            &lt;/ResponsiveContainer>
+                        &lt;/Paper>
+                    &lt;/Grid> */}
+
+                    &lt;Grid item xs={1} style={{ flexGrow: '1', maxWidth: '100%', height: '100%', width: '100%' }}>
+                        &lt;Paper style={{ width: '75%', padding: '20px', margin: '10px', height: '50%' }}>
+                            &lt;ResponsiveContainer height={"100%"} width={"100%"}>
+                                &lt;ComposedChart data={exampleData} barCategoryGap={100} barGap={1}>
+                                    &lt;XAxis dataKey="name" />
+                                    &lt;YAxis />
+                                    &lt;Tooltip content={&lt;ChartTooltip showKeys={[]} hideKeys={[]} />} />
+                                    &lt;Legend content={&lt;ChartLegend hideKeys={['pv']} />} />
+                                    &lt;CartesianGrid stroke="#f5f5f5" />
+                                    &lt;Area type="monotone" dataKey="amt" fill={getColor('amtFill')} stroke={getColor('amtStroke')} />
+                                    &lt;Line type="monotone" dataKey="uv" stroke={getColor('uv')} />
+                                    &lt;Bar stackId="a" dataKey="pv" fill={getColor('pv')} /*onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })}*/ background={{ fill: getColor('pvBackground') }} >
+                                        {/* &lt;LabelList dataKey="executedPercent" position="inisde" content={({ value }) => value + "%"} /> */}
+                                    &lt;/Bar>
+                                    {/* &lt;Bar stackId="a" dataKey="unexecutedPercent" fill={getColor('uv')} onClick={(data, index) => setRedirect('/ExampleReportDD', { index: index })} background={{ fill: getColor('pvBackground') }} > */}
+                                    {/* &lt;LabelList dataKey="unexecutedPercent" position="inside" content={({ value }) => value + "%"} /> */}
+                                    {/* &lt;/Bar> */}
+                                &lt;/ComposedChart>
+                            &lt;/ResponsiveContainer>
+                        &lt;/Paper>
+                    &lt;/Grid>
+                &lt;/React.Fragment>
+            )}
+
+
+
+        &lt;/TemplatePage>
+    );
+}
+
+export default ExampleReportDD;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Colors.html">Colors</a></li><li><a href="ReportTemplate.html">ReportTemplate</a></li><li><a href="TreeComponent.html">TreeComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#exampleFilterDefinition">exampleFilterDefinition</a></li><li><a href="global.html#FilterDateField">FilterDateField</a></li><li><a href="global.html#FilterDrawer">FilterDrawer</a></li><li><a href="global.html#FilterListField">FilterListField</a></li><li><a href="global.html#FilterRow">FilterRow</a></li><li><a href="global.html#inferOptions">inferOptions</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Jul 05 2020 12:43:39 GMT+0300 (Israel Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

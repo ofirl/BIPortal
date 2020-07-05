@@ -44,7 +44,7 @@ const createChart = (props) => {
                                 case 'bar':
                                     return (
                                         <Bar fill={getColor(dataKey)} background={background ? (background.fill ? { fill: background.fill } : { fill: getColor(dataKey + 'Background') }) : null} {...t.props} >
-                                            {t.labelList ? <LabelList {...t.labelList.props} formatter={(v) => formatLabel(v, t.labelList)} /> : null}
+                                            {t.labelList ? <LabelList {...t.labelList.props} formatter={(v) => v > 60 ? '!' : formatLabel(v, t.labelList)} content={(data) => (<g> test </g>)} /> : null}
                                         </Bar>
                                     );
                                 default:

@@ -12,37 +12,46 @@ import { average, sum } from './../../Utils/math';
 const range = len => {
     const arr = [];
     for (let i = 0; i < len; i++) {
-      arr.push(i);
+        arr.push(i);
     }
     return arr;
-  };
-  
-  const newPerson = () => {
+};
+
+const newPerson = () => {
     const statusChance = Math.random();
     return {
-      firstName: 'test' + Math.random(), //namor.generate({ words: 1, numbers: 0 }),
-      lastName:  'last' + Math.random(), //namor.generate({ words: 1, numbers: 0 }),
-      age: Math.floor(Math.random() * 30),
-      visits: Math.floor(Math.random() * 100),
-      progress: Math.floor(Math.random() * 100),
-      status:
-        statusChance > 0.66
-          ? "relationship"
-          : statusChance > 0.33 ? "complicated" : "single"
+        firstName: 'test' + Math.random(), //namor.generate({ words: 1, numbers: 0 }),
+        lastName: 'last' + Math.random(), //namor.generate({ words: 1, numbers: 0 }),
+        age: Math.floor(Math.random() * 30),
+        visits: Math.floor(Math.random() * 100),
+        progress: Math.floor(Math.random() * 100),
+        status:
+            statusChance > 0.66
+                ? "relationship"
+                : statusChance > 0.33 ? "complicated" : "single"
     };
-  };
-  
-  export function makeData(len = 5553) {
+};
+
+export function makeData(len = 5553) {
     return range(len).map(d => {
-      return {
-        ...newPerson(),
-        children: range(10).map(newPerson)
-      };
+        return {
+            ...newPerson(),
+            children: range(10).map(newPerson)
+        };
     });
-  }
+}
+
+export const createTable = (props) => {
+    return (
+        <div>
+            test
+        </div>
+    );
+}
 
 export const Table = (props) => {
-    const { data } = props;
+    const { data, ...tableProps } = props;
+
     return (
         <ReactTable
             data={makeData()}
@@ -86,7 +95,7 @@ export const Table = (props) => {
                             Aggregated: row =>
                                 <span>
                                     {row.value} (avg)
-                    </span>
+                                </span>
                         },
                         {
                             Header: "Visits",
@@ -173,22 +182,22 @@ export const Table = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-      data: state.data,
-      activeFilters: state.activeFilter
+        data: state.data,
+        activeFilters: state.activeFilter
     }
-  }
-  
-  const mapDispatchToProps = (dispatch, ownProps) => {
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-      setActiveFilters: (newActiveFilters) => {
-        dispatch(setActiveFilter(newActiveFilters));
-      }
+        setActiveFilters: (newActiveFilters) => {
+            dispatch(setActiveFilter(newActiveFilters));
+        }
     }
-  }
-  
-  const ConnectedTable = connect(
+}
+
+const ConnectedTable = connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Table)
-  
-  export default ConnectedTable;
+)(Table)
+
+export default ConnectedTable;

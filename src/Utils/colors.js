@@ -1,11 +1,20 @@
-/** colors bank */
+/**
+ * @namespace Colors
+ */
+
+/**
+ * Colors bank
+ * 
+ * @memberof Colors
+ */
 const allColors = ['#8884d8', '#ff7300', '#413ea0'];
 
 let currentColorIndex = 0;
 /**
  * @typedef assignedColors
  * @type {object}
- * @property {string} * the color asigned
+ * @property {string} * the color assigned
+ * @memberof Colors
  */
 let assignedColors = {};
 
@@ -15,6 +24,8 @@ let assignedColors = {};
  * @param {string} key name
  * @param {string} color color value
  * @return {string} color value
+ * 
+ * @memberof Colors
  */
 export function getColor(key, color) {
     if (color)
@@ -37,6 +48,8 @@ export function getColor(key, color) {
  * @param {string} key name
  * @param {string} color color value
  * @return {string} color value
+ * 
+ * @memberof Colors
  */
 export function setColor(key, color) {
     return assignedColors[key] = color;
@@ -45,8 +58,10 @@ export function setColor(key, color) {
 /**
  * sets colors
  * 
- * @param {object} colorsObj colors object ( {name: colorValue})
- * @param {boolean} override override values
+ * @param {object} colorsObj colors object ( {name: colorValue} )
+ * @param {boolean} override=true override values
+ * 
+ * @memberof Colors
  */
 export function setColors(colorsObj, override = true) {
 
