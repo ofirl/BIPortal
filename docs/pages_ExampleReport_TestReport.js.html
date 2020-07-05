@@ -144,9 +144,9 @@ const TestReport = (props) => {
                             top: 2,
                             height: 1,
                             width: 1,
-                            texts: {
-                                //"id": idTexts
-                            },
+                            // texts: {
+                            //"id": idTexts
+                            // },
                             chart: {
                                 type: [
                                     // {
@@ -175,16 +175,19 @@ const TestReport = (props) => {
                                             prefix: '',
                                             // showZeroes: true,
                                             // showNulls: false,
+                                            dataKey: 'executedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'executedPercent',
-                                                position: 'inside',
+                                                // dataKey: 'executedPercent',
+                                                // position: 'inside',
                                             },
                                         },
                                         background: false,
                                         // object will be passed down directly to the line component
+                                        dataKey: 'executedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'executedPercent',
+                                            // dataKey: 'executedPercent',
                                             // fill: '#cfcfcf',
                                             // onClick: (data, index) => {},
                                             // background: {
@@ -199,16 +202,19 @@ const TestReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'unexecutedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'unexecutedPercent',
-                                                position: 'inside',
+                                                // dataKey: 'unexecutedPercent',
+                                                // position: 'inside',
                                             },
                                         },
                                         background: false,
                                         // object will be passed down directly to the line component
+                                        dataKey: 'unexecutedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'unexecutedPercent',
+                                            // dataKey: 'unexecutedPercent',
                                             // fill: '#cfcfcf',
                                             // onClick: (data, index) => {},
                                             // label: true,
@@ -244,11 +250,15 @@ const TestReport = (props) => {
                                 tooltip: {
                                     hideKeys: [],
                                     showKeys: ['date'],
+                                    // props: {
+                                    // }
                                 },
                                 // legend: true,
                                 legend: {
                                     // height: '1.5em',
                                     // hideKeys: ['executedPercent'],
+                                    // props: {
+                                    // }
                                 },
                                 // props object will be passed down to the chart directly
                                 props: {
@@ -302,15 +312,18 @@ const TestReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'executedPercent',
+                                            position: 'top',
                                             props: {
-                                                dataKey: 'executedPercent',
-                                                position: 'top',
+                                                // dataKey: 'executedPercent',
+                                                // position: 'top',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'executedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'executedPercent',
+                                            // dataKey: 'executedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
@@ -319,15 +332,18 @@ const TestReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'unexecutedPercent',
+                                            position: 'top',
                                             props: {
-                                                dataKey: 'unexecutedPercent',
-                                                position: 'top',
+                                                // dataKey: 'unexecutedPercent',
+                                                // position: 'top',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'unexecutedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'unexecutedPercent',
+                                            // dataKey: 'unexecutedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
@@ -384,13 +400,13 @@ export default TestReport;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Colors.html">Colors</a></li><li><a href="ReportTemplate.html">ReportTemplate</a></li><li><a href="TreeComponent.html">TreeComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#exampleFilterDefinition">exampleFilterDefinition</a></li><li><a href="global.html#FilterDateField">FilterDateField</a></li><li><a href="global.html#FilterDrawer">FilterDrawer</a></li><li><a href="global.html#FilterListField">FilterListField</a></li><li><a href="global.html#FilterRow">FilterRow</a></li><li><a href="global.html#inferOptions">inferOptions</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Colors.html">Colors</a></li><li><a href="ReportDefinition.html">ReportDefinition</a></li><li><a href="ReportTemplate.html">ReportTemplate</a></li><li><a href="TreeComponent.html">TreeComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#exampleFilterDefinition">exampleFilterDefinition</a></li><li><a href="global.html#FilterDateField">FilterDateField</a></li><li><a href="global.html#FilterDrawer">FilterDrawer</a></li><li><a href="global.html#FilterListField">FilterListField</a></li><li><a href="global.html#FilterRow">FilterRow</a></li><li><a href="global.html#inferOptions">inferOptions</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Jul 05 2020 17:26:37 GMT+0300 (Israel Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Jul 05 2020 20:17:52 GMT+0300 (Israel Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

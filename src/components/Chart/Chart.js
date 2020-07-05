@@ -10,7 +10,7 @@ import ChartLegend from '../../components/ChartLegend/ChartLegend';
 
 import { getColor } from './../../Utils/colors';
 
-function formatLabel(value, { prefix, suffix, showZeroes = false, showNulls = false}) {
+function formatLabel(value, { prefix, suffix, showZeroes = false, showNulls = false }) {
     if (!showZeroes && value === 0)
         return '';
     if (!showNulls && value == null)
@@ -20,8 +20,9 @@ function formatLabel(value, { prefix, suffix, showZeroes = false, showNulls = fa
 }
 
 const createChart = (props) => {
-    const { type, axis: { x: xAxis, y: yAxis }, grid, tooltip = {}, legend = {}, props: chartProps } = props;
+    const { type, axis = {}, grid, tooltip = {}, legend = {}, props: chartProps } = props;
 
+    let { x: xAxis, y: yAxis } = axis;
     let { showKeys: tooltipShowKeys = [], hideKeys: tooltipHideKeys = [], props: tooltipProps = {} } = tooltip;
     let { hideKeys: legendHideKeys = [], height: legendHeight = '1.5em', props: legendProps = {} } = legend;
     return (data) => (
@@ -35,16 +36,17 @@ const createChart = (props) => {
                     {grid ? <CartesianGrid {...grid} /> : null}
                     {
                         type.map((t) => {
-                            let { type, props: {dataKey}, background = true } = t;
+                            let { type, dataKey, props, background = true, labelList = {} } = t;
+                            let { dataKey: labelDataKey, position = "inside", props: labelListProps } = labelList;
                             switch (type) {
                                 case 'line':
-                                    return <Line stroke={getColor(dataKey)} {...t.props} />;
+                                    return <Line stroke={getColor(dataKey)} {...props} />;
                                 case 'area':
-                                    return <Area fill={getColor(dataKey + "Fill")} stroke={getColor(dataKey + "Stroke")} {...t.props} />;
+                                    return <Area fill={getColor(dataKey + "Fill")} stroke={getColor(dataKey + "Stroke")} {...props} />;
                                 case 'bar':
                                     return (
-                                        <Bar fill={getColor(dataKey)} background={background ? (background.fill ? { fill: background.fill } : { fill: getColor(dataKey + 'Background') }) : null} {...t.props} >
-                                            {t.labelList ? <LabelList {...t.labelList.props} formatter={(v) => v > 60 ? '!' : formatLabel(v, t.labelList)} content={(data) => (<g> test </g>)} /> : null}
+                                        <Bar fill={getColor(dataKey)} background={background ? (background.fill ? { fill: background.fill } : { fill: getColor(dataKey + 'Background') }) : null} {...props} >
+                                            {labelList ? <LabelList dataKey={labelDataKey} position={position} {...labelListProps} formatter={(v) => v > 60 ? '!' : formatLabel(v, labelList)} content={(data) => (<g> test </g>)} /> : null}
                                         </Bar>
                                     );
                                 default:
@@ -65,7 +67,8 @@ createChart.defaultProps = {
     grid: true,
     tooltip: true,
     legend: true,
-    props: {}
+    props: {},
+    axis: {},
 };
 
 export default createChart;

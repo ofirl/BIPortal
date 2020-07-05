@@ -116,9 +116,9 @@ const TestReport = (props) => {
                             top: 2,
                             height: 1,
                             width: 1,
-                            texts: {
-                                //"id": idTexts
-                            },
+                            // texts: {
+                            //"id": idTexts
+                            // },
                             chart: {
                                 type: [
                                     // {
@@ -147,16 +147,19 @@ const TestReport = (props) => {
                                             prefix: '',
                                             // showZeroes: true,
                                             // showNulls: false,
+                                            dataKey: 'executedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'executedPercent',
-                                                position: 'inside',
+                                                // dataKey: 'executedPercent',
+                                                // position: 'inside',
                                             },
                                         },
                                         background: false,
                                         // object will be passed down directly to the line component
+                                        dataKey: 'executedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'executedPercent',
+                                            // dataKey: 'executedPercent',
                                             // fill: '#cfcfcf',
                                             // onClick: (data, index) => {},
                                             // background: {
@@ -171,16 +174,19 @@ const TestReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'unexecutedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'unexecutedPercent',
-                                                position: 'inside',
+                                                // dataKey: 'unexecutedPercent',
+                                                // position: 'inside',
                                             },
                                         },
                                         background: false,
                                         // object will be passed down directly to the line component
+                                        dataKey: 'unexecutedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'unexecutedPercent',
+                                            // dataKey: 'unexecutedPercent',
                                             // fill: '#cfcfcf',
                                             // onClick: (data, index) => {},
                                             // label: true,
@@ -216,11 +222,15 @@ const TestReport = (props) => {
                                 tooltip: {
                                     hideKeys: [],
                                     showKeys: ['date'],
+                                    // props: {
+                                    // }
                                 },
                                 // legend: true,
                                 legend: {
                                     // height: '1.5em',
                                     // hideKeys: ['executedPercent'],
+                                    // props: {
+                                    // }
                                 },
                                 // props object will be passed down to the chart directly
                                 props: {
@@ -274,15 +284,18 @@ const TestReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'executedPercent',
+                                            position: 'top',
                                             props: {
-                                                dataKey: 'executedPercent',
-                                                position: 'top',
+                                                // dataKey: 'executedPercent',
+                                                // position: 'top',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'executedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'executedPercent',
+                                            // dataKey: 'executedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
@@ -291,15 +304,18 @@ const TestReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'unexecutedPercent',
+                                            position: 'top',
                                             props: {
-                                                dataKey: 'unexecutedPercent',
-                                                position: 'top',
+                                                // dataKey: 'unexecutedPercent',
+                                                // position: 'top',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'unexecutedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'unexecutedPercent',
+                                            // dataKey: 'unexecutedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
