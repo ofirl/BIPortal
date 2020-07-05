@@ -113,6 +113,18 @@ const TestReport = (props) => {
                     content: [
                         {
                             left: 1,
+                            top: 1,
+                            height: 1,
+                            width: 1,
+                            chart: {
+                                type: {
+                                    type: 'table',
+                                },
+                                title: 'title test'
+                            }
+                        },
+                        {
+                            left: 1,
                             top: 2,
                             height: 1,
                             width: 1,

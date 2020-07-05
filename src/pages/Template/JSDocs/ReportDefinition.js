@@ -79,7 +79,7 @@
  * @typedef ChartAxis
  * @type {object}
  * @memberof ReportDefinition
- * 
+ *
  * @property {object|bool} x x axis definition, will be passed directly to the axis component
  * @property {object|bool} y y axis definition, will be passed directly to the axis component
  */
@@ -89,7 +89,7 @@
  * @typedef ChartTooltip
  * @type {object}
  * @memberof ReportDefinition
- * 
+ *
  * @property {string[]} hideKeys data keys to remove
  * @property {string[]} showKeys data keys to add
  * @property {object} props will be injected directly to the tooltip component
@@ -99,7 +99,7 @@
  * @typedef ChartLegend
  * @type {object}
  * @memberof ReportDefinition
- * 
+ *
  * @property {string} height="1.5em" legend height
  * @property {string[]} hideKeys keys to hide from legend
  * @property {object} props will be injected directly to the legend component
@@ -111,7 +111,8 @@
  * @type {object}
  * @memberof ReportDefinition
  *
- * @property {ChartType[]} type chart type definitions
+ * @property {ChartType[]|ChartType} type chart type definitions
+ * @property {string} title chart title
  * @property {ChartAxis} axis axis definitions
  * @property {ChartTooltip} tooltip tooltip definition
  * @property {ChartLegend} legend legend definition

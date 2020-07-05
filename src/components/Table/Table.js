@@ -41,14 +41,6 @@ export function makeData(len = 5553) {
     });
 }
 
-export const createTable = (props) => {
-    return (
-        <div>
-            test
-        </div>
-    );
-}
-
 export const Table = (props) => {
     const { data, ...tableProps } = props;
 
@@ -114,7 +106,7 @@ export const Table = (props) => {
                     expander: true
                 }
             ]}
-            defaultPageSize={10}
+            defaultPageSize={5}
             className="-striped -highlight"
             pivotBy={["firstName", "lastName"]}
             defaultSorted={[
@@ -199,5 +191,13 @@ const ConnectedTable = connect(
     mapStateToProps,
     mapDispatchToProps
 )(Table)
+
+export const createTable = (props) => {
+    return (
+        <Table>
+            
+        </Table>
+    );
+}
 
 export default ConnectedTable;

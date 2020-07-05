@@ -142,7 +142,7 @@ function Template(props) {
     const classes = useStyles();
 
     let { children: { layout = {}, content = [], filterDef = {} }, data, history, activeFilters, setActiveFilters, service, fetchDataAction, isFetchingData } = props;
-    let { columns: layoutColumns = 'auto-fill', rows: layoutRows = 'auto-fill', /*layoutMinWidth = '600px',*/ layoutMinHeight = '400px' } = layout;
+    let { columns: layoutColumns = 'auto-fill', rows: layoutRows = 'auto-fill', /*layoutMinWidth = '600px',*/ layoutMinHeight = '200px' } = layout;
     const [open, setOpen] = useState(false);
 
     fetchDataAction(service);
@@ -182,11 +182,11 @@ function Template(props) {
                 >
                     {
                         content ?
-                            content.map((c) =>
-                                <Template.GridItem {...c} data={filteredData} setRedirect={(target, params) => onRedirect(history, target, params)} />)
+                            content.map((c, idx) =>
+                                <Template.GridItem key={idx} {...c} data={filteredData} setRedirect={(target, params) => onRedirect(history, target, params)} />)
                             : null
                     }
-                    <Table />
+                    {/* <Table /> */}
                 </Grid>
             </Cell>
         </Grid>
