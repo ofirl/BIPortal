@@ -150,6 +150,18 @@ const ExampleReport = (props) => {
                     content: [
                         {
                             left: 1,
+                            top: 2,
+                            height: 1,
+                            width: 1,
+                            chart: {
+                                type: {
+                                    type: 'table',
+                                },
+                                title: 'title test'
+                            }
+                        },
+                        {
+                            left: 1,
                             top: 1,
                             height: 1,
                             width: 1,
@@ -167,15 +179,15 @@ const ExampleReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'executedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'executedPercent',
-                                                position: 'inside',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'executedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'executedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
@@ -184,23 +196,23 @@ const ExampleReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'unexecutedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'unexecutedPercent',
-                                                position: 'inside',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'unexecutedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'unexecutedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD2', ['name']),
                                         },
                                     },
                                     {
                                         type: 'line',
+                                        dataKey: 'executedPercent',
                                         props: {
                                             lineType: 'monotone',
-                                            dataKey: 'executedPercent',
                                         }
                                     },
                                 ],
@@ -232,15 +244,15 @@ const ExampleReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'executedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'executedPercent',
-                                                position: 'inside',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'executedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'executedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
@@ -249,15 +261,15 @@ const ExampleReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'unexecutedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'unexecutedPercent',
-                                                position: 'inside',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'unexecutedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'unexecutedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
@@ -290,13 +302,13 @@ export default ExampleReport;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Colors.html">Colors</a></li><li><a href="ReportDefinition.html">ReportDefinition</a></li><li><a href="ReportTemplate.html">ReportTemplate</a></li><li><a href="TreeComponent.html">TreeComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#exampleFilterDefinition">exampleFilterDefinition</a></li><li><a href="global.html#FilterDateField">FilterDateField</a></li><li><a href="global.html#FilterDrawer">FilterDrawer</a></li><li><a href="global.html#FilterListField">FilterListField</a></li><li><a href="global.html#FilterRow">FilterRow</a></li><li><a href="global.html#inferOptions">inferOptions</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Colors.html">Colors</a></li><li><a href="FilterDrawer.html">FilterDrawer</a></li><li><a href="ReportDefinition.html">ReportDefinition</a></li><li><a href="ReportTemplate.html">ReportTemplate</a></li><li><a href="TreeComponent.html">TreeComponent</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Jul 05 2020 22:52:19 GMT+0300 (Israel Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jul 06 2020 09:56:43 GMT+0300 (Israel Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

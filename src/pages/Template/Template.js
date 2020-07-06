@@ -186,7 +186,6 @@ function Template(props) {
                                 <Template.GridItem key={idx} {...c} data={filteredData} setRedirect={(target, params) => onRedirect(history, target, params)} />)
                             : null
                     }
-                    {/* <Table /> */}
                 </Grid>
             </Cell>
         </Grid>

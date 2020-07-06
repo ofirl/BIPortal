@@ -12,6 +12,7 @@ const searchBoxClasses = {
 
 /**
  * Filter date field component
+ * @memberof FilterDrawer
  * 
  * @param {object} props props object
  */

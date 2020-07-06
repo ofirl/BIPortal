@@ -11,9 +11,6 @@ import { createRedirect } from '../../Utils/charts';
 
 // import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
 
-/**
- * @type {filterDef}
- */
 let exampleFilterDefinition = {
     uv: {
         label: 'שם',

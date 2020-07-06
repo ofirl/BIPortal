@@ -9,6 +9,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 /**
  * This function will infer the filter value from the data
+ * @memberof FilterDrawer
+ * 
  * @param {Array.<*>} data The data to infer from
  */
 function inferOptions(data, key) {
@@ -32,6 +34,7 @@ function inferOptions(data, key) {
 
 /**
  * Filter list field component
+ * @memberof FilterDrawer
  * 
  * @param {object} props props object
  */

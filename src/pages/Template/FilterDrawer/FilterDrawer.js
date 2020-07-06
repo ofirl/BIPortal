@@ -1,3 +1,7 @@
+/** 
+ * @namespace FilterDrawer
+ */
+
 import React from 'react'
 import PropTypes from 'prop-types';
 
@@ -75,6 +79,7 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * Filter row component
+ * @memberof FilterDrawer
  * 
  * @param {object} props props object
  */
@@ -131,6 +136,7 @@ FilterRow.propTypes = {
 
 /**
  * Filter drawer component
+ * @memberof FilterDrawer
  * 
  * @param {object} props props object
  */

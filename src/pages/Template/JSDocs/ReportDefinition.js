@@ -115,7 +115,7 @@
  * @property {string} title chart title
  * @property {ChartAxis} axis axis definitions
  * @property {ChartTooltip} tooltip tooltip definition
- * @property {ChartLegend} legend legend definition
+ * @property {ChartLegend|bool} legend legend definition
  * @property {object} props will be injected directly to the composed chart component
  */
 

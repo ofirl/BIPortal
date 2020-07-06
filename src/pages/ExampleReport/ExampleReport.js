@@ -11,21 +11,6 @@ import { createRedirect } from '../../Utils/charts';
 
 // import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
 
-/**
- * @typedef filterDefEntry
- * @type {object} 
- * @property {string} type the type of the filter, supported values are: 'list', 'date'
- * @property {string} [listType] the type of the list, suported values are: 'single', 'multi', default is 'single'
- * @property {Array.<*>} [options] the options of the list
- * @property {bool} [addBlank] add a blank option, default is false
- * @property {string} dateType the type of the date, supported values are: 'single', 'range' (default is range)
- * @property {string | Array.<string>} dateSelection the type of the selection, supported values are: 'year', 'month', 'day', 'time'
- */
-/**
- * @typedef filterDef
- * @type {Object}
- * @property {filterDefEntry} * The filter definition.
- */
 let exampleFilterDefinition = {
     uv: {
         label: 'שם',
@@ -122,6 +107,18 @@ const ExampleReport = (props) => {
                     content: [
                         {
                             left: 1,
+                            top: 2,
+                            height: 1,
+                            width: 1,
+                            chart: {
+                                type: {
+                                    type: 'table',
+                                },
+                                title: 'title test'
+                            }
+                        },
+                        {
+                            left: 1,
                             top: 1,
                             height: 1,
                             width: 1,
@@ -139,15 +136,15 @@ const ExampleReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'executedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'executedPercent',
-                                                position: 'inside',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'executedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'executedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
@@ -156,23 +153,23 @@ const ExampleReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'unexecutedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'unexecutedPercent',
-                                                position: 'inside',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'unexecutedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'unexecutedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD2', ['name']),
                                         },
                                     },
                                     {
                                         type: 'line',
+                                        dataKey: 'executedPercent',
                                         props: {
                                             lineType: 'monotone',
-                                            dataKey: 'executedPercent',
                                         }
                                     },
                                 ],
@@ -204,15 +201,15 @@ const ExampleReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'executedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'executedPercent',
-                                                position: 'inside',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'executedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'executedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
@@ -221,15 +218,15 @@ const ExampleReport = (props) => {
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
+                                            dataKey: 'unexecutedPercent',
+                                            position: 'inside',
                                             props: {
-                                                dataKey: 'unexecutedPercent',
-                                                position: 'inside',
                                             },
                                         },
                                         background: false,
+                                        dataKey: 'unexecutedPercent',
                                         props: {
                                             stackId: 'a',
-                                            dataKey: 'unexecutedPercent',
                                             onClick: createRedirect(history, '/ExampleReportDD', ['name']),
                                         },
                                     },
