@@ -120,6 +120,26 @@
  */
 
 /**
+ * Redirects the page
+ * @memberof ReportDefinition
+ * 
+ * @param {string} target target url
+ * @param {object} params parameters object ( {key: value} will be injected as ?key=value )
+ */
+function setRedirect(target, params) { }
+
+/**
+ * Render function, will override ALL template rendering
+ * @memberof ReportDefinition
+ *
+ * @param {object[]} data the data to show
+ * @param {setRedirect} setRedirect helper method to redirect the page (like on a drilldown) (see methods)
+ *
+ * @returns {Component}
+ */
+function render(data, setRedirect) {}
+
+/**
  * Report content definition
  * @typedef ReportContent
  * @type {object}
@@ -130,6 +150,7 @@
  * @property {number} height grid cell height
  * @property {number} width grid cell width
  * @property {ChartDefinition} chart chart definition
+*  @property {render} render render function (see methods)
  */
 
 /**
