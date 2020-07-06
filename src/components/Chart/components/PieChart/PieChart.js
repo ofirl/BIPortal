@@ -54,7 +54,7 @@ const PieChartBuilder = (props) => {
                                 props = { ...preset, ...props };
 
                             return (
-                                <Pie key={idx} data={data} nameKey={nameKey} dataKey={dataKey} fill={getColor(dataKey)} labelLine={false} label={renderCustomizedLabel} {...props} />
+                                <Pie key={idx} data={data} nameKey={nameKey} dataKey={dataKey} fill={getColor(dataKey)} label {...props} />
                             );
                         })
                     }
