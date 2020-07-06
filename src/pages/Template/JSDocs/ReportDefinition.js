@@ -111,7 +111,8 @@
  * @type {object}
  * @memberof ReportDefinition
  *
- * @property {ChartType[]|ChartType} type chart type definitions
+ * @property {"composed"|"table"|"pie"} mainType="composed" main type for the chart
+ * @property {ChartType[]} type chart type definitions
  * @property {string} title chart title
  * @property {ChartAxis} axis axis definitions
  * @property {ChartTooltip} tooltip tooltip definition
@@ -137,7 +138,7 @@ function setRedirect(target, params) { }
  *
  * @returns {Component}
  */
-function render(data, setRedirect) {}
+function render(data, setRedirect) { }
 
 /**
  * Report content definition

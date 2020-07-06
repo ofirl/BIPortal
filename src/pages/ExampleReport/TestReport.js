@@ -114,9 +114,7 @@ const TestReport = (props) => {
                             height: 1,
                             width: 1,
                             chart: {
-                                type: {
-                                    type: 'table',
-                                },
+                                mainType: 'table',
                                 title: 'title test'
                             }
                         },
@@ -129,6 +127,7 @@ const TestReport = (props) => {
                             //"id": idTexts
                             // },
                             chart: {
+                                mainType: 'pie',
                                 type: [
                                     // {
                                     //     type: 'line',
@@ -150,7 +149,7 @@ const TestReport = (props) => {
                                     //     }
                                     // },
                                     {
-                                        type: 'bar',
+                                        type: 'pie',
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
@@ -166,8 +165,11 @@ const TestReport = (props) => {
                                         background: false,
                                         // object will be passed down directly to the line component
                                         dataKey: 'executedPercent',
+                                        nameKey: 'name',
                                         props: {
-                                            stackId: 'a',
+                                            // innerRadius: 0,
+                                            outerRadius: 30,
+                                            // stackId: 'a',
                                             // dataKey: 'executedPercent',
                                             // fill: '#cfcfcf',
                                             // onClick: (data, index) => {},
@@ -179,7 +181,7 @@ const TestReport = (props) => {
                                         },
                                     },
                                     {
-                                        type: 'bar',
+                                        type: 'donut',
                                         labelList: {
                                             suffix: '%',
                                             prefix: '',
@@ -193,8 +195,11 @@ const TestReport = (props) => {
                                         background: false,
                                         // object will be passed down directly to the line component
                                         dataKey: 'unexecutedPercent',
+                                        nameKey: 'name',
                                         props: {
-                                            stackId: 'a',
+                                            // innerRadius: 40,
+                                            // outerRadius: 80,
+                                            // stackId: 'a',
                                             // dataKey: 'unexecutedPercent',
                                             // fill: '#cfcfcf',
                                             // onClick: (data, index) => {},
