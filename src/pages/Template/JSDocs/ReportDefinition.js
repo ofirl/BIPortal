@@ -69,7 +69,7 @@
  * @memberof ReportDefinition
  *
  * @property {string} type chart type
- * @property {ChartLabelList} labelList label definition
+ * @property {ChartLabelList|bool} labelList label definition
  * @property {ChartBackground|bool} background boolean for no\default background,
  * @property {string} dataKey data key for the chart values
  * @property {object} props will be injected to the chart component directly

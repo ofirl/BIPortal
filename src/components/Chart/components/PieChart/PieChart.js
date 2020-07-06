@@ -46,15 +46,14 @@ const PieChartBuilder = (props) => {
                     {legend ? <Legend height={legendHeight} content={<ChartLegend height={legendHeight} hideKeys={legendHideKeys} />} {...legendProps} /> : null}
                     {
                         type.map((t, idx) => {
-                            let { type: pieType, dataKey, nameKey, props, background = true, labelList = {} } = t;
-                            // let { dataKey: labelDataKey, position = "inside", props: labelListProps } = labelList;
+                            let { type: pieType, dataKey, nameKey, props, background = true, labelList = false } = t;
                             let preset = typePresets[pieType];
 
                             if (preset)
                                 props = { ...preset, ...props };
 
                             return (
-                                <Pie key={idx} data={data} nameKey={nameKey} dataKey={dataKey} fill={getColor(dataKey)} label {...props} />
+                                <Pie key={idx} data={data} nameKey={nameKey} dataKey={dataKey} fill={getColor(dataKey)} label={labelList} {...props} />
                             );
                         })
                     }

@@ -9,7 +9,7 @@ import ChartLegend from '../../../../components/ChartLegend/ChartLegend';
 
 import { getColor } from './../../../../Utils/colors';
 
-function formatLabel(value, { prefix, suffix, showZeroes = false, showNulls = false }) {
+function formatLabel(value, { prefix = "", suffix = "", showZeroes = false, showNulls = false }) {
     if (!showZeroes && value === 0)
         return '';
     if (!showNulls && value == null)
@@ -37,7 +37,7 @@ const ComposedChartBuilder = (props) => {
                     {
                         type.map((t, idx) => {
                             let { type, dataKey, props, background = true, labelList = {} } = t;
-                            let { dataKey: labelDataKey, position = "inside", props: labelListProps } = labelList;
+                            let { dataKey: labelDataKey = dataKey, position = "inside", props: labelListProps } = labelList;
                             switch (type) {
                                 case 'line':
                                     return <Line key={idx} dataKey={dataKey} stroke={getColor(dataKey)} {...props} />;
@@ -46,7 +46,7 @@ const ComposedChartBuilder = (props) => {
                                 case 'bar':
                                     return (
                                         <Bar key={idx} dataKey={dataKey} fill={getColor(dataKey)} background={background ? (background.fill ? { fill: background.fill } : { fill: getColor(dataKey + 'Background') }) : null} {...props} >
-                                            {labelList ? <LabelList dataKey={labelDataKey} position={position} {...labelListProps} formatter={(v) => v > 60 ? '!' : formatLabel(v, labelList)} content={(data) => (<g> test </g>)} /> : null}
+                                            {labelList ? <LabelList dataKey={labelDataKey} position={position} {...labelListProps} formatter={(v) => formatLabel(v, labelList)} /> : null}
                                         </Bar>
                                     );
                                 default:

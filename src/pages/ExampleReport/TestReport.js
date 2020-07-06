@@ -182,16 +182,17 @@ const TestReport = (props) => {
                                     },
                                     {
                                         type: 'donut',
-                                        labelList: {
-                                            suffix: '%',
-                                            prefix: '',
-                                            dataKey: 'unexecutedPercent',
-                                            position: 'inside',
-                                            props: {
-                                                // dataKey: 'unexecutedPercent',
-                                                // position: 'inside',
-                                            },
-                                        },
+                                        labelList: true,
+                                        // labelList: {
+                                        //     suffix: '%',
+                                        //     prefix: '',
+                                        //     dataKey: 'unexecutedPercent',
+                                        //     position: 'inside',
+                                        //     props: {
+                                        //         // dataKey: 'unexecutedPercent',
+                                        //         // position: 'inside',
+                                        //     },
+                                        // },
                                         background: false,
                                         // object will be passed down directly to the line component
                                         dataKey: 'unexecutedPercent',
@@ -299,7 +300,7 @@ const TestReport = (props) => {
                                             suffix: '%',
                                             prefix: '',
                                             dataKey: 'executedPercent',
-                                            position: 'top',
+                                            position: 'inside',
                                             props: {
                                                 // dataKey: 'executedPercent',
                                                 // position: 'top',
@@ -319,7 +320,7 @@ const TestReport = (props) => {
                                             suffix: '%',
                                             prefix: '',
                                             dataKey: 'unexecutedPercent',
-                                            position: 'top',
+                                            position: 'inside',
                                             props: {
                                                 // dataKey: 'unexecutedPercent',
                                                 // position: 'top',
