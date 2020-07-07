@@ -108,7 +108,7 @@ const TestReport = (props) => {
                                 params: {
                                     key: 'value'
                                 }
-                            }
+                            },
                         },
                         date: {
                             label: 'תאריך',
@@ -126,7 +126,14 @@ const TestReport = (props) => {
                             chart: {
                                 mainType: 'table',
                                 title: 'title test'
-                            }
+                            },
+                            service: {
+                                // baseUrl: null,
+                                name: 'https://www.reddit.com/r/reactjs.json',
+                                params: {
+                                    key: 'value'
+                                }
+                            },
                         },
                         {
                             id: 'id1',
@@ -138,7 +145,15 @@ const TestReport = (props) => {
                             //"id": idTexts
                             // },
                             chart: {
+                                title: 'pie chart',
                                 mainType: 'pie',
+                                service: {
+                                    // baseUrl: null,
+                                    name: 'https://www.reddit.com/r/reactjs.json',
+                                    params: {
+                                        key: 'value'
+                                    }
+                                },
                                 type: [
                                     // {
                                     //     type: 'line',
@@ -306,6 +321,13 @@ const TestReport = (props) => {
                             height: 2,
                             width: 1,
                             chart: {
+                                service: {
+                                    // baseUrl: null,
+                                    name: 'https://www.reddit.com/r/reactjs.json',
+                                    params: {
+                                        key: 'value'
+                                    }
+                                },
                                 type: [
                                     {
                                         type: 'bar',

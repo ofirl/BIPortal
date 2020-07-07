@@ -16,7 +16,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Table } from '../Table/Table';
 import ComposedChartBuilder from './components/ComposedChart/ComposedChart';
 import PieChartBuilder from './components/PieChart/PieChart';
-import { getChartData, exampleData } from '../../Utils/network';
+import { getChartData, exampleData, getServiceData } from '../../Utils/network';
 import FilterContext from '../../context/FilterContext';
 
 const mainTypeRenderer = {
@@ -90,7 +90,7 @@ function filterData(filter, data) {
  * 
  * @param {object} props
  */
-export const ChartContainer = ({ title, mainType = "composed", onDataFetch, ...chartProps }) => {
+export const ChartContainer = ({ title, mainType = "composed", onDataFetch, service, ...chartProps }) => {
     let [data, setData] = useState(null);
     let [filteredData, setFilteredData] = useState(null);
     let { activeFilter } = useContext(FilterContext);
@@ -102,7 +102,8 @@ export const ChartContainer = ({ title, mainType = "composed", onDataFetch, ...c
         if (data)
             return;
 
-        getChartData('https://www.reddit.com/r/reactjs.json')
+        // getServiceData(service)
+            getChartData('https://www.reddit.com/r/reactjs.json')
             .then(
                 response => response.json(),
                 error => console.log(error)
@@ -140,26 +141,26 @@ export const ChartContainer = ({ title, mainType = "composed", onDataFetch, ...c
     );
 }
 
-/**
- * Creates a chart based on the given props
- * @param {object} props 
- */
-const createChart = (props) => {
-    const { title, mainType = "composed", ...others } = props;
+// /**
+//  * Creates a chart based on the given props
+//  * @param {object} props 
+//  */
+// const createChart = (props) => {
+//     const { title, mainType = "composed", ...others } = props;
 
-    let ChartComp = mainTypeRenderer[mainType];
+//     let ChartComp = mainTypeRenderer[mainType];
 
-    return (
-        <ChartContainer title={title} chartComp={ChartComp} chartProps={others} />
-    );
-};
-createChart.defaultProps = {
-    type: [],
-    grid: true,
-    tooltip: true,
-    legend: true,
-    props: {},
-    axis: {},
-};
+//     return (
+//         <ChartContainer title={title} chartComp={ChartComp} chartProps={others} />
+//     );
+// };
+// createChart.defaultProps = {
+//     type: [],
+//     grid: true,
+//     tooltip: true,
+//     legend: true,
+//     props: {},
+//     axis: {},
+// };
 
-export default createChart;
+// export default createChart;

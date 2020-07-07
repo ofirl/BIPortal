@@ -130,6 +130,7 @@
  * @memberof ReportDefinition
  *
  * @property {"composed"|"table"|"pie"} mainType="composed" main type for the chart
+ * @property {DataService} service service for the data
  * @property {ChartType[]} type chart type definitions
  * @property {string} title chart title
  * @property {ChartAxis} axis axis definitions
