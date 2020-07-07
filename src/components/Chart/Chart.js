@@ -141,26 +141,4 @@ export const ChartContainer = ({ title, mainType = "composed", onDataFetch, serv
     );
 }
 
-// /**
-//  * Creates a chart based on the given props
-//  * @param {object} props 
-//  */
-// const createChart = (props) => {
-//     const { title, mainType = "composed", ...others } = props;
-
-//     let ChartComp = mainTypeRenderer[mainType];
-
-//     return (
-//         <ChartContainer title={title} chartComp={ChartComp} chartProps={others} />
-//     );
-// };
-// createChart.defaultProps = {
-//     type: [],
-//     grid: true,
-//     tooltip: true,
-//     legend: true,
-//     props: {},
-//     axis: {},
-// };
-
 // export default createChart;
