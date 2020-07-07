@@ -40,7 +40,6 @@ export function makeData(len = 553) {
 
 export const Table = (props) => {
     const { data, ...tableProps } = props;
-    console.log(data);
 
     const mockData = useMemo(() => {
         return makeData();
