@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types';
 
 import Select from '@material-ui/core/Select';
@@ -6,6 +6,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
+import DataContext from '../../../../../context/dataContext';
 
 /**
  * This function will infer the filter value from the data
@@ -14,7 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
  * @param {Array.<*>} data The data to infer from
  */
 function inferOptions(data, key) {
-    if (data.length === 0)
+    if (!data || data.length === 0)
         return {};
 
     let filters = {};
@@ -39,8 +40,14 @@ function inferOptions(data, key) {
  * @param {object} props props object
  */
 const FilterListField = (props) => {
-    const { classes, filterKey, filter, value, theme, data, handleChange, MenuProps } = props;
-    const { listType, addBlank } = filter;
+    const reportData = useContext(DataContext);
+
+    const { classes, filterKey, filter, value, theme, handleChange, MenuProps } = props;
+    const { listType, addBlank, dataSource } = filter;
+
+    let data;
+    if (dataSource)
+        data = dataSource.map((dataSourceId) => reportData[dataSourceId] || []).flat();
 
     function getStyles(name, value, theme) {
         return {
@@ -69,23 +76,11 @@ const FilterListField = (props) => {
                 )}
                 MenuProps={MenuProps}
             >
-                {/* {
-                    () => {
-                        //! hacky hacky... selects will have an id and value.... needs changing
-                        let realOptions = (filter.options ? filter.options : (inferOptions(data, filterKey)[filterKey]));
-                        if (addBlank)
-                            realOptions.splice(0, 0, "");
-
-                        return (filter.options ? filter.options : (inferOptions(data, filterKey)[filterKey])).map(option => (
-                            <MenuItem key={option} value={option} style={getStyles(option, value, theme)}>
-                                {option}
-                            </MenuItem>
-                        ));
-                    }
-                } */}
-
                 {
-                    (filter.options ? filter.options : (inferOptions(data, filterKey)[filterKey])).map(option => (
+                    (filter.options ? filter.options : (
+                        data.length ? inferOptions(data, filterKey)[filterKey] : []
+                    )
+                    ).map(option => (
                         <MenuItem key={option} value={option} style={getStyles(option, value, theme)}>
                             {option}
                         </MenuItem>

@@ -3,15 +3,33 @@
 */
 
 /**
+ * @typedef DataServiceParameter
+ * 
+ * @property {string} * parameter to send
+ */
+
+/**
+ * @typedef DataService
+ * @type {object}
+ * @memberof ReportDefinition
+ * 
+ * @property {string} baseUrl baseUrl to use (a predefined name)
+ * @property {string} name name of the service
+ * @property {DataServiceParameter[]} params parameters for the service
+ */
+
+/**
  * Entry in a FilterDef object
 * @typedef FilterDefEntry
 * @type {object}
 * @memberof ReportDefinition
 *
 * @property {string} label label for the filter field
-* @property {string} type the type of the filter, supported values are: 'list', 'date'
+* @property {"list"|"date"|"tree"} type the type of the filter
+* @property {DataService} [service] service for the hierarchy filter
 * @property {string} [listType] the type of the list, suported values are: 'single', 'multi', default is 'single'
 * @property {Array.<*>} [options] the options of the list
+* @property {string[]} dataSource ids of content to get the data from in order to infer options for list
 * @property {bool} [addBlank] add a blank option, default is false
 * @property {string} dateType the type of the date, supported values are: 'single', 'range' (default is range)
 * @property {string | Array.<string>} dateSelection the type of the selection, supported values are: 'year', 'month', 'day', 'time'

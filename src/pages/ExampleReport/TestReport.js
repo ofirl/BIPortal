@@ -85,21 +85,30 @@ const TestReport = (props) => {
         <TemplatePage {...templateParams} history={props.history}>
             {
                 {
+                    title: 'testing report title',
                     layout: {
                         columns: '1fr 1fr',
                         rows: '1fr 1fr',
                     },
                     filterDef: {
-                        // uv: {
-                        //     label: 'שם',
-                        //     type: 'list',
-                        //     addBlank: true,
-                        //     listType: 'multi',
-                        //     // options: [2000,3000]
-                        // },
+                        uv: {
+                            label: 'שם',
+                            type: 'list',
+                            addBlank: true,
+                            listType: 'multi',
+                            // options: [2000,3000],
+                            dataSource: ['id1', 'id2']
+                        },
                         name: {
                             label: 'כלי',
                             type: 'tree',
+                            service: {
+                                // baseUrl: null,
+                                name: 'https://www.reddit.com/r/reactjs.json',
+                                params: {
+                                    key: 'value'
+                                }
+                            }
                         },
                         date: {
                             label: 'תאריך',
@@ -109,6 +118,7 @@ const TestReport = (props) => {
                     },
                     content: [
                         {
+                            id: 'tableId',
                             left: 1,
                             top: 1,
                             height: 1,
@@ -119,6 +129,7 @@ const TestReport = (props) => {
                             }
                         },
                         {
+                            id: 'id1',
                             left: 1,
                             top: 2,
                             height: 1,
@@ -151,11 +162,12 @@ const TestReport = (props) => {
                                     {
                                         type: 'pie',
                                         labelList: {
+                                            offsetRadius: 100,
                                             suffix: '%',
                                             prefix: '',
                                             // showZeroes: true,
                                             // showNulls: false,
-                                            dataKey: 'executedPercent',
+                                            dataKey: 'uv',
                                             position: 'inside',
                                             props: {
                                                 // dataKey: 'executedPercent',
@@ -164,7 +176,7 @@ const TestReport = (props) => {
                                         },
                                         background: false,
                                         // object will be passed down directly to the line component
-                                        dataKey: 'executedPercent',
+                                        dataKey: 'uv',
                                         nameKey: 'name',
                                         props: {
                                             // innerRadius: 0,
@@ -195,7 +207,7 @@ const TestReport = (props) => {
                                         // },
                                         background: false,
                                         // object will be passed down directly to the line component
-                                        dataKey: 'unexecutedPercent',
+                                        dataKey: 'pv',
                                         nameKey: 'name',
                                         props: {
                                             // innerRadius: 40,
@@ -243,7 +255,7 @@ const TestReport = (props) => {
                                 // legend: true,
                                 legend: {
                                     // height: '1.5em',
-                                    // hideKeys: ['executedPercent'],
+                                    hideKeys: ['executedPercent', 'Page A', 'Page B', 'Page C', 'Page D', 'Page E', 'Page F'],
                                     // props: {
                                     // }
                                 },
@@ -288,6 +300,7 @@ const TestReport = (props) => {
                             //     </ResponsiveContainer>
                         },
                         {
+                            id: 'id2',
                             left: 2,
                             top: 1,
                             height: 2,
@@ -297,9 +310,9 @@ const TestReport = (props) => {
                                     {
                                         type: 'bar',
                                         labelList: {
-                                            suffix: '%',
-                                            prefix: '',
-                                            dataKey: 'executedPercent',
+                                            // suffix: '%',
+                                            // prefix: '',
+                                            dataKey: 'uv',
                                             position: 'inside',
                                             props: {
                                                 // dataKey: 'executedPercent',
@@ -307,7 +320,7 @@ const TestReport = (props) => {
                                             },
                                         },
                                         background: false,
-                                        dataKey: 'executedPercent',
+                                        dataKey: 'uv',
                                         props: {
                                             stackId: 'a',
                                             // dataKey: 'executedPercent',
@@ -317,9 +330,9 @@ const TestReport = (props) => {
                                     {
                                         type: 'bar',
                                         labelList: {
-                                            suffix: '%',
-                                            prefix: '',
-                                            dataKey: 'unexecutedPercent',
+                                            // suffix: '%',
+                                            // prefix: '',
+                                            dataKey: 'pv',
                                             position: 'inside',
                                             props: {
                                                 // dataKey: 'unexecutedPercent',
@@ -327,7 +340,7 @@ const TestReport = (props) => {
                                             },
                                         },
                                         background: false,
-                                        dataKey: 'unexecutedPercent',
+                                        dataKey: 'pv',
                                         props: {
                                             stackId: 'a',
                                             // dataKey: 'unexecutedPercent',

@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { connect } from 'react-redux';
-import { setActiveFilter } from '../../reducers';
-
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
@@ -43,7 +40,7 @@ export function makeData(len = 5553) {
 
 export const Table = (props) => {
     const { data, ...tableProps } = props;
-
+    console.log(data);
     return (
         <ReactTable
             data={makeData()}
@@ -172,26 +169,6 @@ export const Table = (props) => {
     );
 };
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        data: state.data,
-        activeFilters: state.activeFilter
-    }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        setActiveFilters: (newActiveFilters) => {
-            dispatch(setActiveFilter(newActiveFilters));
-        }
-    }
-}
-
-const ConnectedTable = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Table)
-
 export const createTable = (props) => {
     return (
         <Table>
@@ -200,4 +177,4 @@ export const createTable = (props) => {
     );
 }
 
-export default ConnectedTable;
+export default Table;

@@ -2,7 +2,7 @@
  * @namespace FilterDrawer
  */
 
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types';
 
 import Drawer from '@material-ui/core/Drawer';
@@ -26,6 +26,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import FilterListField from './FilterFields/ListField/ListField';
 import FilterDateField from './FilterFields/DateField/DateField';
 import Tree from '../../../components/Tree/Tree';
+import FilterContext from '../../../context/FilterContext';
 
 const useStyles = makeStyles(theme => ({
     drawer: {
@@ -76,6 +77,27 @@ const useStyles = makeStyles(theme => ({
         zIndex: '1001'
     }
 }));
+
+/**
+ * Changes {@param oldFilters} by the given new filters and key. <br />
+ * Adds or deletes the necessary values/keys from the old filters.
+ * 
+ * @param {string} key filter key
+ * @param {activeFilter} newFilters new active filter (only filters relevant to key {@link key})
+ * @param {activeFilter} oldFilters old active filter (all keys)
+ * 
+ * @memberof FilterDrawer
+ */
+function onFilterChange(key, newFilters, oldFilters) {
+    let allFilterObj = { ...oldFilters };
+
+    if (newFilters.length === 0)
+        delete (allFilterObj[key]);
+    else
+        allFilterObj[key] = newFilters;
+
+    return allFilterObj;
+}
 
 /**
  * Filter row component
@@ -141,7 +163,9 @@ FilterRow.propTypes = {
  * @param {object} props props object
  */
 const FilterDrawer = (props) => {
-    const { data, open, filters, activeFilters, onFilterChange } = props;
+    let { activeFilter, setFilter } = useContext(FilterContext);
+
+    const { open, filters } = props;
     const classes = useStyles();
     const theme = useTheme();
 
@@ -162,9 +186,9 @@ const FilterDrawer = (props) => {
                     {
                         Object.keys(filters).map((val) => (
                             <Paper key={val} style={{ marginBottom: '10px' }}>
-                                <FilterRow classes={classes} filterKey={val} filter={filters[val]} theme={theme} data={data}
-                                    handleChange={(newFilters) => onFilterChange(val, newFilters)}
-                                    value={activeFilters[val] ? activeFilters[val].reduce((prev, curr) => { prev.push(curr.value); return prev; }, []) : null} />
+                                <FilterRow classes={classes} filterKey={val} filter={filters[val]} theme={theme}
+                                    handleChange={(newFilters) => setFilter(onFilterChange(val, newFilters, activeFilter))}
+                                    value={activeFilter[val] ? activeFilter[val].reduce((prev, curr) => { prev.push(curr.value); return prev; }, []) : null} />
                             </Paper>
                         ))
                     }

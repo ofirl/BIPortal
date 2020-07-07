@@ -5,9 +5,8 @@ import { Legend } from 'recharts';
 
 const ChartLegend = (props) => {
     let { height = '1.5em', payload, hideKeys } = props;
-    
     hideKeys.forEach( (k) => {
-        let index = payload.findIndex( (p) => p.dataKey === k);
+        let index = payload.findIndex( (p) => p.dataKey === k || p.value === k);
         if (index !== -1)
             payload.splice(index, 1);
     });

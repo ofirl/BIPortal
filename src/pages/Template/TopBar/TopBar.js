@@ -41,7 +41,7 @@ function ElevationScroll(props) {
     });
 }
 
-export default (props) => {
+export default ({ title = "default title", toggleFilterOpen }) => {
     const classes = useStyles();
 
     return (
@@ -54,10 +54,10 @@ export default (props) => {
                         </IconButton> */}
                         <img src={process.env.PUBLIC_URL + "/ocean.png"} className="App-logo2" alt="..." style={{width:"3em", height:"3em", marginLeft: '1em'}}/>
                         <Typography variant="h6" className={classes.title}>
-                            כותרת לדוח
+                            {title}
                         </Typography>
                         {/* <Button color="inherit">Login</Button> */}
-                        <IconButton color="inherit" onClick={props.toggleFilterOpen}>
+                        <IconButton color="inherit" onClick={toggleFilterOpen}>
                             <FilterListIcon />
                         </IconButton>
                     </Toolbar>

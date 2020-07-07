@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Treebeard } from 'react-treebeard';
 import { PropTypes } from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { connect } from 'react-redux';
+import { getServiceData, exampleHier } from '../../Utils/network';
 
 /**
  * @namespace TreeComponent
@@ -248,10 +248,24 @@ function onFilterMouseUp({ target: { value } }, hier) {
  */
 const TreeComp = (props) => {
     const classes = useStyles();
-    let { handleChange, hierarchy } = props
+    let { handleChange, filter: { service } } = props
 
-    const [data, setData] = useState(hierarchy);
+    // const [data, setData] = useState(hierarchy);
     const [cursor, setCursor] = useState(false);
+
+    let [data, setData] = useState();
+
+    useEffect(() => {
+        if (!service)
+            return;
+
+        getServiceData(service)
+            .then(
+                response => response.json(),
+                error => console.log(error)
+            )
+            .then(jsonData => setData(exampleHier));
+    }, [service])
 
     const onToggle = (node, toggled) => {
         data.active = false;
@@ -266,7 +280,7 @@ const TreeComp = (props) => {
         setData(Object.assign({}, data))
         // makes the selection apply to the original hier and not the filtered one - to undo, switch hierNode to be node
         // let hierNode = node;
-        let hierNode = findExactNode(hierarchy, node.id);
+        let hierNode = findExactNode(data, node.id);
         let allChildren = [hierNode.id];
         let checkList = [hierNode];
         while (checkList.length > 0) {
@@ -288,11 +302,15 @@ const TreeComp = (props) => {
                 label="חיפוש"
                 className={[classes.textField, classes.dense]}
                 classes={searchBoxClasses}
-                onInput={(e) => setData(onFilterMouseUp(e, hierarchy))}
+                onInput={(e) => setData(onFilterMouseUp(e, data))}
                 margin="dense"
                 variant="outlined"
             />
-            <Treebeard data={data} onToggle={onToggle} style={treeBaseStyle} />
+            {
+                data ?
+                    <Treebeard data={data} onToggle={onToggle} style={treeBaseStyle} />
+                    : "loading..."
+            }
         </React.Fragment>
     )
 };
@@ -303,23 +321,4 @@ TreeComp.propTypes = {
     handleChange: PropTypes.func
 };
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        hierarchy: state.hierarchy ? state.hierarchy.fetched : {},
-    }
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        // setActiveFilters: (newActiveFilters) => {
-        //     dispatch(setActiveFilter(newActiveFilters));
-        // }
-    }
-};
-
-const ConnectedTree = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(TreeComp);
-
-export default ConnectedTree;
+export default TreeComp;

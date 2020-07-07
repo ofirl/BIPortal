@@ -31,8 +31,6 @@ export function getColor(key, color) {
     if (color)
         return setColor(key, color);
 
-        console.log(key);
-
     if (assignedColors[key] == null) {
         let nextColor = allColors[currentColorIndex++];
         while (currentColorIndex < allColors.length && Object.keys(assignedColors).find((c) => c === nextColor /*!assignedColors[c].localeCompare(nextColor)*/))

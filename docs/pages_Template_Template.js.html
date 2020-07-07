@@ -26,7 +26,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useState } from 'react';
+            <pre class="prettyprint source linenums"><code>import React, { useState, useCallback, useReducer } from 'react';
 import PropTypes from 'prop-types';
 // import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -41,8 +41,10 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
 import { Grid, Cell } from "styled-css-grid";
-import createChart from './../../components/Chart/Chart';
+import createChart, { ChartContainer } from './../../components/Chart/Chart';
 import { Table } from '../../components/Table/Table';
+import FilterContext from '../../context/FilterContext';
+import DataContext from '../../context/dataContext';
 
 /**
  * @namespace ReportTemplate
@@ -72,86 +74,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * Conversion object for filtering &lt;br />
- * Converts a sign to a convertion function
- * 
- * @memberof ReportTemplate
- */
-const operatorConv = {
-    "=": (val1, val2) => val1 === val2,
-    ">=": (val1, val2) => val1 >= val2,
-    "&lt;=": (val1, val2) => val1 &lt;= val2,
-    ">": (val1, val2) => val1 > val2,
-    "&lt;": (val1, val2) => val1 &lt; val2,
-    "!=": (val1, val2) => val1 !== val2,
-    "date-between": (val1, { startDate, endDate }) => {
-        val1 = formatDate(val1);
-        return operatorConv[">"](new Date(val1), startDate) &amp;&amp; operatorConv["&lt;"](new Date(val1), endDate);
-    },
-    "date-single": (val1, val2) => {
-        val1 = formatDate(val1);
-        return operatorConv["="](new Date(val1).getTime(), val2.getTime());
-    },
-}
-
-/**
- * Converts the given date to a date object
- * 
- * @param {string} date the date to convert (assuming the date is in dd/MM/yyyy format)
- * 
- * @returns {Date} date object
- * 
- * @memberof ReportTemplate
- */
-function formatDate(date) {
-    // assuming the date is in dd/MM/yyyy format, if not this will need changing
-    let match = /(\d{2})\/(\d{2})\/(\d{4})/.exec(date);
-    date = new Date(match[3], match[2] - 1, match[1]);
-    return date;
-}
-
-/**
- * Filter the data based on the given filter. &lt;br/>
- * Filters the data using the filter object given and the convertion object {@link operatorConv}.
- * 
- * @param {activeFilter} filter 
- * @param {Array.&lt;*>} data the data to filter
- * @returns Filtered data
- * 
- * @memberof ReportTemplate
- */
-function filterData(filter, data) {
-    let applyFilter = function (dataKey, filterObj, data) {
-        // check if the data checks against at least one of the filter values
-        return filterObj.some((filterEntry) => operatorConv[filterEntry.operator](data[dataKey], filterEntry.value))
-    }
-
-    // check if the data checks against all the filters
-    return data.filter((dataVal) => Object.keys(filter).every((filterVal, index, arr) => applyFilter(filterVal, filter[filterVal], dataVal)));
-};
-
-/**
- * Changes {@param oldFilters} by the given new filters and key. &lt;br />
- * Adds or deletes the necessary values/keys from the old filters.
- * 
- * @param {string} key filter key
- * @param {activeFilter} newFilters new active filter (only filters relevant to key {@link key})
- * @param {activeFilter} oldFilters old active filter (all keys)
- * 
- * @memberof ReportTemplate
- */
-function onFilterChange(key, newFilters, oldFilters) {
-    let allFilterObj = { ...oldFilters };
-
-    if (newFilters.length === 0)
-        delete (allFilterObj[key]);
-    else
-        allFilterObj[key] = newFilters;
-
-    return allFilterObj;
-}
-
-/**
  * Redirects to the target with the supplied parameters
  * 
  * @param {object} history history object from react-router
@@ -165,17 +87,24 @@ function onRedirect(history, target, params) {
     history.push(target + "?" + paramString);
 }
 
+function updateReportData(state, action) {
+    return { ...state, ...action };
+}
+
 function Template(props) {
     console.log('render template');
     const classes = useStyles();
+    let [filter, setFilter] = useState({});
 
-    let { children: { layout = {}, content = [], filterDef = {} }, data, history, activeFilters, setActiveFilters, service, fetchDataAction, isFetchingData } = props;
+    let { children: { title, layout = {}, content = [], filterDef = {} }, data, history, isFetchingData } = props;
     let { columns: layoutColumns = 'auto-fill', rows: layoutRows = 'auto-fill', /*layoutMinWidth = '600px',*/ layoutMinHeight = '200px' } = layout;
     const [open, setOpen] = useState(false);
 
-    fetchDataAction(service);
+    let [reportData, dispatch] = useReducer(updateReportData, {});
 
-    let filteredData = filterData(activeFilters, data);
+    let onDataFetch = useCallback((contentId, fetchedData) => {
+        dispatch({ [contentId]: fetchedData })
+    }, []);
 
     if (isFetchingData)
         return (
@@ -185,38 +114,41 @@ function Template(props) {
         );
 
     return (
-        &lt;Grid
-            className={[classes.mainGrid, open ? classes.filterOpen : ''].join(' ')}
-            height="100%"
-            columns={"0fr 1fr"}
-            rows={"5em 1fr"}
-            areas={[
-                "header header",
-                "menu   content"
-            ]}>
-            &lt;Cell area="header">
-                &lt;TopBar key="topBar" toggleFilterOpen={() => setOpen(!open)} />
-            &lt;/Cell>
-            &lt;Cell area="menu">
-                &lt;FilterDrawer open={open} data={data} filters={filterDef} activeFilters={activeFilters}
-                    onFilterChange={(key, newFilter) => setActiveFilters(onFilterChange(key, newFilter, activeFilters))} />
-            &lt;/Cell>
-            &lt;Cell area="content" style={{ paddingRight: '10px' }}>
+        &lt;FilterContext.Provider value={{ activeFilter: filter, setFilter }}>
+            &lt;DataContext.Provider value={reportData}>
                 &lt;Grid
-                    columns={layoutColumns}
-                    rows={layoutRows}
+                    className={[classes.mainGrid, open ? classes.filterOpen : ''].join(' ')}
                     height="100%"
-                    minRowHeight={layoutMinHeight}
-                >
-                    {
-                        content ?
-                            content.map((c, idx) =>
-                                &lt;Template.GridItem key={idx} {...c} data={filteredData} setRedirect={(target, params) => onRedirect(history, target, params)} />)
-                            : null
-                    }
+                    columns={"0fr 1fr"}
+                    rows={"5em 1fr"}
+                    areas={[
+                        "header header",
+                        "menu   content"
+                    ]}>
+                    &lt;Cell area="header">
+                        &lt;TopBar key="topBar" title={title} toggleFilterOpen={() => setOpen(!open)} />
+                    &lt;/Cell>
+                    &lt;Cell area="menu">
+                        &lt;FilterDrawer open={open} data={data} filters={filterDef} />
+                    &lt;/Cell>
+                    &lt;Cell area="content" style={{ paddingRight: '10px' }}>
+                        &lt;Grid
+                            columns={layoutColumns}
+                            rows={layoutRows}
+                            height="100%"
+                            minRowHeight={layoutMinHeight}
+                        >
+                            {
+                                content ?
+                                    content.map((c, idx) =>
+                                        &lt;Template.GridItem key={idx} {...c} onDataFetch={(fetchedData) => onDataFetch(c.id, fetchedData)} setRedirect={(target, params) => onRedirect(history, target, params)} />)
+                                    : null
+                            }
+                        &lt;/Grid>
+                    &lt;/Cell>
                 &lt;/Grid>
-            &lt;/Cell>
-        &lt;/Grid>
+            &lt;/DataContext.Provider>
+        &lt;/FilterContext.Provider>
     );
 };
 Template.propTypes = {
@@ -236,7 +168,7 @@ Template.propTypes = {
     serviceName: PropTypes.string
 };
 
-Template.GridItem = ({ left, top, width, height, render, data, setRedirect, chart, ...others }) => {
+Template.GridItem = ({ left, top, width, height, render, data, setRedirect, chart, onDataFetch, ...others }) => {
     let cellProps = {
         left,
         top,
@@ -246,7 +178,7 @@ Template.GridItem = ({ left, top, width, height, render, data, setRedirect, char
 
     return (
         &lt;Cell {...cellProps}>
-            {render ? render(data, setRedirect) : createChart(chart)(data)}
+            {render ? render(chart, setRedirect, onDataFetch) : &lt;ChartContainer onDataFetch={onDataFetch} {...chart} />}
         &lt;/Cell>
     );
 };
@@ -285,13 +217,13 @@ export default ConnectedTemplate;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Colors.html">Colors</a></li><li><a href="FilterDrawer.html">FilterDrawer</a></li><li><a href="ReportDefinition.html">ReportDefinition</a></li><li><a href="ReportTemplate.html">ReportTemplate</a></li><li><a href="TreeComponent.html">TreeComponent</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="ChartContainer.html">ChartContainer</a></li><li><a href="Colors.html">Colors</a></li><li><a href="FilterDrawer.html">FilterDrawer</a></li><li><a href="ReportDefinition.html">ReportDefinition</a></li><li><a href="ReportTemplate.html">ReportTemplate</a></li><li><a href="TreeComponent.html">TreeComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createChart">createChart</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jul 06 2020 12:37:55 GMT+0300 (Israel Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Jul 07 2020 13:33:01 GMT+0300 (Israel Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
