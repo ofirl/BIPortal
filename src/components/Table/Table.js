@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import ReactTable from "react-table";
 import "react-table/react-table.css";
@@ -29,7 +29,7 @@ const newPerson = () => {
     };
 };
 
-export function makeData(len = 5553) {
+export function makeData(len = 553) {
     return range(len).map(d => {
         return {
             ...newPerson(),
@@ -41,9 +41,14 @@ export function makeData(len = 5553) {
 export const Table = (props) => {
     const { data, ...tableProps } = props;
     console.log(data);
+
+    const mockData = useMemo(() => {
+        return makeData();
+    }, [])
+
     return (
         <ReactTable
-            data={makeData()}
+            data={mockData}
             // data={data}
             columns={[
                 {
