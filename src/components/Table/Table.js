@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 // import PropTypes from 'prop-types';
 
-import ReactTable from "react-table";
+// import ReactTable from "react-table";
 import "react-table/react-table.css";
 
 // import clsx from 'clsx';
@@ -17,15 +17,15 @@ import TableRow from '@material-ui/core/TableRow';
 // import Toolbar from '@material-ui/core/Toolbar';
 // import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
+// import Checkbox from '@material-ui/core/Checkbox';
 // import IconButton from '@material-ui/core/IconButton';
 // import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Switch from '@material-ui/core/Switch';
 // import DeleteIcon from '@material-ui/icons/Delete';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 
-import { average, sum } from './../../Utils/math';
+// import { average, sum } from './../../Utils/math';
 import EnhancedTableToolbar from './components/TableToolbar/TableToolbar';
 import EnhancedTableHead from './components/TableHead/TableHead';
 
@@ -61,157 +61,6 @@ export function makeData(len = 553) {
         };
     });
 }
-
-// export const TableOld = (props) => {
-//     const { data, ...tableProps } = props;
-
-//     const mockData = useMemo(() => {
-//         return makeData();
-//     }, [])
-
-//     return (
-//         <ReactTable
-//             data={mockData}
-//             // data={data}
-//             columns={[
-//                 {
-//                     Header: "Name",
-//                     columns: [
-//                         {
-//                             Header: "First Name",
-//                             accessor: "firstName",
-//                             PivotValue: ({ value }) =>
-//                                 <span style={{ color: "darkred" }}>
-//                                     {value}
-//                                 </span>
-//                         },
-//                         {
-//                             Header: "Last Name",
-//                             id: "lastName",
-//                             accessor: d => d.lastName,
-//                             PivotValue: ({ value }) =>
-//                                 <span style={{ color: "darkblue" }}>
-//                                     {value}
-//                                 </span>,
-//                             Footer: () =>
-//                                 <div style={{ textAlign: "center" }}>
-//                                     <strong>Pivot Column Footer</strong>
-//                                 </div>
-//                         }
-//                     ]
-//                 },
-//                 {
-//                     Header: "Info",
-//                     columns: [
-//                         {
-//                             Header: "Age",
-//                             accessor: "age",
-//                             aggregate: vals => {
-//                                 return Math.round(average(vals));
-//                             },
-//                             Aggregated: row =>
-//                                 <span>
-//                                     {row.value} (avg)
-//                                 </span>
-//                         },
-//                         {
-//                             Header: "Visits",
-//                             accessor: "visits",
-//                             aggregate: vals => sum(vals),
-//                             filterable: false
-//                         }
-//                     ]
-//                 },
-//                 {
-//                     pivot: true,
-//                     Header: () =>
-//                         <strong>Overridden Pivot Column Header Group</strong>
-//                 },
-//                 {
-//                     expander: true
-//                 }
-//             ]}
-//             defaultPageSize={5}
-//             className="-striped -highlight"
-//             pivotBy={["firstName", "lastName"]}
-//             defaultSorted={[
-//                 { id: "firstName", desc: false },
-//                 { id: "lastName", desc: true }
-//             ]}
-//             collapseOnSortingChange={false}
-//             filterable
-//             ExpanderComponent={({ isExpanded, ...rest }) =>
-//                 isExpanded ? <span> &#10136; </span> : <span> &#10137; </span>}
-//             SubComponent={row => {
-//                 return (
-//                     <div style={{ padding: "20px" }}>
-//                         <em>
-//                             You can put any component you want here, even another React
-//                             Table!
-//                         </em>
-//                         <br />
-//                         <br />
-//                         <ReactTable
-//                             data={makeData()}
-//                             columns={[
-//                                 {
-//                                     Header: "Name",
-//                                     columns: [
-//                                         {
-//                                             Header: "First Name",
-//                                             accessor: "firstName"
-//                                         },
-//                                         {
-//                                             Header: "Last Name",
-//                                             id: "lastName",
-//                                             accessor: d => d.lastName,
-//                                         }
-//                                     ]
-//                                 },
-//                                 {
-//                                     Header: "Info",
-//                                     columns: [
-//                                         {
-//                                             Header: "Age",
-//                                             accessor: "age"
-//                                         },
-//                                         {
-//                                             Header: "Visits",
-//                                             accessor: "visits"
-//                                         }
-//                                     ]
-//                                 }
-//                             ]}
-//                             defaultPageSize={3}
-//                             showPagination={false}
-//                             SubComponent={row => {
-//                                 return (
-//                                     <div style={{ padding: "20px" }}>Sub Component!</div>
-//                                 );
-//                             }}
-//                         />
-//                     </div>
-//                 );
-//             }}
-//         />
-//     );
-// };
-
-// export const createTable = (props) => {
-//     return (
-//         <Table>
-
-//         </Table>
-//     );
-// }
-
-
-
-
-
-
-
-
 
 
 
@@ -300,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function EnhancedTable({ data = [] }) {
+export function EnhancedTable({ data = [], title = "" }) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -373,7 +222,7 @@ export function EnhancedTable({ data = [] }) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} />
+                <EnhancedTableToolbar title={title} numSelected={selected.length} />
                 <TableContainer>
                     <Table
                         className={classes.table}

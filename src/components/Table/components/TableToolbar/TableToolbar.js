@@ -34,7 +34,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected } = props;
+    const { numSelected, title } = props;
 
     return (
         <Toolbar
@@ -48,7 +48,7 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             ) : (
                     <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                        Nutrition
+                        {title}
                     </Typography>
                 )}
 

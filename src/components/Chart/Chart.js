@@ -124,7 +124,7 @@ export const ChartContainer = ({ title, mainType = "composed", onDataFetch, serv
     return (
         <div style={{ height: '97%' }}>
             {
-                title ? (<div>
+                title && mainType !== "table" ? (<div>
                     {title}
                 </div>
                 ) : null
@@ -132,7 +132,7 @@ export const ChartContainer = ({ title, mainType = "composed", onDataFetch, serv
             <div style={{ height: '97%' }}>
                 {
                     filteredData ?
-                        <ChartComp data={filteredData} {...chartProps} />
+                        <ChartComp title={title} data={filteredData} {...chartProps} />
                         : <div> "loading...." </div>
                 }
             </div>
