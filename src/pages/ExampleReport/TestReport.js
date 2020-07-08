@@ -125,14 +125,14 @@ const TestReport = (props) => {
                             width: 1,
                             chart: {
                                 mainType: 'table',
-                                title: 'title test'
-                            },
-                            service: {
-                                // baseUrl: null,
-                                name: 'https://www.reddit.com/r/reactjs.json',
-                                params: {
-                                    key: 'value'
-                                }
+                                title: 'title test',
+                                service: {
+                                    // baseUrl: null,
+                                    name: 'https://www.reddit.com/r/reactjs.json',
+                                    params: {
+                                        key: 'value'
+                                    }
+                                },
                             },
                         },
                         {

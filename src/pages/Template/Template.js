@@ -11,8 +11,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
 import { Grid, Cell } from "styled-css-grid";
-import createChart, { ChartContainer } from './../../components/Chart/Chart';
-import { Table } from '../../components/Table/Table';
+import { ChartContainer } from './../../components/Chart/Chart';
 import FilterContext from '../../context/FilterContext';
 import DataContext from '../../context/dataContext';
 

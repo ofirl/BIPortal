@@ -13,7 +13,7 @@ import React, { useState, useEffect, useContext } from 'react';
 // import ChartLegend from '../../components/ChartLegend/ChartLegend';
 
 // import { getColor } from './../../Utils/colors';
-import { Table } from '../Table/Table';
+import Table from '../Table/Table';
 import ComposedChartBuilder from './components/ComposedChart/ComposedChart';
 import PieChartBuilder from './components/PieChart/PieChart';
 import { getChartData, exampleData, getServiceData } from '../../Utils/network';
@@ -102,8 +102,7 @@ export const ChartContainer = ({ title, mainType = "composed", onDataFetch, serv
         if (data)
             return;
 
-        // getServiceData(service)
-            getChartData('https://www.reddit.com/r/reactjs.json')
+        getServiceData(service)
             .then(
                 response => response.json(),
                 error => console.log(error)
@@ -112,7 +111,7 @@ export const ChartContainer = ({ title, mainType = "composed", onDataFetch, serv
                 setData(exampleData);
                 onDataFetch(exampleData);
             })
-    }, [data, onDataFetch]);
+    }, [data, onDataFetch, service]);
 
     // filter data
     useEffect(() => {
@@ -132,7 +131,7 @@ export const ChartContainer = ({ title, mainType = "composed", onDataFetch, serv
             }
             <div style={{ height: '97%' }}>
                 {
-                    data ?
+                    filteredData ?
                         <ChartComp data={filteredData} {...chartProps} />
                         : <div> "loading...." </div>
                 }
